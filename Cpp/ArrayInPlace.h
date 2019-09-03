@@ -45,6 +45,31 @@ namespace ArrayInPlace {
 		}
 		return index;
 	}
+	// mine
+	int removeDuplicates(vector<int>& nums) {
+		if(nums.size() < 2)
+		    return nums.size();
+
+		int dupCount = 0;
+		int curIndex = 0;
+		int curValue = nums[curIndex];
+		for(int nextIndex = 0; nextIndex < nums.size(); nextIndex++){
+		    if(curValue == nums[nextIndex]){
+			++dupCount;
+			if(dupCount >= 3){
+			    continue;
+			}
+			//curValue = nums[curIndex];
+		    }else{
+			// new value
+			dupCount = 1;
+			curValue = nums[nextIndex];
+		    }    
+		    nums[curIndex] = curValue;
+		    ++curIndex;
+		}
+		return curIndex;
+	    }
 
 	// 27. Remove Element [E]
 	// Given an array nums and a value val, remove all instances of that value in-place and return the new length.
