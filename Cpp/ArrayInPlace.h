@@ -58,6 +58,17 @@ namespace ArrayInPlace {
 		}
 		return index;
 	}
+	// mine
+	int removeElement(vector<int>& nums, int val) {
+		int curIndex = 0;
+		int nextIndex = 0;
+		for(;nextIndex < nums.size(); nextIndex++){
+		    if(nums[nextIndex] != val){
+			nums[curIndex++] = nums[nextIndex];                
+		    }
+		}
+		return curIndex;
+	    }
 
 	// 41. First Missing Positive [H]
 	// Given an unsorted integer array, find the smallest missing positive integer.
