@@ -14,6 +14,23 @@ namespace ArrayInPlace {
 		}
 		return index + 1;
 	}
+	// mine
+	int removeDuplicates(vector<int>& nums) {
+		int len = nums.size();
+		if(len < 1)
+		    return len;
+
+		int curValue = nums[0];
+		int curIndex = 1;
+		for(int startIndex = 0; startIndex < len-1; startIndex++){
+		    if(nums[startIndex+1] > curValue){
+			//curValue = nums[startIndex+1];
+			nums[curIndex++] = curValue= nums[startIndex+1];
+			//++curIndex;
+		    }
+		}
+		return curIndex;
+	    }
 
 	// 80. Remove Duplicates from Sorted Array II
 	// Given a sorted array nums, remove the duplicates in-place such that duplicates appeared at most twice and return the new length.
