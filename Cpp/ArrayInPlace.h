@@ -157,6 +157,12 @@ namespace ArrayInPlace {
 		}
 		return headhead->next;
 	    }
+	// 237. Delete Node in a Linked List
+	// Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.
+	void deleteNode(ListNode* node) {
+		node->val = node->next->val;
+		node->next = node->next->next;        
+	    }
 
 	// 41. First Missing Positive [H]
 	// Given an unsorted integer array, find the smallest missing positive integer.
