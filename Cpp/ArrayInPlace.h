@@ -163,6 +163,17 @@ namespace ArrayInPlace {
 		node->val = node->next->val;
 		node->next = node->next->next;        
 	    }
+	
+	// 268. Missing Number
+	// Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
+	int missingNumber(vector<int>& nums) {
+		int len = nums.size();
+		int sum = (0+len)*(len+1)/2;
+		for(int i = 0; i < len; i++){
+		    sum -= nums[i];
+		}
+		return sum;
+	    }
 
 	// 41. First Missing Positive [H]
 	// Given an unsorted integer array, find the smallest missing positive integer.
