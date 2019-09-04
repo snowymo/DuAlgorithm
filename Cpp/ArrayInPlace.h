@@ -142,6 +142,21 @@ namespace ArrayInPlace {
 		    nums[lastNonZeroFoundAt] = 0;
 		}
 	    }
+	// 203. Remove Linked List Elements
+	// Remove all elements from a linked list of integers that have value val.
+	ListNode* removeElements(ListNode* head, int val) {
+		ListNode* headhead = new ListNode(val-1);
+		headhead->next = head;
+		ListNode* lastPtr = headhead, *curPtr = head;
+		while(curPtr){
+		    if(curPtr->val == val){
+			lastPtr->next = curPtr->next;
+		    }else
+			lastPtr = lastPtr->next;
+		    curPtr = curPtr->next;            
+		}
+		return headhead->next;
+	    }
 
 	// 41. First Missing Positive [H]
 	// Given an unsorted integer array, find the smallest missing positive integer.
