@@ -94,6 +94,36 @@ namespace ArrayInPlace {
 		}
 		return curIndex;
 	    }
+	
+	// 283. Move Zeroes
+	// Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+	// mine
+	void moveZeroes(vector<int>& nums) {
+		int firstZeroIndex = 0;
+		int nextNonZeroIndex = firstZeroIndex+1;
+		int len = nums.size();
+		while(nextNonZeroIndex < len){
+		    // find zero
+		    for(; firstZeroIndex < len; firstZeroIndex++){
+			if(nums[firstZeroIndex] == 0)
+			    break;
+		    }
+		    if(firstZeroIndex >= len)
+			break;
+		    // find non-zero
+		    for(nextNonZeroIndex = firstZeroIndex+1; nextNonZeroIndex < len; nextNonZeroIndex++){
+			if(nums[nextNonZeroIndex] != 0)
+			    break;
+		    }            
+		    if(nextNonZeroIndex >= len)
+			break;
+		    // swap
+		    nums[firstZeroIndex] = nums[nextNonZeroIndex];
+		    nums[nextNonZeroIndex] = 0;
+		    ++firstZeroIndex;
+		    ++nextNonZeroIndex;
+		}
+	    }
 
 	// 41. First Missing Positive [H]
 	// Given an unsorted integer array, find the smallest missing positive integer.
