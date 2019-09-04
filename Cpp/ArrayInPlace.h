@@ -124,6 +124,24 @@ namespace ArrayInPlace {
 		    ++nextNonZeroIndex;
 		}
 	    }
+	// better
+	void moveZeroes(vector<int>& nums) {
+		int lastNonZeroFoundAt = 0;
+		int len = nums.size();
+		// If the current element is not 0, then we need to
+		// append it just in front of last non 0 element we found. 
+		for (int i = 0; i < len; i++) {
+		    if (nums[i] != 0) {
+			nums[lastNonZeroFoundAt++] = nums[i];
+		    }
+		}
+		// After we have finished processing new elements,
+		// all the non-zero elements are already at beginning of array.
+		// We just need to fill remaining array with 0's.
+		for (; lastNonZeroFoundAt < len; lastNonZeroFoundAt++) {
+		    nums[lastNonZeroFoundAt] = 0;
+		}
+	    }
 
 	// 41. First Missing Positive [H]
 	// Given an unsorted integer array, find the smallest missing positive integer.
