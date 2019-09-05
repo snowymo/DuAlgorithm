@@ -317,4 +317,36 @@ namespace ArrayInPlace {
 		}
 		return 0;
 	    }
+	
+	// No.765. Couples Holding Hands
+	// N couples sit in 2N seats arranged in a row and want to hold hands. We want to know the minimum number of swaps so that every couple is sitting side by side. A swap consists of choosing any two people, then they stand up and switch seats.
+	// The people and seats are represented by an integer from 0 to 2N-1, the couples are numbered in order, the first couple being (0, 1), the second couple being (2, 3), and so on with the last couple being (2N-2, 2N-1).
+	// The couples' initial seating is given by row[i] being the value of the person who is initially sitting in the i-th seat.
+	int minSwapsCouples(vector<int>& row) {
+		int count = 0;
+		// check how many couples are not together
+		//bool flag = true;
+		//while(flag){
+		    //flag = false;
+		    for(int i = 0; i < row.size(); i++){
+			int delta = row[i] % 2 == 0 ? 1 : -1;
+			int neighbour1 = i % 2 == 0 ? i+1 : i-1;
+			if((row[neighbour1]-row[i] == delta)){
+			    // they are couples already
+			    continue;
+			}
+			//flag = true;
+			// the other half is not by side
+			for(int j = 0; j < row.size(); j++){
+			    if(row[j] - row[i] == delta){
+				swap(row[j], row[neighbour1]);
+				++count;
+				break;
+			    }
+			}
+			++i;
+		    }    
+		//}        
+		return count;
+	    }
 }
