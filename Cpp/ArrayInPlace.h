@@ -344,9 +344,32 @@ namespace ArrayInPlace {
 				break;
 			    }
 			}
-			++i;
 		    }    
 		//}        
+		return count;
+	    }
+	// use map
+	int minSwapsCouples(vector<int>& row) {
+		int count = 0;
+		std::map<int,int> mapValueIndex;
+		for(int i = 0; i < row.size(); i++){
+		    mapValueIndex[row[i]] = i;
+		}
+		for(int i = 0; i < row.size(); i++){
+		    int delta = row[i] % 2 == 0 ? 1 : -1;
+		    int neighbour1 = i % 2 == 0 ? i+1 : i-1;
+		    if((row[neighbour1]-row[i] == delta)){
+			// they are couples already
+			continue;
+		    }
+
+		    // the other half is not by side
+		    swap(row[neighbour1], row[mapValueIndex[row[i]+delta]]);
+		    ++count;
+		    mapValueIndex[row[mapValueIndex[row[i]+delta]]] = mapValueIndex[row[i]+delta];
+		    mapValueIndex[row[neighbour1]] = neighbour1;//won't be visited anymore            
+		}    
+
 		return count;
 	    }
 }
