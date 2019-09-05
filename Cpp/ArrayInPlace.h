@@ -246,6 +246,7 @@ namespace ArrayInPlace {
 	// Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
 	// Find all the elements of [1, n] inclusive that do not appear in this array.
 	// Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.
+	// mine
 	void assignInPlace(vector<int>& nums, int pos, int val){
 		if(val <= 0)
 		    return;
@@ -279,6 +280,21 @@ namespace ArrayInPlace {
 		    if(nums[i] == 0){
 			ret.push_back(i+1);
 		    }
+		}
+		return ret;
+	    }
+	
+	// No.442. Find All Duplicates in an Array
+	// Given an array of integers, 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+	// Find all the elements that appear twice in this array.
+	// Could you do it without extra space and in O(n) runtime?
+	// mine
+	vector<int> findDuplicates(vector<int>& nums) {
+		vector<int> ret;
+		for(int i = 0; i < nums.size(); i++){
+		    nums[abs(nums[i])-1] *= -1;
+		    if(nums[abs(nums[i])-1] > 0)
+			ret.push_back(abs(nums[i]));
 		}
 		return ret;
 	    }
