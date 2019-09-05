@@ -341,6 +341,7 @@ namespace ArrayInPlace {
 			    if(row[j] - row[i] == delta){
 				swap(row[j], row[neighbour1]);
 				++count;
+				    ++i;
 				break;
 			    }
 			}
