@@ -242,4 +242,44 @@ namespace ArrayInPlace {
 		}
 		return ans;
 	    }
+	// No.448. Find All Numbers Disappeared in an Array
+	// Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+	// Find all the elements of [1, n] inclusive that do not appear in this array.
+	// Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.
+	void assignInPlace(vector<int>& nums, int pos, int val){
+		if(val <= 0)
+		    return;
+
+		int temp = nums[val-1];        
+		if(temp == val){
+		    nums[val-1] = -val;
+		    if(nums[pos] > 0)
+			nums[pos] = 0;
+		    return;   
+		}
+		if(temp < 0){
+		    //already assigned
+		    if(nums[pos] > 0)
+			nums[pos] = 0; 
+		    return;
+		}
+
+		nums[val-1] = -val;
+		if(nums[pos] > 0)
+		    nums[pos] = 0; 
+		assignInPlace(nums, pos, temp);
+	    }
+
+	    vector<int> findDisappearedNumbers(vector<int>& nums) {
+		vector<int> ret;
+		for(int i = 0; i < nums.size(); i++){
+		    assignInPlace(nums, i, nums[i]);
+		}
+		for(int i = 0; i < nums.size(); i++){
+		    if(nums[i] == 0){
+			ret.push_back(i+1);
+		    }
+		}
+		return ret;
+	    }
 }
