@@ -418,6 +418,23 @@ namespace BitsManipulation {
 		}
 		return{ -1, -1 };
 	}
+	// mine
+	vector<int> singleNumber(vector<int>& nums) {
+		unsigned int allxor = std::accumulate(nums.begin(), nums.end(), 0, std::bit_xor<unsigned int>());
+		vector<int> ret;
+		ret.push_back(0);
+		ret.push_back(0);
+		// find a set place, all are using rightmost, let's try another one
+		allxor = 1 << (unsigned int)std::log2(allxor);
+		for(int i = 0; i < nums.size(); i++){
+		    if(nums[i] & allxor){
+			ret[0] ^= nums[i];
+		    }else{
+			ret[1] ^= nums[i];
+		    }
+		}
+		return ret;
+	    }
 
 	// Fast SQRT
 	// 15 times faster than the classical float sqrt. // Reasonably accurate up to root(32500) // Source: http://supp.iar.com/FilesPublic/SUPPORT/000419/AN-G-002.pdf
