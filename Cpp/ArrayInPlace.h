@@ -203,4 +203,43 @@ namespace ArrayInPlace {
 				return i + 1;
 		return n + 1;
 	}
+	// mine
+	void assignInPlace(vector<int>& nums, int pos, int val){
+		int temp = nums[val-1];
+		if(temp < 0){
+		    // already set
+		    if(nums[pos] > 0)
+			nums[pos] = 0;
+		    return;
+		}
+		if(temp == val || temp == 0){
+		    nums[val-1] = -val;
+		    if(nums[pos] > 0)
+			nums[pos] = 0;
+		    return;
+		}
+		nums[val-1] = -val;
+		assignInPlace(nums, pos, temp);
+	    }
+	    int firstMissingPositive(vector<int>& nums) {
+		int len = nums.size();
+		for(int i = 0; i < len; i++){
+		    if(nums[i] < 0 || nums[i] > len){
+			nums[i] = 0;
+		    }
+		}
+		for(int i = 0; i < len; i++){
+		    if(nums[i] > 0){
+			assignInPlace(nums,i,nums[i]);
+		    }
+		}
+		int ans = nums.size()+1;
+		for(int i = 0; i < len; i++){
+		    if(nums[i] == 0){
+			ans = i+1;
+			break;
+		    }
+		}
+		return ans;
+	    }
 }
