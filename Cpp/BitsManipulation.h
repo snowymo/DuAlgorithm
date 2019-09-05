@@ -388,6 +388,20 @@ namespace BitsManipulation {
 			count[i] <<= i;
 		return accumulate(count.cbegin(), count.cend(), 0, std::plus<int>());
 	}
+	// mine
+	int singleNumber(vector<int>& nums) {        
+		//*# Exor of seenOnce and num provided seenTwice is 0*
+		    //seenOnce  = (seenOnce ^ num) & ~seenTwice
+			//*# Exor of seenTwice and num provided seenOnce is 0*
+	//            seenTwice = (seenTwice ^ num) & ~seenOnce
+		int seenOnce = 0;
+		int seenTwice = 0;
+		for(int i = 0; i < nums.size(); i++){
+		    seenOnce = (seenOnce ^ nums[i]) & (~seenTwice);
+		    seenTwice = (seenTwice ^ nums[i]) & (~seenOnce);
+		}
+		return seenOnce;
+	    }
 
 	// 260. Single Number III
 	// Given an array of numbers nums, in which exactly two elements appear only once and all the other elements appear exactly twice. Find the two elements that appear only once.
