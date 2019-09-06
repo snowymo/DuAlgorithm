@@ -273,6 +273,36 @@ namespace BinaryTreeOrders {
 	    bool isValidBST(TreeNode* root) {
 		return isValidTree(root, NULL, NULL);
 	    }
+	// iteration solution
+	bool isValidBST(TreeNode* root) {
+		vector<TreeNode*> mystack;
+		vector<int*> lowers, uppers;
+		mystack.push_back(root);
+		lowers.push_back(NULL);
+		uppers.push_back(NULL);
+		int* lower, *upper;
+		while(!mystack.empty()){
+		    root = mystack.back();
+		    lower = lowers.back();
+		    upper = uppers.back();
+		    mystack.pop_back();
+		    lowers.pop_back();
+		    uppers.pop_back();
+		    if(root){
+			if(lower && root->val <= *lower)
+			    return false;
+			if(upper && root->val >= *upper)
+			    return false;
+			mystack.push_back(root->left);
+			lowers.push_back(lower);
+			uppers.push_back(&(root->val));
+			mystack.push_back(root->right);
+			lowers.push_back(&(root->val));
+			uppers.push_back(upper);
+		    }
+		}
+		return true;
+	    }
 };
 
 
