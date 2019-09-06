@@ -43,6 +43,27 @@ namespace BinaryTreeOrders {
 		}
 		return ans;
 	}
+	// mine
+	vector<int> inorderTraversal(TreeNode* root) {
+		vector<int> ret;
+		vector<TreeNode*> nodes;
+		TreeNode* iter = root;
+		while(iter || !nodes.empty()){
+		    if(iter){
+			nodes.push_back(iter);
+			iter = iter->left;                
+		    }                
+		    else{
+			// left finish, then self
+			iter = nodes.back();
+			ret.push_back(iter->val);
+			nodes.pop_back();
+
+			iter = iter->right;
+		    }                
+		}
+		return ret;
+	    }
 
 	// 144. Binary Tree Preorder Traversal
 	vector<int> preorderTraversal(TreeNode* root) {
