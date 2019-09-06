@@ -202,6 +202,38 @@ namespace BinaryTreeOrders {
 		}
 		return d != 0 ? false : v.back() == "#";
 	}
+	
+	// No.783. Minimum Distance Between BST Nodes
+	// Given a Binary Search Tree (BST) with the root node root, return the minimum difference between the values of any two different nodes in the tree.
+	void findMin(TreeNode* iter, int& smallest){
+		if(!iter)
+		    return;
+		if(iter->left){
+		    TreeNode* rightmost = iter->left;
+		    while(rightmost->right){
+			rightmost = rightmost->right;
+		    }
+		    int smallest1 = abs(iter->val - rightmost->val);
+		    smallest = smallest > smallest1 ? smallest1 : smallest;
+		    findMin(iter->left, smallest);
+		}
+		if(iter->right){
+		    TreeNode* leftmost = iter->right;
+		    while(leftmost->left){
+			leftmost = leftmost->left;
+		    }
+		    int smallest1 = abs(iter->val - leftmost->val);
+		    smallest = smallest > smallest1 ? smallest1 : smallest;     
+		    findMin(iter->right, smallest);
+		}
+	    }
+
+	    int minDiffInBST(TreeNode* root) {
+		// the minimum diff is between one node and left largest or right smallest
+		int smallest = root->val;
+		findMin(root, smallest);
+		return smallest;
+	    }
 };
 
 
