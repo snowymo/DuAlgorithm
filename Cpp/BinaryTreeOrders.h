@@ -255,6 +255,24 @@ namespace BinaryTreeOrders {
 		findMin(root, smallest);
 		return smallest;
 	    }
+	
+	// No.98. Validate Binary Search Tree
+	// Given a binary tree, determine if it is a valid binary search tree (BST).
+	bool isValidTree(TreeNode* node, int* lower, int* upper){
+		if(!node)
+		    return true;
+		bool bLeft = lower == NULL || node->val > *lower;
+		bool bRight = upper == NULL || node->val < *upper;
+		if(bLeft && bRight){
+		    return isValidTree(node->left, lower, &(node->val))
+			&& isValidTree(node->right, &(node->val), upper);
+		}
+		else
+		    return false;
+	    }
+	    bool isValidBST(TreeNode* root) {
+		return isValidTree(root, NULL, NULL);
+	    }
 };
 
 
