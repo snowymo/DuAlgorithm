@@ -225,6 +225,52 @@ class BinaryTreeMisc {
 		}
 		return ans;
 	    }
+	// not using hashmap
+	void findMode(TreeNode* node, int & curValue, int & curCount, int& maxCount, vector<int>& ans){
+		if(!node)
+		    return;
+		findMode(node->left, curValue, curCount, maxCount, ans);
+
+		if(curCount == 0){
+		    // first time
+		    curCount = 1;
+		    curValue = node->val;
+		}
+		else if(curValue == node->val){
+		    ++curCount;
+		}else{
+		    //reaches the top
+		    if(curCount == maxCount){
+			ans.push_back(curValue);
+		    }else if(curCount > maxCount){
+			ans.clear();
+			ans.push_back(curValue);
+			maxCount = curCount;
+		    }
+		    curValue = node->val;
+		    curCount = 1;
+		}
+
+		findMode(node->right, curValue, curCount, maxCount, ans);
+	    }
+
+	    vector<int> findMode(TreeNode* root) {
+		// the point is, if the node is different from the child's value, then the child's value reaches its max value.
+		int val = -1;
+		int count = 0;
+		int maxCount = 0;
+		vector<int> ans;
+
+		findMode(root, val, count, maxCount, ans);
+		if(count > 0 && count == maxCount){
+		    ans.push_back(val);
+		}else if(count > maxCount){
+		    ans.clear();
+		    ans.push_back(val);
+		    maxCount = count;
+		}
+		return ans;
+	    }
 };
 
 
