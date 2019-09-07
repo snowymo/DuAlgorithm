@@ -189,6 +189,42 @@ class BinaryTreeMisc {
 			if (root->right) binaryTreePathsDFS(root->right, out + "->", res);
 		}
 	}
+	
+	// 501. Find Mode in Binary Search Tree
+	// Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST.
+	// Assume a BST is defined as follows:
+	// The left subtree of a node contains only nodes with keys less than or equal to the node's key.
+	// The right subtree of a node contains only nodes with keys greater than or equal to the node's key.
+	// Both the left and right subtrees must also be binary search trees.
+	void findMode(TreeNode* node, map<int, int>& ret, int& maxCount){
+		if(!node)
+		    return;
+		findMode(node->left, ret, maxCount);
+		findMode(node->right, ret, maxCount);
+		if(ret.find(node->val) == ret.end()){
+		    ret[node->val] = 1;
+		    cout << "first time:" << node->val << "\t1\n";
+		}            
+		else{
+		    ++ret[node->val];
+		    cout << "find again:" << node->val << "\t" << ret[node->val] << "\n";
+		}   
+		maxCount = max(maxCount, ret[node->val]);
+		cout << "maxCount:" << maxCount << "\n";
+	    }
+
+	    vector<int> findMode(TreeNode* root) {
+		// the point is, if the node is different from the child's value, then the child's value reaches its max value.
+		map<int,int> ret;
+		int count = 0;
+		vector<int> ans;
+		findMode(root, ret, count);
+		for(auto start = ret.begin(); start != ret.end(); start++){
+		    if(start->second == count)
+			ans.push_back(start->first);
+		}
+		return ans;
+	    }
 };
 
 
