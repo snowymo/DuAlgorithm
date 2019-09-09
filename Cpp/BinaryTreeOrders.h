@@ -324,6 +324,41 @@ namespace BinaryTreeOrders {
 		}
 		return ans;
 	    }
+	
+	// No.590. N-ary Tree Postorder Traversal
+	// Given an n-ary tree, return the postorder traversal of its nodes' values.
+	vector<int> postorder(Node* root) {
+		vector<int> ans;
+		vector<Node*> mystack;
+		Node* nextRoot;
+		while(root || !mystack.empty()){
+		    if(root){
+			for(int i = 1; i < root->children.size(); i++){
+			    mystack.push_back(root->children[root->children.size()-i]);
+			}
+			mystack.push_back(root);
+			if(root->children.size() > 0)
+			    root = root->children[0];
+			else
+			    root = NULL;
+		    }else{
+			root = mystack.back();
+			mystack.pop_back();
+			if(!mystack.empty() && root->children.size()>1 && 
+			   find(root->children.begin(), root->children.end(), mystack.back()) != root->children.end()){
+			    nextRoot = mystack.back();
+			    mystack.pop_back();
+			    mystack.push_back(root);
+			    root = nextRoot;
+			}
+			else{
+			    ans.push_back(root->val);
+			    root = NULL;
+			}
+		    }
+		}
+		return ans;
+	    }
 	// No.98. Validate Binary Search Tree
 	// Given a binary tree, determine if it is a valid binary search tree (BST).
 	bool isValidTree(TreeNode* node, int* lower, int* upper){
