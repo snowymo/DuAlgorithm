@@ -302,6 +302,28 @@ namespace BinaryTreeOrders {
 		return smallest;
 	    }
 	
+	// No.589. N-ary Tree Preorder Traversal
+	// Given an n-ary tree, return the preorder traversal of its nodes' values.
+	vector<int> preorder(Node* root) {
+		vector<int> ans;
+		vector<Node*> mystack;
+		while(root || !mystack.empty()){
+		    if(root){
+			ans.push_back(root->val);
+			for(int i = 1; i < root->children.size(); i++){
+			    mystack.push_back(root->children[root->children.size() - i]);
+			}
+			if(root->children.size() > 0)
+			    root = root->children[0];
+			else
+			    root = NULL;
+		    }else{
+			root = mystack.back();
+			mystack.pop_back();
+		    }
+		}
+		return ans;
+	    }
 	// No.98. Validate Binary Search Tree
 	// Given a binary tree, determine if it is a valid binary search tree (BST).
 	bool isValidTree(TreeNode* node, int* lower, int* upper){
