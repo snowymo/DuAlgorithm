@@ -428,4 +428,104 @@ public:
 		istringstream in(data);
 		return deserialize(in);
 	}
+	
+	// mine, iterative
+	// Encodes a tree to a single string.
+	    string serialize(TreeNode* root) {
+		string res = "";
+		deque<TreeNode*> mystack;
+		if(root){
+		    mystack.push_back(root);
+		    res += std::to_string(root->val);
+		}
+		while(!mystack.empty()){
+		    int len = mystack.size();
+		    while(len-- > 0){
+			TreeNode* cur = mystack.front();
+			mystack.pop_front();
+			if(cur->left)    {
+			    mystack.push_back(cur->left);
+			    res += "," + std::to_string(cur->left->val);
+			}else{
+			    res += ",n";
+			}
+			if(cur->right)    {
+			    mystack.push_back(cur->right);
+			    res += "," + std::to_string(cur->right->val);
+			}else{
+			    res += ",n";
+			}
+		    }
+		}
+		return res;
+	    }
+
+	    // Decodes your encoded data to tree.
+	    TreeNode* deserialize(string data) {
+		if(data.size() == 0){
+		    return NULL;
+		}
+
+		int curIdx = 0, nextComma = 0;
+		nextComma = data.find(",");
+		if(nextComma == std::string::npos){
+		    // one element
+		    TreeNode* root = new TreeNode(stoi(data));
+		    return root;
+		}
+		string curVal = data.substr(curIdx, nextComma);
+		curIdx = nextComma+1;
+		TreeNode* root = new TreeNode(stoi(curVal));
+
+		int step = 0;//0 - left, 1 - right
+		deque<TreeNode*> mystack;
+		mystack.push_back(root);
+		TreeNode*cur = NULL;
+
+		nextComma = data.find(",", curIdx);    
+		while(nextComma != std::string::npos){
+		    curVal = data.substr(curIdx, nextComma-curIdx);
+		    curIdx = nextComma+1;
+
+		    if(step == 0){
+			cur = mystack.front();
+			mystack.pop_front();
+			if(curVal != "n"){
+			    cur->left = new TreeNode(stoi(curVal));
+			    mystack.push_back(cur->left);   
+			}else{
+			    cur->left = NULL;
+			}                    
+		    }else if(step == 1){
+			if(curVal != "n"){
+			    cur->right = new TreeNode(stoi(curVal));
+			    mystack.push_back(cur->right);
+			}else{
+			    cur->right = NULL;
+			}
+		    }
+		    step = (step+1) % 2;
+		    nextComma = data.find(",", curIdx);
+		}
+		// last
+		curVal = data.substr(curIdx);
+		if(step == 0){
+		    cur = mystack.front();
+		    mystack.pop_front();
+		    if(curVal != "n"){
+			cur->left = new TreeNode(stoi(curVal));
+			mystack.push_back(cur->left);   
+		    }else{
+			cur->left = NULL;
+		    }                    
+		}else if(step == 1){
+		    if(curVal != "n"){
+			cur->right = new TreeNode(stoi(curVal));
+			mystack.push_back(cur->right);
+		    }else{
+			cur->right = NULL;
+		    }
+		}
+		return root;
+	    }
 };
