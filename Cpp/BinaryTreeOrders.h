@@ -183,6 +183,37 @@ namespace BinaryTreeOrders {
 		}
 		return res;
 	}
+	// mine
+	vector<vector<int>> levelOrder(TreeNode* root) {
+		vector<vector<int>> ans;
+		deque<TreeNode*> mystack;
+		vector<int> eachLevel;
+		if(root){
+		    eachLevel.push_back(root->val);
+		    mystack.push_back(root);
+		    ans.push_back(eachLevel);
+		}
+		while(!mystack.empty()){
+		    int len = mystack.size();
+		    eachLevel.clear();
+		    while(len-- > 0){
+			root = mystack.front();
+			mystack.pop_front();    
+
+			if(root->left){
+			    eachLevel.push_back(root->left->val);            
+			    mystack.push_back(root->left);
+			}
+			if(root->right){
+			    eachLevel.push_back(root->right->val);            
+			    mystack.push_back(root->right);
+			}
+		    }
+		    if(eachLevel.size() > 0)
+			ans.push_back(eachLevel);            
+		}
+		return ans;
+	    }
 
 	// 107. Binary Tree Level Order Traversal II
 	// Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
