@@ -189,6 +189,47 @@ class BinaryTreeMisc {
 			if (root->right) binaryTreePathsDFS(root->right, out + "->", res);
 		}
 	}
+	// mine, iterative
+	vector<string> binaryTreePaths(TreeNode* root) {
+		// it depends on how many leaves
+		map<TreeNode*, TreeNode*> myParent;
+		vector<TreeNode*> mystack;
+		vector<string> ans;
+		while(root || !mystack.empty()){
+		    if(root){
+			if(root->left){
+			    myParent[root->left] = root;
+			}
+			if(root->right){
+			    myParent[root->right] = root;
+			}
+			if(!root->left && !root->right){
+			    //leaf
+			    TreeNode* leaf = root;
+			    vector<int> path;
+			    path.push_back(leaf->val);
+			    while(myParent[leaf]){
+				leaf = myParent[leaf];
+				path.push_back(leaf->val);
+			    }
+			    string st = std::to_string(path[path.size()-1]);
+			    for(int i = 1; i < path.size(); i++){
+				st += "->" + std::to_string(path[path.size()-i-1]);
+			    }
+			    ans.push_back(st);
+			    root = NULL;
+			}else{
+			    mystack.push_back(root->right);
+			    root = root->left;    
+			}                
+		    }
+		    else{
+			root = mystack.back();
+			mystack.pop_back();
+		    }
+		}
+		return ans;
+	    }
 	
 	// No.98. Validate Binary Search Tree
 	// Given a binary tree, determine if it is a valid binary search tree (BST).
