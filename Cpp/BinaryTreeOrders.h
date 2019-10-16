@@ -247,6 +247,73 @@ namespace BinaryTreeOrders {
 		}
 		return res;
 	}
+	// mine
+	    std::deque<TreeNode*> mystack;
+	    vector<vector<int>> result;
+	    std::deque<int> steps;
+	    void levelOrderBottomHelp(TreeNode* root){
+		TreeNode* cur = NULL;
+		int curStep, nextStep;
+		while(!mystack.empty()){
+		    vector<int> curLevel;
+		    curStep = steps.front();
+		    steps.pop_front();
+		    nextStep = 0;
+		    while(curStep-- > 0){
+			cur = mystack.front();
+			mystack.pop_front();
+			curLevel.push_back(cur->val);
+			if(cur->left){
+			    mystack.push_back(cur->left);
+			    ++nextStep;
+			}    
+			if(cur->right){
+			    mystack.push_back(cur->right);
+			    ++nextStep;
+			}
+		    }
+		    steps.push_back(nextStep);
+		    result.insert(result.begin(),curLevel);
+		}
+	    }
+	    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+		if(root){
+		    mystack.push_back(root);
+		    steps.push_back(1);
+		    levelOrderBottomHelp(root);
+		}
+
+		return result;
+	    }
+	// optimized
+	void levelOrderBottomHelp(TreeNode* root){
+		TreeNode* cur = NULL;
+		int curStep, nextStep;
+		while(!mystack.empty()){
+		    vector<int> curLevel;
+		    curStep = mystack.size();
+		    while(curStep-- > 0){
+			cur = mystack.front();
+			mystack.pop_front();
+			curLevel.push_back(cur->val);
+			if(cur->left){
+			    mystack.push_back(cur->left);
+			}    
+			if(cur->right){
+			    mystack.push_back(cur->right);
+			}
+		    }
+		    result.push_back(curLevel);
+		}
+	    }
+	    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+		if(root){
+		    mystack.push_back(root);
+		    levelOrderBottomHelp(root);
+		    reverse(result.begin(), result.end());
+		}
+		return result;
+	    }
 
 	// 103. Binary Tree Zigzag Level Order Traversal
 	// Given a binary tree, return the zigzag level order traversal of its nodes' values. (ie, from left to right, then right to left for the next level and alternate between).
