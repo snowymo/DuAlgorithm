@@ -70,6 +70,30 @@ class BinaryTreeMisc {
 		}
 		return ans;
 	}
+	// mine
+	int minDepth(TreeNode* root) {
+		deque<TreeNode*> mystack;
+		if(!root)
+		    return 0;
+		mystack.push_back(root);
+		int depth = 1;
+		while(!mystack.empty()){
+		    int size = mystack.size();        
+		    while(size-- > 0){
+			TreeNode* curNode = mystack.front();
+			mystack.pop_front();
+			if(!curNode->left && !curNode->right)
+			    return depth;
+			if(curNode->left)
+			    mystack.push_back(curNode->left);
+			if(curNode->right)
+			    mystack.push_back(curNode->right);
+
+		    }
+		    ++depth;
+		}
+		return depth;
+	    }
 
 	// 106. Construct Binary Tree from Inorder and Postorder Traversal
 	// Given inorder and postorder traversal of a tree, construct the binary tree.
