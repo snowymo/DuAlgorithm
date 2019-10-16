@@ -389,6 +389,31 @@ class BinaryTreeMisc {
 		diameterOfBinaryTree(root, depth, maxLen);
 		return maxLen;
 	    }
+	// No. 637 Average of Levels in Binary Tree (Mine)
+	// Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.
+	vector<double> averageOfLevels(TreeNode* root) {
+        deque<TreeNode*> mystack;
+        mystack.push_back(root);
+        vector<double> result;
+        while(!mystack.empty()){
+            int curLevelSize = mystack.size();
+            int number = curLevelSize;
+            double sum = 0;
+            while(curLevelSize-- > 0){
+                TreeNode* curNode = mystack.front();
+                mystack.pop_front();
+                sum += curNode->val;
+                if(curNode->left)
+                    mystack.push_back(curNode->left);
+                if(curNode->right)
+                    mystack.push_back(curNode->right);
+        
+            }
+            result.push_back(sum / (double)number);
+            
+        }
+        return result;
+    }
 };
 
 
