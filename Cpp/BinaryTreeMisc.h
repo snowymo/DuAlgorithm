@@ -46,6 +46,42 @@ class BinaryTreeMisc {
 		}
 		return ans;
 	}
+	// mine
+	int maxDepth(TreeNode* root) {
+		if(!root)
+		    return 0;
+		int depth = 0;
+		deque<TreeNode*> mystack;
+		mystack.push_back(root);
+		while(!mystack.empty()){
+		    int size = mystack.size();
+		    while(size-- > 0){
+			TreeNode* curNode = mystack.front();
+			mystack.pop_front();
+			if(curNode->left)
+			    mystack.push_back(curNode->left);
+			if(curNode->right)
+			    mystack.push_back(curNode->right);         
+		    }
+		    ++depth;
+		}
+		return depth;
+	}
+	// optimized
+	int maxDepth(TreeNode* root) {
+		if (root==NULL){
+		    return 0;
+		}
+
+		int left_height = 1 + maxDepth(root->left);
+		int right_height = 1 + maxDepth(root->right);
+
+		if (left_height>right_height){
+		    return left_height;
+		}
+
+		return right_height;
+	    }
 
 	// 111. Minimum Depth of Binary Tree
 	// Given a binary tree, find its minimum depth.
