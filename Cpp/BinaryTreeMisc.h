@@ -452,28 +452,64 @@ class BinaryTreeMisc {
 	// No. 637 Average of Levels in Binary Tree (Mine)
 	// Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.
 	vector<double> averageOfLevels(TreeNode* root) {
-        deque<TreeNode*> mystack;
-        mystack.push_back(root);
-        vector<double> result;
-        while(!mystack.empty()){
-            int curLevelSize = mystack.size();
-            int number = curLevelSize;
-            double sum = 0;
-            while(curLevelSize-- > 0){
-                TreeNode* curNode = mystack.front();
-                mystack.pop_front();
-                sum += curNode->val;
-                if(curNode->left)
-                    mystack.push_back(curNode->left);
-                if(curNode->right)
-                    mystack.push_back(curNode->right);
-        
-            }
-            result.push_back(sum / (double)number);
-            
-        }
-        return result;
-    }
+		deque<TreeNode*> mystack;
+		mystack.push_back(root);
+		vector<double> result;
+		while(!mystack.empty()){
+		    int curLevelSize = mystack.size();
+		    int number = curLevelSize;
+		    double sum = 0;
+		    while(curLevelSize-- > 0){
+			TreeNode* curNode = mystack.front();
+			mystack.pop_front();
+			sum += curNode->val;
+			if(curNode->left)
+			    mystack.push_back(curNode->left);
+			if(curNode->right)
+			    mystack.push_back(curNode->right);
+
+		    }
+		    result.push_back(sum / (double)number);
+
+		}
+		return result;
+	    }
+	// No. 559 Given a n-ary tree, find its maximum depth. (Mine)
+	// The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+	 int maxDepth(Node* root) {
+		deque<Node*> mystack;
+		if(!root)
+		    return 0;
+		mystack.push_back(root);
+		int depth = 1;
+		while(!mystack.empty()){
+
+		    int size = mystack.size();
+		    bool hasChildren = false;
+		    while(size -- > 0){
+			Node* curNode = mystack.front();
+			mystack.pop_front();
+			for(int i = 0; i < curNode->children.size(); i++){
+			    mystack.push_back(curNode->children[i]);
+			    hasChildren = true;
+			}
+		    }
+		    if(hasChildren)
+			++depth;
+		}
+		return depth;
+	    }
+	    int maxDepth(Node* root){
+		if(!root)
+		    return 0;
+		int depth = 1;
+		for(int i = 0; i < root->children.size(); i++){
+		    int curDepth = 1 + maxDepth(root->children[i]);
+		    if(curDepth > depth)
+			depth = curDepth;
+		}
+		return depth;
+	    }
 };
 
 
