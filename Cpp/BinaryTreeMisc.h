@@ -204,6 +204,28 @@ class BinaryTreeMisc {
 		}
 		connect(level.next);
 	}
+	// mine
+	Node* connect(Node* root) {
+		if(!root)
+		    return root;
+		deque<Node*> mystack;
+		mystack.push_back(root);
+		while(!mystack.empty()){
+		    int size = mystack.size();
+		    while(size-- > 0){
+			Node* curNode = mystack.front();
+			mystack.pop_front();
+			if(size > 0)
+			    curNode->next = mystack.front();
+			if(curNode->left){
+			    mystack.push_back(curNode->left);
+			    mystack.push_back(curNode->right);
+			}
+
+		    }
+		}
+		return root;
+	    }
 
 	// 117. Populating Next Right Pointers in Each Node II
 	// Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
