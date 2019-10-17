@@ -245,6 +245,9 @@ class BinaryTreeMisc {
 		}
 		connect(level.next);
 	}
+	// mine
+	// the same as No.116
+	// just slightly changed the condition for right child
 
 	// 226. Invert Binary Tree [E]
 	TreeNode* invertTree(TreeNode* root) {
