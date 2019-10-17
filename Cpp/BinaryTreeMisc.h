@@ -731,7 +731,25 @@ class BinaryTreeMisc {
 		deque<int> sums;
 		sums.push_back(sum);
 		return pathSumHelp(root, sums);
-
+	    }
+	// No. 669 Trim Binary Search Tree(Mine)
+	// Given a binary search tree and the lowest and highest boundaries as L and R, 
+	// trim the tree so that all its elements lies in [L, R] (R >= L). 
+	// You might need to change the root of the tree, so the result should return the new root of the trimmed binary search tree.
+	TreeNode* trimBST(TreeNode* root, int L, int R) {
+		if(!root)
+		    return root;
+		if(root->val < L){
+		    return trimBST(root->right, L, R);
+		}
+		if(root->val > R){
+		    return trimBST(root->left, L, R);
+		}
+		if(root->left)
+		    root->left = trimBST(root->left, L, R);
+		if(root->right)
+		    root->right = trimBST(root->right, L, R);
+		return root;
 	    }
 };
 
