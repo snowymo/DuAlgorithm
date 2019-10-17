@@ -533,6 +533,44 @@ class BinaryTreeMisc {
 		getDepth(root);
 		return ret;
 	    }
+	// No.993 Cousins in Binary Tree(Mine
+	// In a binary tree, the root node is at depth 0, and children of each depth k node are at depth k+1.
+	//Two nodes of a binary tree are cousins if they have the same depth, but have different parents.
+	// We are given the root of a binary tree with unique values, and the values x and y of two different nodes in the tree.
+	// Return true if and only if the nodes corresponding to the values x and y are cousins
+	bool isCousins(TreeNode* root, int x, int y) {
+		if(!root)
+		    return false;
+		deque<TreeNode*> mystack;
+		mystack.push_back(root);
+		while(!mystack.empty()){
+		    int size = mystack.size();
+		    int count = 0;
+		    while(size-- > 0){
+			TreeNode* curNode = mystack.front();
+			mystack.pop_front();
+
+			if(curNode->val == x || curNode->val == y){
+			    if(++count == 2)
+			    return true;
+			}
+			if(curNode->left && curNode->right){
+			    if(curNode->left->val == x
+			      && curNode->right->val == y)
+				return false;
+			    if(curNode->left->val == y
+			      && curNode->right->val == x)
+				return false;
+			}
+			if(curNode->left)
+			    mystack.push_back(curNode->left);
+			if(curNode->right)
+			    mystack.push_back(curNode->right);
+		    }
+
+		}
+		return false;
+	    }
 };
 
 
