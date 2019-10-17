@@ -639,6 +639,37 @@ class BinaryTreeMisc {
 		MyNode* ret = new MyNode();
 		return longestHelper(root, ret);
 	    }
+	// No.437 Path Sum III(Mine)
+	// You are given a binary tree in which each node contains an integer value.
+	// Find the number of paths that sum to a given value.
+	// The path does not need to start or end at the root or a leaf, but it must go downwards (traveling only from parent nodes to child nodes).
+	int pathSumHelp(TreeNode* root, deque<int> sums){
+		int ret = 0;
+		int size = sums.size();
+		int oriSum = sums[0];
+		for(int i = 0; i < size; i++){
+		    if(sums[i] == root->val)
+			++ret;
+		    sums[i] = (sums[i] - root->val);
+		}
+		sums.push_front( oriSum);
+		int leftRet = 0;
+		int rightRet = 0;
+
+		if(root->left)
+		    leftRet = pathSumHelp(root->left, sums);
+		if(root->right)
+		    rightRet = pathSumHelp(root->right, sums);
+		return ret + leftRet + rightRet;
+	    }
+	    int pathSum(TreeNode* root, int sum) {
+		if(!root)
+		    return 0;
+		deque<int> sums;
+		sums.push_back(sum);
+		return pathSumHelp(root, sums);
+
+	    }
 };
 
 
