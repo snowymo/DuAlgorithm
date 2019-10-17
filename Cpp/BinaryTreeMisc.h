@@ -639,6 +639,21 @@ class BinaryTreeMisc {
 		MyNode* ret = new MyNode();
 		return longestHelper(root, ret);
 	    }
+	// No.112 Path Sum I(Mine)
+	//Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+	// Note: A leaf is a node with no children.
+	bool hasPathSum(TreeNode* root, int sum) {
+		if(!root)
+		    return false;
+		if(!root->left && !root->right){
+		    if(root->val == sum)
+			return true;
+		    else
+			    return false;
+		}
+		return hasPathSum(root->left, sum-root->val)
+		    || hasPathSum(root->right, sum-root->val);
+	    }
 	// No.437 Path Sum III(Mine)
 	// You are given a binary tree in which each node contains an integer value.
 	// Find the number of paths that sum to a given value.
