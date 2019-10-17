@@ -751,6 +751,50 @@ class BinaryTreeMisc {
 		    root->right = trimBST(root->right, L, R);
 		return root;
 	    }
+	// No. 1130 Minimun cost tree from leave values (Mine)
+	// Given an array arr of positive integers, consider all binary trees such that:
+	// Each node has either 0 or 2 children;
+	// The values of arr correspond to the values of each leaf in an in-order traversal of the tree.  (Recall that a node is a leaf if and only if it has 0 children.)
+	// The value of each non-leaf node is equal to the product of the largest leaf value in its left and right subtree respectively.
+	// Among all possible binary trees considered, return the smallest possible sum of the values of each non-leaf node.  It is guaranteed this sum fits into a 32-bit integer.
+	int mctFromLeafValues(vector<int>& arr) {
+		int sums = 0;
+		// we need to let the smallest two combine together
+		while(arr.size() > 1){
+		    vector<int> indices;
+		    int index = 0;
+		    int product = arr[0] * arr[1];
+		    indices.push_back(index);
+		    vector<int> temp;
+
+		    for(int i = 1; i < arr.size()-1; i++){
+			int curProduct = arr[i] * arr[i+1];
+			if(curProduct == product){
+			    indices.push_back(i);
+			}
+			if(curProduct < product){
+			    product = curProduct;
+			    indices.clear();
+			    indices.push_back(i);
+			}
+		    }
+		    // get rid of those indices with new values
+		    for(int i = 0, j = 0; i < arr.size(); i ++){
+			if(j < indices.size() && i == indices[j]){
+			    sums += arr[i] * arr[i+1];
+			    //cout << " " << sums;
+			    temp.push_back(max(arr[i],arr[i+1]));
+			    ++j;
+			    ++i;
+			}else{
+			    temp.push_back(arr[i]);
+			}
+		    }
+		    arr = temp;
+		    //cout << "\n" << arr.size();
+		}
+		return sums;
+	    }
 };
 
 
