@@ -489,6 +489,42 @@ namespace BinaryTreeOrders {
 
 		return ans;
 	    }
+	// No. 1008 Construct Binary Search Tree from Preorder Traversal(Mine)
+	// Return the root node of a binary search tree that matches the given preorder traversal.
+	TreeNode* bstFromPreorder(vector<int>& preorder) {
+		TreeNode* root = new TreeNode(preorder[0]);
+		deque<TreeNode*> mystack;
+		mystack.push_back(root);
+		int index = 1;
+		while(index < preorder.size()){
+		    TreeNode* curNode = root;
+		    bool changed = true;
+		    //cout << preorder[index];
+		    while(changed){
+			changed = false;
+			while(curNode->left && preorder[index] < curNode->val){
+			    curNode = curNode->left;
+			    changed = true;
+			}
+			while(curNode->right && preorder[index] > curNode->val){
+			    curNode = curNode->right;
+			    changed = true;
+			}
+		    }
+
+
+		    if(!curNode->left && preorder[index] < curNode->val){
+			curNode->left = new TreeNode(preorder[index]);
+		    }
+		    if(!curNode->right && preorder[index] > curNode->val){
+			curNode->right = new TreeNode(preorder[index]);
+		    }
+
+		    ++index;
+
+		}
+		return root;
+	    }
 };
 
 
