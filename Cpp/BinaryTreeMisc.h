@@ -571,6 +571,74 @@ class BinaryTreeMisc {
 		}
 		return false;
 	    }
+	// No.687 Longest Univalue Path (Mine)
+	// Given a binary tree, find the length of the longest path where each node in the path has the same value. This path may or may not pass through the root.
+	// The length of path between two nodes is represented by the number of edges between the
+	struct MyNode{
+		int length;// the longest path may or may not include the root
+		int leftLength;// the path including the root and left children
+		int rightLength;// the path including th root and the right children
+		int val; // the value related to the length
+		MyNode(): length(0), leftLength(0), rightLength(0), val(-1234){}
+	    };
+	    int longestHelper(TreeNode* root, MyNode* ret){
+		if(!root){
+		    return 0;
+		}
+		//cout << "visiting " << root->val << "\n";
+		MyNode* leftRet = new MyNode(), *rightRet = new MyNode();
+		int leftPath = longestHelper(root->left, leftRet);
+		int rightPath = longestHelper(root->right, rightRet);
+		//cout << leftPath << ":" << *leftVal << "\t" << rightPath <<":" << *rightVal << "\n";
+		//cout << "root->val\t" << root->val;
+
+		ret->val = root->val;
+
+		//ret->leftLength = 0;
+		if(root->left ){
+		    if(leftRet && root->val == root->left->val){        
+			ret->leftLength = 1 + max(leftRet->leftLength, leftRet->rightLength);
+		    }
+
+		}
+		if(root->right ){
+		    if(rightRet && root->val == root->right->val){
+			ret->rightLength = 1 +  max(rightRet->leftLength, rightRet->rightLength);
+		    }
+
+		}
+
+		    ret->length = max(ret->leftLength, ret->rightLength);
+		// if two children
+		if(root->left && root->right){
+		    if(root->val == root->left->val &&
+		      root->val == root->right->val){ 
+			ret->length = max(ret->length,2 + max(leftRet->leftLength, leftRet->rightLength) + max(rightRet->leftLength, rightRet->rightLength));
+		    }
+		}
+		if(ret->length < leftPath){
+		    //cout << "leftVal " << *leftVal << "\n";
+		    ret->length = leftPath;
+		    ret->val = leftRet->val;
+		}
+		if(ret->length < rightPath){
+		    //cout << "rightVal " << *rightVal << "\n";
+		    ret->val = rightRet->val;
+		    ret->length = rightPath;
+		}
+		//if(ret->length > 1)
+		//     cout << "leaving " << root->val << " with ";
+		// if(root->left)
+		//     cout << "leftchild " << root->left->val;
+		// if(root->right)
+		//     cout << "rightchild " << root->right->val;
+		// ret->output();
+		return ret->length;
+	    }
+	    int longestUnivaluePath(TreeNode* root) {
+		MyNode* ret = new MyNode();
+		return longestHelper(root, ret);
+	    }
 };
 
 
