@@ -525,6 +525,21 @@ namespace BinaryTreeOrders {
 		}
 		return root;
 	    }
+	// optimized
+	TreeNode* bstFromPreorderHelper(vector<int>& preorder, int start, int end){
+		if(end-start < 1)
+		    return NULL;
+		int right = start+1;
+		TreeNode* cur = new TreeNode(preorder[start]);
+		while(right < end && preorder[right] < preorder[start])
+		    ++right;
+		cur->left = bstFromPreorderHelper(preorder, start+1, right);
+		cur->right = bstFromPreorderHelper(preorder, right, end);
+		return cur;
+	    }
+	    TreeNode* bstFromPreorder(vector<int>& preorder){
+		return bstFromPreorderHelper(preorder, 0, preorder.size());
+	    }
 };
 
 
