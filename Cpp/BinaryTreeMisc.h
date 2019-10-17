@@ -654,6 +654,29 @@ class BinaryTreeMisc {
 		return hasPathSum(root->left, sum-root->val)
 		    || hasPathSum(root->right, sum-root->val);
 	    }
+	// No. 113 Path Sum II(Mine)
+	// Given a binary tree and a sum, find all root-to-leaf paths where each path's sum equals the given sum.
+	vector<vector<int>> ret;
+	    void pathSumHelp(TreeNode* root, int sum, vector<int> path){
+		if(!root){
+		    return;
+		}
+		if(!root->left && !root->right){
+		    if(root->val == sum){
+			path.push_back(root->val);
+			ret.push_back(path);
+			return;
+		    }
+		}
+		path.push_back(root->val);
+		pathSumHelp(root->left, sum-root->val, path);
+		pathSumHelp(root->right, sum-root->val, path);
+	    }
+	    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+		vector<int>path;
+		pathSumHelp(root, sum, path);
+		return ret;
+	    }
 	// No.437 Path Sum III(Mine)
 	// You are given a binary tree in which each node contains an integer value.
 	// Find the number of paths that sum to a given value.
