@@ -795,6 +795,32 @@ class BinaryTreeMisc {
 		}
 		return sums;
 	    }
+	// No.515 Find Largest Value in Each Tree Row (Mine)
+	// You need to find the largest value in each row of a binary tree.
+	vector<int> largestValues(TreeNode* root) {
+		vector<int> ret;
+		if(!root)
+		    return ret;
+		deque<TreeNode*> mystack;
+		mystack.push_back(root);
+
+		while(!mystack.empty()){
+		    int size = mystack.size();
+		    int largest = mystack.front()->val;
+		    while(size-- > 0){
+			TreeNode* curNode = mystack.front();
+			mystack.pop_front();
+			if(curNode->val > largest)
+			    largest = curNode->val;
+			if(curNode->left)
+			    mystack.push_back(curNode->left);
+			if(curNode->right)
+			    mystack.push_back(curNode->right);
+		    }
+		    ret.push_back(largest);
+		}
+		return ret;
+	    }
 };
 
 
