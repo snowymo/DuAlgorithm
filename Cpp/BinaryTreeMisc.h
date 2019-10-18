@@ -967,8 +967,25 @@ class BinaryTreeMisc {
 		    ret = min(ret, getMinimumDifference(root->right));
 		}
 		    return ret;
-
 	    }
+	// inspired by inorder traversal solution and optimized it
+	int ret = INT_MAX;
+	void inorder(TreeNode* root, int& prevVal)
+		{
+		if(root == nullptr)
+		    return;
+
+		inorder(root->left, prevVal);
+		ret = min(ret, abs(prevVal - root->val));
+		prevVal = root->val;
+		inorder(root->right, prevVal);
+		 }
+
+		 int getMinimumDifference(TreeNode* root) {
+		int temp = INT_MAX;
+		inorder(root, temp);
+		return ret;   
+	}
 };
 
 
