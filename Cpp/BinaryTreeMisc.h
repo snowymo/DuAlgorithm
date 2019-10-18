@@ -821,6 +821,103 @@ class BinaryTreeMisc {
 		}
 		return ret;
 	    }
+	
+	// No.329 Longest Increasing Path in a Matrix(Mine)
+	// Given an integer matrix, find the length of the longest increasing path.
+	// From each cell, you can either move to four directions: left, right, up or down. You may NOT move diagonally or move outside of the boundary (i.e. wrap-around is not allowed).
+	struct MatrixNode{
+		int rowIndex;
+		int columnIndex;
+		vector<MatrixNode*> next;
+		int depth;
+		bool isRoot;
+		MatrixNode(int r, int c):rowIndex(r), columnIndex(c),depth(-1),isRoot(true){}
+	    };
+	    int nCol = 0;
+	    int helper(MatrixNode* node){
+		if(!node)
+		    return 0;
+		if(node->depth > 0)
+		    return node->depth;
+
+		int count = 0;
+		for(int i = 0; i < node->next.size(); i++){
+		    int temp = helper(node->next[i]);
+		    if(temp > count)
+			count = temp;
+		}
+		node->depth = count+1;
+		//cout << "\t" << node->rowIndex << "," << node->columnIndex << ":"<< count+1 << "\n";
+		return count+1;
+	    }
+	    int longestIncreasingPath(vector<vector<int>>& matrix) {
+		if(matrix.empty())
+		    return 0;
+		nCol = matrix[0].size();
+		// create the path between the matrix
+		vector<MatrixNode*> matrixNode;
+		for(int i = 0; i < matrix.size(); i++){
+		    for(int j = 0; j < matrix[i].size(); j++){
+			//cout << i << "-" << j << "\n";
+			MatrixNode* curNode = new MatrixNode(i,j);
+			//cout << curNode->rowIndex << "," << curNode->columnIndex << ":" << curNode->isRoot << "\n";
+		       //cout << i<<","<<j<<":"<<matrix[i][j] << "\t";
+			// test four direction
+			if(i-1>=0 && matrix[i][j] < matrix[i-1][j]){
+			    // up
+			    curNode->next.push_back(matrixNode[(i-1)*nCol+j]);
+			    //cout << matrixNode[(i-1)*nCol+j]->rowIndex << "," 
+			       // << matrixNode[(i-1)*nCol+j]->columnIndex << ":False";
+			    matrixNode[(i-1)*nCol+j]->isRoot = false;
+			   //cout << i<<","<<j<<":"<<matrix[i][j]<<"->next "<<i-1<<","<<j<<":"<<matrix[i-1][j]<<"\n";
+			}
+			if(i-1>=0 && matrix[i][j] > matrix[i-1][j]){
+			    // up
+			    matrixNode[(i-1)*nCol+j]->next.push_back(curNode);
+			    curNode->isRoot = false;
+			    //cout << curNode->rowIndex << "," << curNode->columnIndex << ":False";
+			   //cout << i-1<<","<<j<<":"<<matrix[i-1][j]<<"->next "<<i<<","<<j<<":"<<matrix[i][j]<<"\n";
+			}
+
+			 if(j-1>=0 && matrix[i][j] < matrix[i][j-1]){
+			    // left
+			     int index = i * nCol + j - 1;
+			     //cout << "index " << index << "\n";
+			    curNode->next.push_back(matrixNode[index]);
+			     matrixNode[index]->isRoot = false;
+			     //cout << matrixNode[index]->rowIndex << "," << matrixNode[index]->columnIndex << ":False";
+			     //cout << i<<","<<j<<":"<<matrix[i][j]<<"->next "<<i<<","<<j-1<<":"<<matrix[i][j-1]<<"\n";
+			}
+			if(j-1>=0 && matrix[i][j] > matrix[i][j-1]){
+			    // left
+			    matrixNode[(i)*nCol+j-1]->next.push_back(curNode);
+			    curNode->isRoot = false;
+			    //cout << curNode->rowIndex << "," << curNode->columnIndex << ":False";
+			     //cout << i<<","<<j-1<<":"<<matrix[i][j-1]<<"->next "<<i<<","<<j<<":"<<matrix[i][j]<<"\n";
+
+			}
+			//cout << curNode->next.size();
+			//cout << "push back index:" << matrixNode.size()<<"\t";
+			 matrixNode.push_back(curNode);
+			//cout << curNode->rowIndex << "," << curNode->columnIndex << ":" << curNode->isRoot << "\n";
+			//cout << "\t[0,0] root " << matrixNode[0]->isRoot << "\n";
+		    }
+		}
+		int ret = 0;
+		//cout << "here";
+		// calculate the largest depth for tree matrixNode
+		for(int i = 0; i < matrixNode.size(); i++){
+		    //deque<MatrixNode*> mystack;
+		    //cout << "visiting " << matrixNode[i]->rowIndex << "," << matrixNode[i]->columnIndex << ":" << matrixNode[i]->isRoot << "\n";
+		    if(!matrixNode[i]->isRoot)
+			continue;
+		    ///cout << i << "\n";
+		    int temp = helper(matrixNode[i]);
+		    if(temp > ret)
+			ret = temp;
+		}
+		return ret;
+	    }
 };
 
 
