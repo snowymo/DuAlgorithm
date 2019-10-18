@@ -938,6 +938,37 @@ class BinaryTreeMisc {
 		if(j < c-1 && matrix[i][j+1] > matrix[i][j]) m[i][j] = max(m[i][j], dfs(matrix, m, i, j+1));
 		return ++m[i][j];
 	    }
+	
+	// No.530 Minimum Absolute Difference in BST(Mine)
+	// Given a binary search tree with non-negative values, find the minimum absolute difference between values of any two nodes.
+	int ret = 1000;
+	    int getMinimum(TreeNode * node){
+		// return minimum value
+		while(node->left)
+		    node = node->left;
+		return node->val;
+	    }
+	    int getMaximum(TreeNode* node){
+		while(node->right)
+		    node = node->right;
+		return node->val;
+	    }
+	    int getMinimumDifference(TreeNode* root) {
+		if(ret == 0)
+		    return ret;
+		// deal with cur node
+		if(root->left){
+		    ret = min(ret, abs(root->val- getMaximum(root->left)));
+		    ret = min(ret, getMinimumDifference(root->left));
+		}
+
+		if(root->right){
+		    ret = min(ret, abs(root->val- getMinimum(root->right)));
+		    ret = min(ret, getMinimumDifference(root->right));
+		}
+		    return ret;
+
+	    }
 };
 
 
