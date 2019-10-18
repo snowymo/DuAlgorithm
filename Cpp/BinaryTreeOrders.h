@@ -348,6 +348,34 @@ namespace BinaryTreeOrders {
 		}
 		return res;
 	}
+	// Mine
+	vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+		deque<TreeNode*> mystack;
+		vector<vector<int>> ret;
+		if(!root)
+		    return ret;
+		mystack.push_back(root);
+		bool direction = true;// left to right
+		while(!mystack.empty()){
+		    int size = mystack.size();
+		    vector<int> curPath;
+		    while(size-- > 0){
+			TreeNode * curNode = mystack.front();
+			mystack.pop_front();
+			curPath.push_back(curNode->val);
+			if(curNode->left)
+			    mystack.push_back(curNode->left);
+			if(curNode->right)
+			    mystack.push_back(curNode->right);
+
+		    }
+		    if(!direction)
+			reverse(curPath.begin(), curPath.end());
+		    ret.push_back(curPath);
+		    direction = !direction;
+		}
+		return ret;
+	    }
 
 	// 331. Verify Preorder Serialization of a Binary Tree
 	// Given a string of comma separated values, verify whether it is a correct preorder traversal serialization of a binary tree. Find an algorithm without reconstructing the tree.
