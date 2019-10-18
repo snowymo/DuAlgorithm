@@ -73,6 +73,39 @@ namespace TopologicalSort {
 		}
 		return res.size() == n ? res : Vector();
 	}
+	// mine, reference
+	vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        
+		vector<vector<int>> graph(numCourses, vector<int>());
+		vector<int> visited(numCourses);
+		vector<int> res;
+		for (auto pre : prerequisites)
+		    graph[pre[1]].push_back(pre[0]);
+
+		for (int i = 0; i < numCourses; ++i) {
+		    if (!DFS(graph, i, visited, res))
+			return {};
+		}
+		reverse(res.begin(), res.end());
+		return res;
+	    }
+
+	    bool DFS(vector<vector<int>>& graph, int i, vector<int>& visited, vector<int>& res){
+
+		if (visited[i] == 1)
+		    return true;
+
+		if (visited[i] == -1)
+		    return false;
+
+		visited[i] = -1;
+		for (auto v : graph[i]) {
+		    if(!DFS(graph, v, visited, res)) return false;
+		}
+		visited[i] = 1;
+		res.push_back(i);
+		return true;
+	    }
 
 	// Refer to 630. Course Schedule III [H], in Greedy.h
 }
