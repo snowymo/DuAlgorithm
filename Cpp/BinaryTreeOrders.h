@@ -632,6 +632,7 @@ class InorderPostorder {
 		int rootVal = postorder[endIndex2-1];
 		TreeNode* node = new TreeNode(rootVal);        
 		int rootIndex = 0;
+		// use map could save time by more space
 		for(;rootIndex < endIndex1; rootIndex++){
 		    if(inorder[rootIndex] == rootVal){
 			//cout << "\tcreate " << rootVal << "\n";
