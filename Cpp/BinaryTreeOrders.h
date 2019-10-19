@@ -597,6 +597,27 @@ class preorderInorder {
 		root->right = buildTree(preorder, pr - (ir - j - 1), pr, inorder, j + 1, ir);
 		return root;
 	}
+	//mine
+	TreeNode* buildTree(vector<int>& preorder, int preStart, int preEnd, vector<int>& inorder, int inStart, int inEnd){
+		if(preStart > preEnd)
+		    return NULL;
+		if(inStart > inEnd)
+		    return NULL;
+		TreeNode* node = new TreeNode(preorder[preStart]);
+		// find the index
+		int i;
+		for(i = inStart; i <= inEnd; i++){
+		    if(inorder[i] == node->val)
+			break;
+		}
+		int leftAmount = i - inStart;// rightAmount = inEnd-inStart-leftAmount = inEnd-i
+		node->left = buildTree(preorder, preStart+1, preStart+leftAmount, inorder, inStart, inStart+leftAmount-1 );
+		node->right = buildTree(preorder, preStart+leftAmount+1, preEnd, inorder, inStart+leftAmount+1, inEnd);
+		return node;
+	    }
+	    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+		return buildTree(preorder, 0, preorder.size()-1, inorder, 0, inorder.size()-1);
+	    }
 };
 
 // 106. Construct Binary Tree from Inorder and Postorder Traversal
