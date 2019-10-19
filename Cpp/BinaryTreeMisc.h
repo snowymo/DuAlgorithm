@@ -1265,6 +1265,36 @@ class BinaryTreeMisc {
 		}
 		return ret;
 	    }
+	
+	// No. 129 (Mine)
+	// Given a binary tree containing digits from 0-9 only, each root-to-leaf path could represent a number.
+	// An example is the root-to-leaf path 1->2->3 which represents the number 123.
+	// Find the total sum of all root-to-leaf numbers.
+	int sum = 0;
+	    int mystack = 0;
+	    bool sumNumbersHelp(TreeNode* root){
+		 mystack = mystack*10+ root->val;
+		if(!root->left && !root->right){
+		    cout << mystack << "\n";
+		    sum += mystack;
+		     return true;
+		}
+		if(root->left && sumNumbersHelp(root->left)){
+		    mystack /= 10;
+		}
+		if(root->right && sumNumbersHelp(root->right)){
+
+		    mystack /= 10;
+		}
+		mystack /= 10;
+		return false;
+	    }
+	    int sumNumbers(TreeNode* root) {
+		if(!root)
+		    return 0;
+		sumNumbersHelp(root);
+		return sum;
+	    }
 };
 
 
