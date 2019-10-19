@@ -173,6 +173,22 @@ class BinaryTreeMisc {
 			if (!s.empty()) p->right = s.top();
 		}
 	}
+	// Mine
+	void flatten(TreeNode* root){
+		while(root){
+		    if(root->left){
+			TreeNode* temp = root->right;
+			root->right = root->left;
+			root->left = NULL;
+			TreeNode* temp2 = root->right;
+			while(temp2->right){
+			    temp2 = temp2->right;
+			}
+			temp2->right = temp;
+		    }
+		    root = root->right;
+		}
+	    }
 
 	// 100. Same Tree [E]
 	// Given two binary trees, write a function to check if they are the same or not.
