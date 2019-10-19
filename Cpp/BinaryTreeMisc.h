@@ -999,6 +999,94 @@ class BinaryTreeMisc {
 		    return searchBST(root->left, val);
 		return NULL;
 	    }
+	
+	// No. 310 MHT (Mine)
+	// MHT is different if we want to do it efficiently
+	// For an undirected graph with tree characteristics, we can choose any node as the root. The result graph is then a rooted tree. Among all possible rooted trees, those with minimum height are called minimum height trees (MHTs). Given such a graph, write a function to find all the MHTs and return a list of their root labels.
+	// Format
+	// The graph contains n nodes which are labeled from 0 to n - 1. You will be given the number n and a list of undirected edges (each edge is a pair of labels).
+	// You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.
+	    int getDepth(int node, vector<vector<int>> & myedges, vector<int>& visited){
+		if(visited[node] == 1)
+		    // already visited, must be some father
+		    return 0;
+		visited[node] = 1;
+		int depth = 0;
+		for(int i = 0; i < myedges[node].size(); i++){
+		    int temp = getDepth(myedges[node][i], myedges, visited);
+		    if(temp > depth)
+			depth = temp;
+		}
+		cout << node << ":depth=" << depth+1<<"\n";
+		return depth+1;
+	    }
+	    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+		vector<int> ret(1,0);
+		if(edges.size() == 0)
+		    return ret;
+		vector<int> tmp;
+		vector<vector<int>> myedges(n, tmp);
+		vector<int> degrees(n,0);
+		int minLevel = INT_MAX;
+
+		for(int i = 0; i < edges.size(); i++){
+		    int p1 = edges[i][0];
+		    int p2 = edges[i][1];
+		    // add edge btw p1 and p2 two myedges
+		    myedges[p1].push_back(p2);
+		    myedges[p2].push_back(p1);
+		    // add degrees
+		    ++degrees[p1];
+		    ++degrees[p2];
+		}
+		//cout << "finish edge construction\n";
+		// calculate depth for each one, recursive dfs
+		// for(int i = 0; i < n; i++){
+		//     vector<int> visited(n,0);
+		//     int depth = getDepth(i, myedges, visited);
+		//     if(depth == minLevel)
+		//         tmp.push_back(i);
+		//     if(depth < minLevel){
+		//         minLevel = depth;
+		//         tmp.clear();
+		//         tmp.push_back(i);
+		//     }                
+		// }
+
+		// instead of calculating the depth, we reconstruct the tree based on the degree
+		int depth = 0;
+		deque<int> mystack;
+		for(int i = 0; i < n; i++){
+		    if(degrees[i] == 1){
+			mystack.push_back(i);
+		    }
+		}
+
+		while(n > 2){
+		    int size = mystack.size();
+		    while(size-->0){
+			int cur = mystack.front();
+			//cout << "cur " << cur << "\n";
+			mystack.pop_front();
+			--n;
+			for(int j = 0; j < myedges[cur].size(); j++){
+			    //cout << "nei " << myedges[cur][j] << "\n";
+			    if(--degrees[myedges[cur][j]] == 1){
+				mystack.push_back(myedges[cur][j]);
+				//cout << "add " << myedges[cur][j] << "\n";
+			    }
+
+			}
+		    }    
+		}
+
+		for(int i = 0; i < mystack.size(); i++){
+		    tmp.push_back(mystack[i]);
+		}
+
+		return tmp;
+	    }
+	
 };
 
 
