@@ -1209,6 +1209,62 @@ class BinaryTreeMisc {
 		}
 		return ret;
 	    }
+	
+	// No.236 Lowest Common Ancestor of a Binary Tree(Mine)
+	// Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+	// According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+	bool findP = false;
+	    bool findQ = false;
+	    deque<TreeNode*> pathP,pathQ;
+	    void findPath(TreeNode* root, TreeNode*p, TreeNode* q){
+		if(!root){
+		   return;
+		}
+
+		if(root->val == p->val){
+		     pathP.push_back(root);
+		    findP = true;
+		}
+		if(root->val == q->val){
+		     pathQ.push_back(root);
+		    findQ = true;
+		}
+		if(findP && findQ)
+		    return;
+		if(!findP){
+		    pathP.push_back(root);
+		    //cout << "push p " << root->val << "\n";
+		}
+
+		if(!findQ){
+		    pathQ.push_back(root);
+		    //cout << "push q " << root->val << "\n";   
+		}
+
+		findPath(root->left, p, q);  
+		findPath(root->right, p, q);
+
+		if(!findP){
+		    //cout << "pop p " << pathP.back()->val << "\n";
+		    pathP.pop_back(); 
+		}
+
+		if(!findQ){
+		    //cout << "pop q " << pathQ.back()->val << "\n";
+		    pathQ.pop_back();
+		}
+
+	    }
+	    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+		findPath(root, p, q);
+		TreeNode* ret = NULL;
+		// generate two paths for pa nd q
+		for(int i = 0; i < min(pathP.size(), pathQ.size()); i++){
+		    if(pathP[i]->val == pathQ[i]->val)
+			ret = pathP[i];
+		}
+		return ret;
+	    }
 };
 
 
