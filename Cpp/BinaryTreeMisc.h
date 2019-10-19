@@ -1087,6 +1087,30 @@ class BinaryTreeMisc {
 		return tmp;
 	    }
 	
+	// No. 199 Binary Tree Right Side View(Mine)
+	//Given a binary tree, imagine yourself standing on the right side of it, 
+	// return the values of the nodes you can see ordered from top to bottom.
+	vector<int> rightSideView(TreeNode* root) {
+        vector<int> ret;
+        if(!root)
+            return ret;
+        deque<TreeNode*> mystack;
+        mystack.push_back(root);
+        while(!mystack.empty()){
+            int size = mystack.size();
+            TreeNode* curNode = NULL;
+            while(size-- > 0){
+                curNode = mystack.front();
+                mystack.pop_front();
+                if(curNode->left)
+                    mystack.push_back(curNode->left);
+                if(curNode->right)
+                    mystack.push_back(curNode->right);
+            }
+            ret.push_back(curNode->val);
+        }
+        return ret;
+    }
 };
 
 
