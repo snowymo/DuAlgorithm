@@ -316,7 +316,7 @@ class BinaryTreeMisc {
 		return ans;
 	    }
 	
-	// No.98. Validate Binary Search Tree
+	// No.98. Validate Binary Search Tree (Mine)
 	// Given a binary tree, determine if it is a valid binary search tree (BST).
 	bool isValidTree(TreeNode* node, int* lower, int* upper){
 		if(!node)
@@ -364,7 +364,7 @@ class BinaryTreeMisc {
 		return true;
 	    }
 	
-	// 501. Find Mode in Binary Search Tree
+	// 501. Find Mode in Binary Search Tree (Mine)
 	// Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST.
 	// Assume a BST is defined as follows:
 	// The left subtree of a node contains only nodes with keys less than or equal to the node's key.
@@ -446,7 +446,7 @@ class BinaryTreeMisc {
 		return ans;
 	    }
 	
-	// No.543. Diameter of Binary Tree
+	// No.543. Diameter of Binary Tree (Mine)
 	// Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
 	void diameterOfBinaryTree(TreeNode* node, int& depth, int& maxLen){
 		if(!node)
@@ -558,7 +558,7 @@ class BinaryTreeMisc {
 		getDepth(root);
 		return ret;
 	    }
-	// No.993 Cousins in Binary Tree(Mine
+	// No.993 Cousins in Binary Tree(Mine)
 	// In a binary tree, the root node is at depth 0, and children of each depth k node are at depth k+1.
 	//Two nodes of a binary tree are cousins if they have the same depth, but have different parents.
 	// We are given the root of a binary tree with unique values, and the values x and y of two different nodes in the tree.
@@ -824,7 +824,8 @@ class BinaryTreeMisc {
 	
 	// No.329 Longest Increasing Path in a Matrix(Mine)
 	// Given an integer matrix, find the length of the longest increasing path.
-	// From each cell, you can either move to four directions: left, right, up or down. You may NOT move diagonally or move outside of the boundary (i.e. wrap-around is not allowed).
+	// From each cell, you can either move to four directions: left, right, up or down. 
+	// You may NOT move diagonally or move outside of the boundary (i.e. wrap-around is not allowed).
 	struct MatrixNode{
 		int rowIndex;
 		int columnIndex;
