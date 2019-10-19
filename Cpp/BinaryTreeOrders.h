@@ -396,7 +396,7 @@ namespace BinaryTreeOrders {
 		return d != 0 ? false : v.back() == "#";
 	}
 	
-	// No.783. Minimum Distance Between BST Nodes
+	// No.783. Minimum Distance Between BST Nodes (Mine)
 	// Given a Binary Search Tree (BST) with the root node root, return the minimum difference between the values of any two different nodes in the tree.
 	void findMin(TreeNode* iter, int& smallest){
 		if(!iter)
@@ -428,7 +428,7 @@ namespace BinaryTreeOrders {
 		return smallest;
 	    }
 	
-	// No.589. N-ary Tree Preorder Traversal
+	// No.589. N-ary Tree Preorder Traversal (Mine)
 	// Given an n-ary tree, return the preorder traversal of its nodes' values.
 	vector<int> preorder(Node* root) {
 		vector<int> ans;
@@ -451,7 +451,7 @@ namespace BinaryTreeOrders {
 		return ans;
 	    }
 	
-	// No.590. N-ary Tree Postorder Traversal
+	// No.590. N-ary Tree Postorder Traversal (Mine)
 	// Given an n-ary tree, return the postorder traversal of its nodes' values.
 	vector<int> postorder(Node* root) {
 		vector<int> ans;
@@ -486,7 +486,7 @@ namespace BinaryTreeOrders {
 		return ans;
 	    }
 	
-	// 429. N-ary Tree Level Order Traversal
+	// 429. N-ary Tree Level Order Traversal (Mine)
 	// Given an n-ary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
 	vector<vector<int>> levelOrder(Node* root) {
 		vector<vector<int>> ans;
@@ -517,7 +517,7 @@ namespace BinaryTreeOrders {
 
 		return ans;
 	    }
-	// No. 1008 Construct Binary Search Tree from Preorder Traversal(Mine)
+	// No. 1008 Construct Binary Search Tree from Preorder Traversal (Mine)
 	// Return the root node of a binary search tree that matches the given preorder traversal.
 	TreeNode* bstFromPreorder(vector<int>& preorder) {
 		TreeNode* root = new TreeNode(preorder[0]);
