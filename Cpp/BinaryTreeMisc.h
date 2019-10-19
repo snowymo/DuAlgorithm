@@ -25,6 +25,36 @@ class BinaryTreeMisc {
 		}
 		return true;
 	}
+	// Mine
+	 bool isSymmetric(TreeNode* root) {
+		if(!root)
+		    return true;
+		if((root->left == NULL) != (root->right == NULL))
+		    return false;
+		deque<TreeNode*> mystack;
+		if(root->left){
+		    mystack.push_back(root->left);
+		    mystack.push_back(root->right);
+		}
+		while(!mystack.empty()){
+		    TreeNode* curLeft = mystack.front();
+		    mystack.pop_front();
+		    TreeNode* curRight = mystack.front();
+		    mystack.pop_front();
+		    if((curLeft && !curRight) ||
+		       (!curLeft && curRight))
+			return false;
+		    if(curLeft){
+			if(curLeft->val != curRight->val)
+			    return false;
+			mystack.push_back(curLeft->left);
+			mystack.push_back(curRight->right);
+			mystack.push_back(curLeft->right);
+			mystack.push_back(curRight->left);
+		    }
+		}
+		return true;
+	    }
 
 	// 104. Maximum Depth of Binary Tree
 	// Given a binary tree, find its maximum depth.
