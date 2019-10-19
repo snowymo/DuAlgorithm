@@ -1176,6 +1176,39 @@ class BinaryTreeMisc {
         }
         return ret;
     }
+	
+	// No.671 Second Minimum Node In a Binary Tree(Mine)
+	// Given a non-empty special binary tree consisting of nodes with the non-negative value, where each node in this tree has exactly two or zero sub-node. If the node has two sub-nodes, then this node's value is the smaller value among its two sub-nodes. More formally, the property root.val = min(root.left.val, root.right.val) always holds.
+	// Given such a binary tree, you need to output the second minimum value in the set made of all the nodes' value in the whole tree.
+	// If no such second minimum value exists, output -1 instead.
+	int findSecondMinimumValue(TreeNode* root) {
+		if(!root)
+		    return -1;
+		if(!root->left)
+		    return -1;
+		deque<TreeNode*> mystack;
+		mystack.push_back(root);
+		int smallest = root->val;
+		int ret = -1;
+		while(!mystack.empty()){
+		    int size = mystack.size();
+		    while(size-- > 0){
+			TreeNode* curNode = mystack.front();
+			mystack.pop_front();
+			if(curNode->left){
+			     int smaller = max(curNode->left->val, curNode->right->val);
+			    if(smaller > curNode->val){
+				// this is larger than smallest
+				if(ret == -1 || smaller < ret)
+				    ret = smaller;
+			    }
+			    mystack.push_back(curNode->left);
+			    mystack.push_back(curNode->right);
+			}
+		    }
+		}
+		return ret;
+	    }
 };
 
 
