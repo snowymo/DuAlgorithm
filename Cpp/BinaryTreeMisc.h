@@ -304,6 +304,24 @@ class BinaryTreeMisc {
 		root->right = t;
 		return root;
 	}
+	// mine
+	TreeNode* invertTree(TreeNode* root) {
+		if(!root)
+		    return root;
+		TreeNode* newright = NULL, *newleft = NULL;
+		if(root->left){
+		    newright = invertTree(root->left);
+		    //cout << "\nnewright " << newright->val;
+		}
+		if(root->right){
+		    newleft = invertTree(root->right);
+		    //cout << "\nnewleft " << newleft->val;
+		}
+		root->right = newright;
+		root->left = newleft;
+
+		return root;
+	    }
 
 	// 257. Binary Tree Paths [E]
 	vector<string> binaryTreePaths(TreeNode* root) {
