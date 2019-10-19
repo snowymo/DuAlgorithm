@@ -622,4 +622,34 @@ class InorderPostorder {
 		root->right = buildTree(inorder, j + 1, ir, postorder, pr - 1 - (ir - j - 1), pr - 1);
 		return root;
 	}
+	// Mine
+	TreeNode* buildTree(vector<int>& inorder, int startIndex1, int endIndex1, vector<int>& postorder, int startIndex2, int endIndex2){
+		//cout << startIndex1 << ":" << endIndex1 << "\t" << startIndex2 << ":" << endIndex2 << "\n";
+		if(startIndex1 >= endIndex1)
+		    return NULL;
+		if(startIndex2 >= endIndex2)
+		    return NULL;
+		int rootVal = postorder[endIndex2-1];
+		TreeNode* node = new TreeNode(rootVal);        
+		int rootIndex = 0;
+		for(;rootIndex < endIndex1; rootIndex++){
+		    if(inorder[rootIndex] == rootVal){
+			//cout << "\tcreate " << rootVal << "\n";
+			break;
+		    }                
+		}
+
+		int leftAmount = rootIndex-startIndex1;
+		//int rightAmount = endIndex1-1-leftAmount;
+		if(rootIndex-startIndex1 > 0){
+		    node->left = buildTree(inorder, startIndex1, rootIndex, postorder, startIndex2, startIndex2 + leftAmount);
+		}
+		if(endIndex1-1-leftAmount > 0){
+		    node->right = buildTree(inorder, rootIndex + 1, endIndex1, postorder, startIndex2 + leftAmount, endIndex2-1);
+		}
+		return node;
+	    }
+	    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+		return buildTree(inorder, 0, inorder.size(), postorder, 0, postorder.size())   ;
+	    }
 };
