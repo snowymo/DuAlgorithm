@@ -53,4 +53,50 @@ namespace DivideNConquer {//Mine
         }
         return sortedNums[k-1];
     }
+  
+  // No.241 Different Ways to Add Parentheses
+  // Given a string of numbers and operators, 
+  // return all possible results from computing all the different possible ways to group numbers and operators. 
+  // The valid operators are +, - and *.
+  // Finish after read the discussion
+  map<pair<int,int>, vector<int>> cache;
+    
+    vector<int> diffWaysHelper(string input, int start, int end){
+        pair<int,int> curPair = make_pair(start, end);
+        if(cache.find(curPair) != cache.end())
+            return cache[curPair];
+        
+        // for through the operators one by one
+        vector<int> left, right, ans;
+        
+        bool isOp = false;
+        for(int i = start; i <= end; i++){
+            if(!isdigit(input[i])){
+                isOp = true;
+                //cout << start << "," << i-1 << "\n";
+                //cout << i+1 << "," << end << "\n\n";
+                left = diffWaysHelper(input, start, i-1);
+                right = diffWaysHelper(input, i+1, end);
+
+                for(int lefti = 0; lefti < left.size(); lefti++){
+                    for(int rightj = 0; rightj < right.size(); rightj++){
+                        if(input[i] == '+')
+                            ans.push_back(left[lefti] + right[rightj]);
+                        else if(input[i] == '-')
+                            ans.push_back(left[lefti] - right[rightj]);
+                        else if(input[i] == '*')
+                            ans.push_back(left[lefti] * right[rightj]);
+                    }
+                }    
+            }
+        }    
+        if(!isOp)
+            ans.push_back(stoi(input.substr(start, end-start+1)));
+
+        cache[curPair] = ans;
+        return ans;
+    }
+    vector<int> diffWaysToCompute(string input) {
+        return diffWaysHelper(input, 0, input.size()-1);
+    }
 }
