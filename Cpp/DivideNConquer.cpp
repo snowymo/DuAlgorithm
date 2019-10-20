@@ -27,4 +27,30 @@ namespace DivideNConquer {//Mine
         }
         return 0;
     }
+  
+  // No.215 Kth Largest Element in an Array
+  // Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+  // the below is an unoptimized solution. Quicksort/quickselection should be the ideal way
+  int findKthLargest(vector<int>& nums, int k) {
+        // insert the element into a sorted array
+        // discard the k+1 largest one to save time of insertion
+        vector<int> sortedNums;
+        for(int i = 0; i < nums.size(); i++){
+            int j = 0;
+            for(; j < sortedNums.size(); j++){
+                if(nums[i] >= sortedNums[j]){
+                     break;
+                }
+            }
+            cout << ":" << j << "\n";
+            if(j!=-1)
+                sortedNums.insert(sortedNums.begin()+j, nums[i]);
+            //print(sortedNums);
+            int size = sortedNums.size();
+            while(size-- > k)
+                sortedNums.pop_back();
+            //print(sortedNums);
+        }
+        return sortedNums[k-1];
+    }
 }
