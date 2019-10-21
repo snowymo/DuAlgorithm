@@ -280,4 +280,25 @@ namespace DivideNConquer {//Mine
         }
         return 0;
     }
+  // No.240 Search a 2D Matrix II
+  // Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+  // Integers in each row are sorted in ascending from left to right.
+  // Integers in each column are sorted in ascending from top to bottom.
+  bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int m = matrix.size();
+        if(m == 0)
+            return false;
+        int n = matrix[0].size();
+        if(matrix[0].size() == 0)
+            return false;
+        for(int i = m-1, j = 0; i >= 0 && j < n; ){
+            if(target == matrix[i][j])
+                return true;
+            else if(target < matrix[i][j])
+                --i;
+            else if(target > matrix[i][j])
+                ++j;
+        }
+        return false;
+    }
 }
