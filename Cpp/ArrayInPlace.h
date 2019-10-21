@@ -95,9 +95,8 @@ namespace ArrayInPlace {
 		return curIndex;
 	    }
 	
-	// 283. Move Zeroes
+	// 283. Move Zeroes (Mine)
 	// Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
-	// mine
 	void moveZeroes(vector<int>& nums) {
 		int firstZeroIndex = 0;
 		int nextNonZeroIndex = firstZeroIndex+1;
@@ -142,7 +141,7 @@ namespace ArrayInPlace {
 		    nums[lastNonZeroFoundAt] = 0;
 		}
 	    }
-	// 203. Remove Linked List Elements
+	// 203. Remove Linked List Elements (Mine)
 	// Remove all elements from a linked list of integers that have value val.
 	ListNode* removeElements(ListNode* head, int val) {
 		ListNode* headhead = new ListNode(val-1);
@@ -157,14 +156,14 @@ namespace ArrayInPlace {
 		}
 		return headhead->next;
 	    }
-	// 237. Delete Node in a Linked List
+	// 237. Delete Node in a Linked List (Mine)
 	// Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.
 	void deleteNode(ListNode* node) {
 		node->val = node->next->val;
 		node->next = node->next->next;        
 	    }
 	
-	// 268. Missing Number
+	// 268. Missing Number (Mine)
 	// Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
 	int missingNumber(vector<int>& nums) {
 		int len = nums.size();
@@ -284,11 +283,10 @@ namespace ArrayInPlace {
 		return ret;
 	    }
 	
-	// No.442. Find All Duplicates in an Array
+	// No.442. Find All Duplicates in an Array (Mine)
 	// Given an array of integers, 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
 	// Find all the elements that appear twice in this array.
 	// Could you do it without extra space and in O(n) runtime?
-	// mine
 	vector<int> findDuplicates(vector<int>& nums) {
 		vector<int> ret;
 		for(int i = 0; i < nums.size(); i++){
@@ -299,14 +297,13 @@ namespace ArrayInPlace {
 		return ret;
 	    }
 	
-	// No.287. Find the Duplicate Number
+	// No.287. Find the Duplicate Number (Mine)
 	// Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive), 
 	// prove that at least one duplicate number must exist. Assume that there is only one duplicate number, find the duplicate one.
 	// You must not modify the array (assume the array is read only).
 	// You must use only constant, O(1) extra space.
 	// Your runtime complexity should be less than O(n2).
 	// There is only one duplicate number in the array, but it could be repeated more than once.
-	// mine
 	int findDuplicate(vector<int>& nums) {
 		int len = nums.size();
 		for(int i = 0; i < len; i++){
