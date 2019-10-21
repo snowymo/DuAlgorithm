@@ -14,6 +14,26 @@ namespace DPCounts {
 			f[i % 3] = f[(i - 1) % 3] + f[(i - 2) % 3];
 		return f[n % 3];
 	}
+	
+	// Mine
+	int climbStairs(int n) {
+        // a[n] = a[n-1] + a[n-2]
+		int ans1 = INT_MIN, ans2 = INT_MIN;
+		int temp;
+		for(int i = 1; i <= n; i ++){
+		    if(i == 1)
+			ans2 = 1;
+		    else if(i == 2){
+			ans1 = ans2;
+			ans2 = 2;
+		    }else{
+			temp = ans1;
+			ans1 = ans2;
+			ans2 = temp + ans1;
+		    }
+		}
+		return ans2;
+	    }
 
 	// 91. Decode Ways [M]
 	// Ways to decode a string of numbers to A-Z: 1 -> 'A' || 26 -> 'Z'
