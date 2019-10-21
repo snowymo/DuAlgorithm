@@ -210,3 +210,74 @@ namespace DivideNConquer {//Mine
         }
         return 0;
     }
+  // optimized by reading the solution. Using the idea of "cut"
+  double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        int m = nums2.size();
+        
+        vector<int> mynums1, mynums2;
+        if(m>n) {mynums1 = nums2; mynums2 = nums1;}
+        else {mynums1 = nums1; mynums2 = nums2;}
+        
+        n = mynums1.size();
+        m = mynums2.size();
+        
+        if(m == 0){
+            if(n % 2 == 0){
+                return (mynums1[n/2]+mynums1[n/2-1])/2.0;
+            }else{
+                return mynums1[n/2];
+            }
+        }
+        
+        bool isOdd = false;
+        if((n+m) % 2 == 1){
+            if(mynums1.back() > mynums2.back())
+                mynums2.push_back(mynums1.back()+1);
+            else
+                mynums1.push_back(mynums2.back()+1);
+            isOdd = true;
+        }
+        n = mynums1.size();
+        m = mynums2.size();
+        
+        int ideal = (n+m)/2;
+        
+        for(int i = max(0,ideal-m); i <= ideal; i++){
+            // apply cut
+            // left:mynums1[0,i], mynums2[0,ideal-i]
+            //cout << i << "\t" << ideal-i << "\t";
+            //bool b = (i == 0) || (ideal-i == mynums2.size()) || (mynums1[i-1] <= mynums2[ideal-i]);
+            //cout << b << "\t";
+            //b = (ideal-i == 0) || (i == mynums1.size()) || (mynums2[ideal-i-1] <= mynums1[i]);
+            //cout << b << "\n";
+             if( (   (i == 0) || (ideal-i == mynums2.size()) || (mynums1[i-1] <= mynums2[ideal-i])   )
+               && (  (ideal-i == 0) || (i == mynums1.size()) || (mynums2[ideal-i-1] <= mynums1[i])   )   ){
+                if(isOdd){
+                    if(i-1 < 0)
+                        return mynums2[ideal-i-1];
+                    else if(ideal-i-1 < 0)
+                        return mynums1[i-1];
+                    return max(mynums1[i-1],mynums2[ideal-i-1]);
+                }else{
+                    double left = 0, right = 0;
+                     if ((i == 0) || (i > mynums1.size()))
+                         left = mynums2[ideal-i-1];
+                     else if((ideal-i-1 < 0) || (ideal-i-1 > mynums2.size()))
+                         left = mynums1[i-1];
+                     else
+                         left = max(mynums1[i-1],mynums2[ideal-i-1]);
+                    
+                     if((ideal-i < 0) || (ideal-i == mynums2.size()))
+                         right = mynums1[i];
+                     else if ((i < 0) || (i == mynums1.size()))
+                         right = mynums2[ideal-i];
+                     else 
+                         right = min(mynums2[ideal-i], mynums1[i]);
+                     return (left+right)/2;
+                }
+             }
+        }
+        return 0;
+    }
+}
