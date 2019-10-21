@@ -301,4 +301,107 @@ namespace DivideNConquer {//Mine
         }
         return false;
     }
+  
+  // No.973 The K closest points
+  // We have a list of points on the plane.  Find the K closest points to the origin (0, 0).
+  // (Here, the distance between two points on a plane is the Euclidean distance.)
+  // You may return the answer in any order.  The answer is guaranteed to be unique (except for the order that it is in.)
+  map<vector<int>, double> cache;
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int K) {
+        if(points.size() <= 1)
+            return points;
+        // use pivot
+        // ahhh so complicated
+        // pick up a random value
+        int pivot = points.size()/2;
+        int start = 0;
+        int end = points.size();
+        while(true){
+            int newpos = kClosestHelp(points, pivot, start, end);    
+            if(newpos == (K-1)){
+                return vector<vector<int>> (points.begin(), points.begin()+K);
+            }else if(newpos >( K-1)){
+                pivot = start + (newpos-start)/2;
+                end = newpos;
+            }else if(newpos < (K-1)){
+                pivot = end - (end - newpos)/2;
+                start = newpos+1;
+            }
+        }
+        
+        return vector<vector<int>> (points.begin(), points.begin()+K);
+    }
+    
+    int kClosestHelp(vector<vector<int>>& points, int pivot, int start, int end){
+        vector<int> curPivot = points[pivot];
+        //cout << "pivot:" << pivot << ": " << curPivot[0]<<","<<curPivot[1] << "\n";
+        if(cache.find(curPivot) == cache.end())
+            cache[curPivot] = sqrt(curPivot[0]*curPivot[0]+curPivot[1]*curPivot[1]);
+        float dis = cache[curPivot];
+        //
+        if(start + 2 == end){
+            int otherIndex = start+end-1-pivot;
+            vector<int> otherPoint = points[otherIndex];
+            if(cache.find(otherPoint) == cache.end())
+                cache[otherPoint] = sqrt(otherPoint[0]*otherPoint[0]+otherPoint[1]*otherPoint[1]);
+            float otherDis = cache[otherPoint];
+            if(((dis <= otherDis) && (pivot > otherIndex))
+              || ((dis >= otherDis) && (pivot < otherIndex))){
+                //swap
+                points[pivot] = otherPoint;
+                points[otherIndex] = curPivot;
+                return otherIndex;
+            }else
+                return pivot;
+        }
+        // swap pivot to the end first
+        points[pivot] = points[end-1];
+        points[end-1] = curPivot;
+        // do the swap
+        int i = start, j = end-2;
+        //cout << i << " " << j << "\n";
+        for(; i < j; ){
+            vector<int> curPoint1 = points[i];
+            vector<int> curPoint2 = points[j];
+            
+            if(cache.find(curPoint1) == cache.end())
+                cache[curPoint1] = sqrt(curPoint1[0]*curPoint1[0]+curPoint1[1]*curPoint1[1]);
+            float dis1 = cache[curPoint1];
+            if(cache.find(curPoint2) == cache.end())
+                cache[curPoint2] = sqrt(curPoint2[0]*curPoint2[0]+curPoint2[1]*curPoint2[1]);
+            float dis2 = cache[curPoint2];
+            //cout << "dis:" << dis << " " << dis1 << " " << dis2 << "\n";
+            if(dis < dis1 && dis > dis2){
+                //swap
+                //cout << "swap" << i << " with " << j << "\n"; 
+                points[i] = curPoint2;
+                points[j] = curPoint1;
+            }
+            else{
+                if(dis >= dis1){
+                    ++i;
+                }
+                if(dis <= dis2){
+                    --j;
+                }
+                //cout << "update i and j " << i << " " << j << "\n";
+            }            
+        }
+        // swap back
+        if(i == j){
+            vector<int> curPoint3 = points[i];
+            if(cache.find(curPoint3) == cache.end())
+                cache[curPoint3] = sqrt(curPoint3[0]*curPoint3[0]+curPoint3[1]*curPoint3[1]);
+            float dis3 = cache[curPoint3];
+            if(dis3 > dis){
+                // swap
+                points[end-1] = points[j];
+                points[j] = curPivot;
+                return j;
+            }
+        }
+        points[end-1] = points[j+1];
+        points[j+1] = curPivot;
+        return j+1;
+    }
 }
