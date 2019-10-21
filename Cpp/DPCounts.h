@@ -65,6 +65,54 @@ namespace DPCounts {
 		}
 		return f[n];
 	}
+	// Mine
+	int numDecodings(string s) {
+		// a[n] = a[n-1] + a[n-1:n] <= 26 ? a[n-2] : 0
+		int ans0 = INT_MIN;
+		int ans1 = INT_MIN;
+		int ans2 = INT_MIN;
+		int temp;
+		for(int i = 0; i < s.size(); i++){
+		    if(i == 0){
+			if(s[i] == '0')
+			    ans2 = 0;
+			else
+			    ans2 = 1;
+		    }
+		    else if(i == 1){
+			// both 0, one 0
+			int digit0 = stoi(s.substr(i-1,1)),
+			digit1 = stoi(s.substr(i,1)),
+			digit2 = stoi(s.substr(i-1,2));
+			ans1 = ans2;
+			ans2 = 0;
+			if(ans1 > 0 && digit1 <= 26 && digit1 > 0)
+			    ans2 += 1;
+			if(digit2 <= 26 && digit2 > 9)
+			    ans2 += 1;
+
+		    }
+		    else{
+			temp = ans1;
+			ans1 = ans2;
+			ans2 = 0;
+			if(temp != 0){
+			    int digit1 = stoi(s.substr(i-1,2));
+			    if(digit1 <= 26 && digit1 > 9){
+				ans2 += temp;
+			    }
+			}
+			if(ans1 != 0){
+			    int digit1 = stoi(s.substr(i,1));
+			    if(digit1 <= 26 && digit1 > 0){
+				ans2 += ans1;
+			    }
+			}
+		    }
+		    //cout << ans2 << "\n";
+		}
+		return ans2;
+	    }
 
 	// 96. Unique Binary Search Trees
 	// Given n, how many structurally unique BST's (binary search trees) that store values 1 ... n?
