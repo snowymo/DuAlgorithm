@@ -99,4 +99,32 @@ namespace DivideNConquer {//Mine
     vector<int> diffWaysToCompute(string input) {
         return diffWaysHelper(input, 0, input.size()-1);
     }
+  
+  // No.932 Beautiful Array
+  // For some fixed N, an array A is beautiful if it is a permutation of the integers 1, 2, ..., N, such that:
+  // For every i < j, there is no k with i < k < j such that A[k] * 2 = A[i] + A[j].
+  // Given N, return any beautiful array A.  (It is guaranteed that one exists.)
+  // Finish after read the solution
+  map<int, vector<int>> ans;
+    vector<int> beautifulArray(int N) {
+        // it is not a medium
+        // solve this problem linearly
+        // let's say we have solution for two arrays, we concatenate them as [a,b] and this new array fit the requirement too
+        // if x meets the condition, ax+b meets too
+        if(N == 1){
+            ans[N] = vector<int>(1,1);
+        }            
+        else{
+            vector<int> cur;
+            // construct the vector with [left,right]
+            vector<int> odd = beautifulArray((N+1)/2);
+            for(int i = 0; i < odd.size(); i++)
+                cur.push_back(odd[i]*2-1);
+            vector<int> even = beautifulArray((N)/2);
+            for(int i = 0; i < even.size(); i++)
+                cur.push_back(even[i]*2);
+            ans[N] = cur;
+        }        
+        return ans[N];
+    }
 }
