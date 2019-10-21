@@ -127,6 +127,24 @@ namespace DPCounts {
 		}
 		return f[n];
 	}
+	// Mine
+	// Finish after read Du's
+	int numTrees(int n) {
+        // a[n] = a[n-1] * 2 + 1
+        // 1 1-1 1
+        // 2 2-2 2
+        // a[3] = a[0]*a[2] + a[1]*a[1] + a[2]*a[0]=2+1+2
+        // a[4] = a[0]*a[3]
+        vector<int> answers(n+1, 0);
+		answers[0] = 1;
+		answers[1] = 1;
+		for(int i = 2; i <= n; i++){
+		    for(int j = 1; j <= i; j++){
+			answers[i] += answers[j-1] * answers[i-j];
+		    }
+		}
+		return answers[n];
+	    }
 
 	// 115. Distinct Subsequences
 	// Given a string S and a string T, count the number of distinct subsequences of S which equals T.
