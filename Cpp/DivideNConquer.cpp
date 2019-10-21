@@ -130,11 +130,11 @@ namespace DivideNConquer {//Mine
   // optimized: instead of calculating each value, we only calculate the odd now, and use the odd result for even
   // remember to get rid of the number which is larger than N
   vector<int> beautifulArray(int N) {
+        vector<int> cur;
         if(N == 1){
-            ans[N] = vector<int>(1,1);
+            cur = vector<int>(1,1);
         }            
         else{
-            vector<int> cur;
             // construct the vector with [left,right]
             vector<int> odd = beautifulArray((N+1)/2);
             int evensize = odd.size();
@@ -145,8 +145,6 @@ namespace DivideNConquer {//Mine
             for(int i = 0; i < odd.size(); i++)
                 if(odd[i]*2 <= N)
                     cur.push_back(odd[i]*2);
-            ans[N] = cur;
         }        
-        return ans[N];
+        return cur;
     }
-}
