@@ -148,3 +148,65 @@ namespace DivideNConquer {//Mine
         }        
         return cur;
     }
+
+  // No.4 Median of Two Sorted Arrays
+  // There are two sorted arrays nums1 and nums2 of size m and n respectively.
+  // Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+  // You may assume nums1 and nums2 cannot be both empty.
+  double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        
+        vector<int> ans;
+        int n = nums1.size();
+        int m = nums2.size();
+        int ideal = (n+m+1)/2;
+        int ideal2 = ideal;
+        if((n+m) % 2 == 0)
+            ++ideal2;
+        
+        
+        int count = 0;
+        int large = 0, preLarge = 0;
+        
+        int mIndex = 0;
+        int nIndex = 0;
+        double left = INT_MIN;
+        double right = INT_MIN;
+        
+        
+        while(nIndex < n && mIndex < m){
+            if(nums1[nIndex] > nums2[mIndex]){
+                ++count;
+                preLarge = large;
+                large = nums2[mIndex];
+                cout << "add " << nums2[mIndex] << "\n";
+                ++mIndex;
+            }else{
+                ++count;
+                preLarge = large;
+                large = nums1[nIndex];
+                cout << "add " << nums1[nIndex] << "\n";
+                ++nIndex;
+            }
+            if(count == ideal){
+                left = large;
+                cout << "left = " << left << "\n";
+            }
+            if(count == ideal2){
+                right = large;
+                cout << "return " << (left+right)/2 << "\n";
+                return (left+right)/2;
+            }
+        }
+        
+        if(nIndex >= n){
+            if(left == INT_MIN)
+                left = nums2[mIndex+ideal-1-count];
+            return double(left+ nums2[mIndex+ideal2-1-count])/2;
+        }
+        if(mIndex >= m){
+            if(left == INT_MIN)
+                left = nums1[nIndex+ideal-1-count];
+            return double(left + nums1[nIndex+ideal2-1-count])/2;
+        }
+        return 0;
+    }
