@@ -188,18 +188,38 @@ namespace DPCounts {
 		    //cout << "cache[" << sStart << "][" << tStart << "]=" << cache[sStart][tStart] << "\n";
 		    return cache[sStart][tStart];
 		}
-
-
-		   for(int i = sStart; i <= s.size()-(t.size()-tStart); i++){
-			if(t[tStart] == s[i]){
-			    //cout << "t[" << tStart << "]==s[" << i << "]\n";
-			    cache[sStart][tStart] += numDistinctHelp(s,t,i+1,tStart+1, cache);
-			    //cout << "cache[" << sStart << "][" << tStart << "]=" << cache[sStart][tStart] << "\n";
-			}
-		    } 
-
-
+	   for(int i = sStart; i <= s.size()-(t.size()-tStart); i++){
+		if(t[tStart] == s[i]){
+		    //cout << "t[" << tStart << "]==s[" << i << "]\n";
+		    cache[sStart][tStart] += numDistinctHelp(s,t,i+1,tStart+1, cache);
+		    //cout << "cache[" << sStart << "][" << tStart << "]=" << cache[sStart][tStart] << "\n";
+		}
+	    }
 		return cache[sStart][tStart];
+	    }
+	// Now I understand
+	int numDistinct(string s, string t) {
+		if(s.size() < t.size())
+		    return 0;
+		vector<vector<int>> cache(s.size()+1, vector<int>(t.size()+1));
+		for(int i = 0; i <= s.size(); i++){
+		    cache[i][0] = 1;
+		}
+
+		for(int i = 1; i <= s.size(); i++){
+		    for(int j = 1; j <= min(int(t.size()),i); j++){
+			if(s[i-1] != t[j-1]){
+			    cache[i][j] = cache[i-1][j];
+			}else{
+			    long temp = (long)cache[i-1][j] + (long)cache[i-1][j-1];
+			    if(temp >= INT_MAX)
+				cache[i][j] = (cache[i-1][j]%1000000007 + cache[i-1][j-1]%1000000007);
+			    else
+				cache[i][j] = (cache[i-1][j] + cache[i-1][j-1]);
+			}
+		    }
+		}
+		return cache[s.size()][t.size()];
 	    }
 
 	// 629. K Inverse Pairs Array [H]
