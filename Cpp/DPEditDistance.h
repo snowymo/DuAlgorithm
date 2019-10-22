@@ -130,4 +130,51 @@ namespace DPEditDistance {
 		}
 		return f[N][m];
 	}
+	// my recursion
+	bool isInterleave(string s1, string s2, string s3) {
+		if(s1.size() + s2.size() != s3.size())
+		    return false;
+		vector<vector<int>> cache(s1.size(), vector<int> (s2.size()));
+		 return isInterleave(s1, s2,s3,0,0, cache);
+	    }
+
+	    bool isInterleave(string& s1, string&s2, string & s3, int s1start, int s2start, vector<vector<int>> & cache){
+		if(s1.size() == s1start)
+		    return s2.substr(s2start) == s3.substr(s1start+s2start);
+		if(s2.size() == s2start)
+		    return s1.substr(s1start) == s3.substr(s1start+s2start);
+		if(cache[s1start][s2start] != 0)
+		    return cache[s1start][s2start] == 1;
+		bool b= false;
+
+		if(s1[s1start] == s3[s1start+s2start])
+		    b = isInterleave(s1, s2, s3, s1start+1, s2start, cache);
+		if(!b && s2[s2start] == s3[s1start+s2start])
+		    b = isInterleave(s1, s2, s3, s1start, s2start+1, cache);
+		cache[s1start][s2start] = b ? 1 : -1;
+		return b; 
+	    }
+	// DP after reading the solution
+	bool isInterleave(string s1, string s2, string s3) {
+		if(s1.size() + s2.size() != s3.size())
+		    return false;
+		if(s1.size() == 0)
+		    return s2 == s3;
+		if(s2.size() == 0)
+		    return s1 == s3;
+
+		vector<vector<bool>> memo(s1.size()+1, vector<bool> (s2.size()+1, false));
+		memo[0][0] = true;
+		for(int i = 0; i < s1.size()+1; i++){
+		    for(int j = 0; j < s2.size()+1; j++){                
+			if(i > 0 && s1[i-1] == s3[i+j-1])
+			    memo[i][j] = memo[i-1][j];
+			if(!memo[i][j] && j > 0 && s2[j-1] == s3[i+j-1])
+			    memo[i][j] = memo[i][j-1];                
+			//cout << i << "," << j << ":" << memo[i][j] << "\n";
+		    }
+		}
+
+		return memo.back().back();        
+	    }
 }
