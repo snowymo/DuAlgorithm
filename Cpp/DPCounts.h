@@ -167,6 +167,40 @@ namespace DPCounts {
 		}
 		return f[n][m];
 	}
+	// My TLE version, still don't understand
+	int numDistinct(string s, string t) {
+		// loop i in s[i], find the first same char in t[j]
+		// it is equivlant to s[i:] and t[1], continue
+		if(s.size() < t.size())
+		    return 0;
+		vector<vector<int>> cache(s.size(), vector<int>(t.size()));
+		numDistinctHelp(s,t,0,0, cache);
+		return cache[0][0];
+	    }
+
+	    int numDistinctHelp(string s, string t, int sStart, int tStart, vector<vector<int>>& cache){
+		if(tStart == t.size())
+		   return 1;
+		if(cache[sStart][tStart] > 0)
+		    return cache[sStart][tStart];
+		if((s.substr(sStart) == t.substr(tStart))){
+		    cache[sStart][tStart] = 1;
+		    //cout << "cache[" << sStart << "][" << tStart << "]=" << cache[sStart][tStart] << "\n";
+		    return cache[sStart][tStart];
+		}
+
+
+		   for(int i = sStart; i <= s.size()-(t.size()-tStart); i++){
+			if(t[tStart] == s[i]){
+			    //cout << "t[" << tStart << "]==s[" << i << "]\n";
+			    cache[sStart][tStart] += numDistinctHelp(s,t,i+1,tStart+1, cache);
+			    //cout << "cache[" << sStart << "][" << tStart << "]=" << cache[sStart][tStart] << "\n";
+			}
+		    } 
+
+
+		return cache[sStart][tStart];
+	    }
 
 	// 629. K Inverse Pairs Array [H]
 	// Given two integers n and k, find how many different arrays consist of numbers from 1 to n such that there are exactly k inverse pairs. Since the answer may be very large, the answer should be modulo 10^9 + 7.
