@@ -185,4 +185,24 @@ namespace DPCounts {
 		}
 		return f[n % 2][k];
 	}
+	// Mine, my DP is TLE and I used Du's
+	int kInversePairs(int n, int k) {
+		// assume a[n,0] to a[n,n-1]
+		// a[n+1,k]= a[n,0]+a[n,1]+..+a[n,k]
+		int cache[n][max(1,k+1)] = {0}; // cache[0~n-1][k]
+		memset(cache, 0 ,sizeof(cache[0][0]) * n*(max(1,k+1)));
+		//cout << cache[0][0] << " " << cache[0][1];
+		cache[0][0] = 1;
+
+		for(int i = 1; i < n; i++){
+		    cache[i][0] = 1;
+		    for(int j = 1; j <= k; j++){
+			//if(j < i)
+			    cache[i][j] = (cache[i][j-1] + cache[i-1][j]) % 1000000007;
+			if(j > i)
+			    cache[i][j] = (cache[i][j] - cache[i-1][j-i-1] + 1000000007) % 1000000007;
+		    }
+		}
+		return cache[n-1][k];
+	    }
 }
