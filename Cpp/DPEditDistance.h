@@ -29,6 +29,30 @@ namespace DPEditDistance {
 		}
 		return f[n][m];
 	}
+	// Mine, I wonder why I was wrong when I just create a n*m vector to store the result. Probably calculate either the first row or column wrong.
+	 int minDistance(string word1, string word2) {
+		int s1 = word1.size();
+		int s2 = word2.size();
+		vector<vector<int>> cache (s1+1, vector<int>(s2+1));
+		for(int i = 0; i <= s1; i++)
+		    cache[i][0] = i;
+		for(int i = 1; i <= s2; i++)
+		    cache[0][i] = i;
+
+		for(int i = 1; i <= s1; i++){
+		    for(int j = 1; j <= s2; j++){
+			if(word1[i-1] == word2[j-1]){
+				cache[i][j] = cache[i-1][j-1];
+
+			}else{
+
+				cache[i][j] = min(cache[i-1][j-1],min(cache[i][j-1], cache[i-1][j]))+1;
+			}
+			//cout << "cache["<<i<<"]["<<j <<"]=" << cache[i][j] << "\n";
+		    }
+		}
+		return cache[s1][s2];
+	    }
 
 	// 161. Edit Distance
 	// Given two strings S and T, determine if they are both one edit distance apart.
