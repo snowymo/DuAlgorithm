@@ -221,6 +221,24 @@ namespace DPCounts {
 		}
 		return cache[s.size()][t.size()];
 	    }
+	// Optimize a little
+	int numDistinct(string s, string t) {
+		if(s.size() < t.size())
+		    return 0;
+		vector<vector<long>> cache(s.size()+1, vector<long>(t.size()+1));        
+		cache[0][0] = 1;        
+
+		for(int i = 1; i <= s.size(); i++){
+		    cache[i][0] = 1;
+		    for(int j = 1; j <= min(int(t.size()),i); j++){
+			cache[i][j] = cache[i-1][j];
+			if(s[i-1] == t[j-1]){
+			    cache[i][j] += cache[i-1][j-1];
+			}
+		    }
+		}
+		return (int)cache[s.size()][t.size()];
+	    }
 
 	// 629. K Inverse Pairs Array [H]
 	// Given two integers n and k, find how many different arrays consist of numbers from 1 to n such that there are exactly k inverse pairs. Since the answer may be very large, the answer should be modulo 10^9 + 7.
