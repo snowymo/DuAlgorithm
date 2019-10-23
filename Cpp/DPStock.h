@@ -9,16 +9,36 @@ public:
 	// Solution: scan the stocks, find the min_price up to now, update by cur - min_price
 	// Time: O(n)
 	int maxProfit_once(vector<int>& prices) {
-		int n = (int)prices.size();
-		if (n == 0) return 0;
+			int n = (int)prices.size();
+			if (n == 0) return 0;
+			int ans = 0;
+			int min_price = prices[0];
+			for (int i = 0; i < n; ++i) {
+				min_price = min(min_price, prices[i]);
+				ans = max(ans, prices[i] - min_price);
+			}
+			return ans;
+		}
+		// Mine
+		int maxProfit2(vector<int>& prices) {
 		int ans = 0;
-		int min_price = prices[0];
-		for (int i = 0; i < n; ++i) {
-			min_price = min(min_price, prices[i]);
-			ans = max(ans, prices[i] - min_price);
+		for(int i = 0; i < prices.size(); i++){
+		    for(int j = i+1; j < prices.size(); j++){
+			ans = max(ans, prices[j]-prices[i]);
+		    }
 		}
 		return ans;
-	}
+	    }
+
+	    int maxProfit(vector<int>& prices){
+		int ans = 0;
+		for(int i = 0, j = 0; i < prices.size()&& j < prices.size(); i++){
+		    if(prices[i] < prices[j])
+			j=i;
+		    ans = max(ans, prices[i]-prices[j]);
+		}
+		return ans;
+	    }
 
 	// 122. Best Time to Buy and Sell Stock II
 	// Condition: Buy and sell multiple times, can in the same day
