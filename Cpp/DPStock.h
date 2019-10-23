@@ -54,6 +54,41 @@ public:
 		}
 		return sum;
 	}
+	// Mine
+	int maxProfit(vector<int>& prices) {
+		int curStart = INT_MAX;
+		int curEnd = INT_MIN;
+		int ans = 0;
+		int curans = 0;
+		bool findStart = true;
+		for(int i = 0; i < prices.size(); i++){
+		    //cout << "prices[" << i << "]=" << prices[i] << "\n";
+		    if(findStart){
+			findStart = false;
+			if(prices[i] < curStart){
+	//                    cout << "update curStart with " << prices[i] << "\n";
+			    curStart = prices[i];
+			    findStart = true;
+			}   
+		    }
+		    if(!findStart){
+			if(prices[i] > curEnd){
+	  //                  cout << "update curEnd with " << prices[i] << "\n";
+			    curEnd = prices[i];
+			    curans = max(curans, curEnd-curStart);
+			}else{
+	    //                cout << "update cur stock with " << curEnd-curStart << "\n";
+			    ans += curans;
+			    curans = 0;
+			    curStart = prices[i];
+			    curEnd = INT_MIN;
+			    findStart = true;
+			}                
+		    }
+		}
+
+		return ans+curans;
+	    }
 
 	// 123. Best Time to Buy and Sell Stock III
 	// Condition: Buy and sell m times (m = 2)
