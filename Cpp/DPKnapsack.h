@@ -92,4 +92,30 @@ public:
 		}
 		return dp.back();
 	}
+	// Mine. Finish after read Du's
+	bool canPartition(vector<int>& nums) {
+		// need to caclulate and sort the vector
+		sort(nums.begin(), nums.end());
+		int sum = 0;
+		for(int n : nums){
+		    sum += n;
+		}
+		if(sum % 2 == 1)
+		    return false;
+		sum = sum >> 1;
+		vector<bool> memo(sum+1, false);
+		memo[0] = true;
+
+		// 0/1 knapsack problem
+		//for(int j = 0; j < nums.size()+1; j++)
+	//            memo[0][j] = true;
+		for(int j = 0; j < nums.size(); j++){
+		    for(int i = sum; i >= nums[j]; i--){            
+			    memo[i] = memo[i] || memo[i-nums[j]];
+
+		    }
+		}
+
+		return memo.back();
+	    }
 };
