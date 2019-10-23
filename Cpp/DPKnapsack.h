@@ -50,6 +50,27 @@ public:
 		}
 		return (memo.back() == INT_MAX/2) ? -1 : memo.back();
 	    }
+	// A faster way for top-down solution
+	int minC = INT_MAX;
+	    int coinChange(vector<int>& coins, int amount) {
+		sort(coins.begin(), coins.end(), greater<int>());
+		calc(0, amount, 0, coins);
+		return minC == INT_MAX ? -1 : minC;
+	    }
+
+	    void calc(int index, int amount, int currC, const vector<int>& coins) {
+		if (index == coins.size()) {
+		    if (amount == 0) minC = min(minC, currC);
+		    return;
+		}
+
+		// Key pruning here.
+		if (amount/coins[index] + currC > minC) return;
+
+		for (int i = amount/coins[index]; i >= 0; i--) {
+		    calc(index + 1, amount - i*coins[index], currC + i, coins);
+		}
+	    }
 	
 
 	// 416. Partition Equal Subset Sum [M]
