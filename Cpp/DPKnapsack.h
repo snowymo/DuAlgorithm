@@ -26,6 +26,31 @@ public:
 				}
 		return f[m] > m ? -1 : f[m];
 	}
+	// Mine
+	int coinChange(vector<int>& coins, int amount) {
+		if(amount == 0)
+		    return 0;
+
+		vector<int> memo(amount, INT_MAX/2);
+		for(int c : coins){
+		    if(c-1 < amount)
+			memo[c-1] = 1;
+		}
+
+		sort(coins.begin(), coins.end());
+
+		for(int i = 0; i < amount; i++){
+		    for(int j = 0; j < coins.size(); j++){
+			//cout << "i:" << i << " i-k-1 " << i-k-1 << " k " << k << "\n";
+			if(coins[j] < i+1){
+			    memo[i] = min(memo[i], memo[i-coins[j]]+memo[coins[j]-1]);    
+			}
+
+		    }
+		}
+		return (memo.back() == INT_MAX/2) ? -1 : memo.back();
+	    }
+	
 
 	// 416. Partition Equal Subset Sum [M]
 	// Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
