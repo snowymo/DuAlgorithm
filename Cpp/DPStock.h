@@ -285,4 +285,18 @@ public:
 		}
 		return sell;
 	}
+	// Mine, after read discussion
+	int maxProfit(vector<int>& prices) {
+		if(prices.size() == 0)
+		    return 0;
+
+		vector<int> profit((int)prices.size()+1, 0);
+		profit[0] = profit[1] = 0;
+		int buy = -prices[0];
+		for(int i = 2; i <= prices.size(); i++){
+		    profit[i] = max(profit[i-1], prices[i-1] + buy);
+		    buy = max(buy, profit[i-2]-prices[i-1]);
+		}
+		return profit.back();
+	    }
 };
