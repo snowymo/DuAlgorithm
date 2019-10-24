@@ -149,6 +149,18 @@ class DP1D {
 
 		return f[n % 3];
 	}
+	// Mine
+	int rob(vector<int>& nums) {
+		if(nums.size() == 0)
+		    return 0;
+
+		vector<int> money(nums.size()+1, 0);
+		money[1] = nums[0];
+		for(int i = 2; i <= nums.size(); i++){
+		    money[i] = max(money[i-1], money[i-2] + nums[i-1]);
+		}
+		return money.back();
+	    }
 
 	// 213. House Robber II [M]
 	// All houses at this place are arranged in a circle.
