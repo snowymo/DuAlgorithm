@@ -299,4 +299,29 @@ public:
 		}
 		return profit.back();
 	    }
+	// an easy-understanding solution that list buy-or-not results
+	vector<vector<int>> memo;
+	    int dp(int i, bool bought, const vector<int>& prices){
+		if (i>=prices.size()) return 0;
+		int res; 
+		// cout << int(bought);
+		if (memo[int(bought)][i] == -1) {
+		    if (bought){
+			// Choose sell or hold. 
+			res = max(dp(i+2, false, prices)+prices[i], dp(i+1, true, prices));
+		    } else {
+			// Choose buy or hold. 
+			res = max(dp(i+1, true, prices)-prices[i], dp(i+1, false, prices));  
+		    }
+		    memo[int(bought)][i] = res;
+		} else {
+		    res = memo[int(bought)][i];   
+		}
+		return res;
+	    }
+	    int maxProfit(vector<int>& prices) {
+		memo = vector<vector<int>> (2, vector<int>(prices.size(), -1));
+		// dp problem. 
+		return dp(0, false, prices);
+	    }
 };
