@@ -150,6 +150,38 @@ public:
 		}
 		return max(ans, maxProfitI(prices, start, end, memo));
 	    }
+	// Same idea, better implementation
+	int maxProfit(vector<int>& p) {
+		if(p.size() <= 1) return 0;
+		vector<vector<int>> dp(2,vector<int>(p.size(),0));
+		int min_ = p[0];
+		for(int i = 1; i < p.size() ; i++){
+		    dp[0][i] = max(0,p[i]-min_);
+		    min_ = min(min_,p[i]);
+		}
+		for(int i = 1 ; i < p.size()-2 ; i++){
+		    if(dp[0][i]){
+			min_ = p[i+1];
+			for(int j = i+2 ; j < p.size() ; j++){
+			    dp[1][j] = max(dp[1][j],p[j]-min_+dp[0][i]);
+			    min_ = min(min_,p[j]);
+			}
+		    }
+		}
+		return max(*max_element(dp[0].begin(),dp[0].end()),*max_element(dp[1].begin(),dp[1].end()));
+	    }
+	// Fastest solution for this problem
+	int maxProfit3(vector<int>& prices) {
+		int buy1 = INT_MIN, buy2 = INT_MIN, sell1 = 0, sell2 = 0;
+		for(int i : prices){
+		    buy1  = max(buy1, -i);
+		    sell1 = max(sell1, buy1 + i);
+		    buy2  = max(buy2, sell1 - i);
+		    sell2 = max(sell2, buy2 + i);
+		    //cout<<buy1<<" "<<sell1<<" "<<buy2<<" "<<sell2<<endl;
+		}
+		return sell2;
+	    }
 
 	// Time: O(NM)
 	// Space: O(M)
