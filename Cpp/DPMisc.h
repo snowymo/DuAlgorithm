@@ -70,4 +70,35 @@ class DPMisc{
         }
         return -1;
     }
+  
+  // No.520 Detect Capital (Mine)
+// Given a word, you need to judge whether the usage of capitals in it is right or not.
+// We define the usage of capitals in a word to be right when one of the following cases holds:
+
+// All letters in this word are capitals, like "USA".
+// All letters in this word are not capitals, like "leetcode".
+// Only the first letter in this word is capital, like "Google".
+// Otherwise, we define that this word doesn't use capitals in a right way. 
+
+// Example 1:
+// Input: "USA"
+// Output: True 
+
+// Example 2:
+// Input: "FlaG"
+// Output: False
+  
+  bool detectCapitalUse(string word) {
+        if(word.size() <= 1)
+            return true;
+        bool sec = (word[1] < 'a');
+        cout << sec;
+        for(int i = 2; i < word.size(); i++){
+            if(word[i] < 'a' != sec )
+                return false;
+        }
+        if(sec && ( word[0] >= 'a'))
+            return false;
+        return true;
+    }
 }
