@@ -111,6 +111,45 @@ public:
 		}
 		return g[n - 1][2];
 	}
+	// Mine
+	int maxProfitI(vector<int>& prices, int start, int end, map<pair<int,int>, int>& memo){
+		if(start >= end)
+		    return 0;
+
+		if(memo[make_pair(start,end)] > 0)
+		    return memo[make_pair(start,end)];
+
+		for(int i = start, j = start; i <= end&& j <= end; i++){
+			    if(prices[i] < prices[j])
+				    j=i;
+			    memo[make_pair(start,end)] = max(memo[make_pair(start,end)], prices[i]-prices[j]);
+			}
+
+		//cout << "memo[" << start << "][" << end <<"]=" << memo[start][end] << "\n";
+		return memo[make_pair(start,end)];
+	    }
+	    int maxProfit(vector<int>& prices) {
+		if(prices.size() == 0)
+		    return 0;
+
+		// clean up the data, get rid of the first N which is larger than N+1
+		int start = 0;
+		while((start < prices.size()-1) && (prices[start] >= prices[start+1])){
+		    ++start;
+		}
+		int end = prices.size()-1;
+		while((end > start) && (prices[end] <= prices[end-1])){
+		    --end;
+		}
+		cout << start << " " << end << "\n";
+		map<pair<int,int>, int> memo;
+
+		int ans = 0;
+		for(int i = start; i < end; i++){
+		    ans = max( maxProfitI(prices, 0, i, memo) + maxProfitI(prices, i+1, end, memo), ans);
+		}
+		return max(ans, maxProfitI(prices, start, end, memo));
+	    }
 
 	// Time: O(NM)
 	// Space: O(M)
