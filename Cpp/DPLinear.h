@@ -267,4 +267,25 @@ class DP1D {
 		}
 		return uglies[n - 1];
 	}
+	
+	// No.303 Range Sum Query - Immutable Mine
+	// Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.
+	vector<int> sums;
+	    NumArray(vector<int>& nums) {
+		if(nums.size() == 0)
+		    return;
+		sums = vector<int>(nums.size(), nums[0]);
+		//sums.push_back(nums[0]);
+		for(int i = 1; i < nums.size(); i++){
+		    sums[i] = (sums[i-1] + nums[i]);
+		    //cout << sums.back() << "\t";
+		}
+
+	    }
+
+	    int sumRange(int i, int j) {
+		if(i == 0)
+		    return sums[j];
+		return sums[j] - sums[i-1];
+	    }
 };
