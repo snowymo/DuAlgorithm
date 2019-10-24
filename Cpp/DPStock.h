@@ -221,6 +221,44 @@ public:
 		}
 		return g[k];
 	}
+	// Mine, use the best solution of III and combine with the discussion for one condition
+	int maxProfit(int k, vector<int>& prices) {
+		if(k == 0 || prices.size() <= 1)
+		    return 0;
+		if (k >= prices.size()) {
+		    return anyNumberOfTransactions(prices);
+		}
+		// based on the smartest one for III
+		vector<int> buys(k, INT_MIN);
+		vector<int> sells(k, 0);
+		for(int i = 0; i < prices.size(); i++){
+		    buys[0] = max(buys[0], -prices[i]);
+		    sells[0] = max(sells[0], buys[0]+prices[i]);
+		    //cout << "\nsells[0]" << sells[0] << "\t";
+		    for(int j = 1; j < k; j++){
+			buys[j] = max(buys[j], sells[j-1]-prices[i]);
+			sells[j] = max(sells[j], buys[j]+prices[i]);
+			//cout << "sells[j]" << sells[j] << "\t";
+		    }
+		}
+		int ans = sells[k-1];
+		return ans;
+	    }
+	    // II
+	    int anyNumberOfTransactions(vector<int>& prices) {
+		if (prices.empty()) {
+		    return 0;
+		}
+
+		int maxProfit = 0;
+		for (int i = 1; i < prices.size(); ++i) {
+		    if (prices[i] - prices[i-1] > 0) {
+			maxProfit += prices[i] - prices[i-1];
+		    }
+		}
+
+		return maxProfit;
+	    }
 
 	/**
 	 * 309. Best Time to Buy and Sell Stock with 1 day Cooldown
