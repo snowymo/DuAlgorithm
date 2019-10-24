@@ -288,4 +288,30 @@ class DP1D {
 		    return sums[j];
 		return sums[j] - sums[i-1];
 	    }
+	
+	// No.746 Min Cost Climbing Stairs Mine
+	// On a staircase, the i-th step has some non-negative cost cost[i] assigned (0 indexed).
+	// Once you pay the cost, you can either climb one or two steps. 
+	// You need to find minimum cost to reach the top of the floor,
+	// and you can either start from the step with index 0, or the step with index 1.
+	int minCostClimbingStairs(vector<int>& cost) {
+		if(cost.size() == 0)
+		    return 0;
+		if(cost.size() == 1)
+		    return cost[0];
+		// vector<int> steps(cost.size());
+		// steps[0] = cost[0];
+		// steps[1] = cost[1];
+		int cost1 = cost[0];
+		int cost2 = cost[1];
+		int cost3 = min(cost1, cost2);
+		for(int i = 2; i < cost.size(); i++){
+		    cost3 = min(cost1+cost[i], cost2+cost[i]);
+		    cost1 = cost2;
+		    cost2 = cost3;
+		    // steps[i] = min(steps[i-2] + cost[i], steps[i-1] + cost[i]);
+		}
+		// return min(steps.back(), steps[steps.size()-2]);
+		return min(cost1, cost3);
+	    }
 };
