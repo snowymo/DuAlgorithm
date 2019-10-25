@@ -55,4 +55,21 @@ public:
 		if (len > 2) res += (len - 1) * (len - 2) / 2;
 		return res;
 	}
+	// Mine
+	int numberOfArithmeticSlices(vector<int>& A) {
+		int ans = 0;
+		int diff = INT_MIN;
+		int count = 0;
+		for(int i = 1; i < A.size(); i++){
+		    if(diff == A[i] - A[i-1]){
+			++count;
+		    }else{
+			ans += (count+1) * count/2;
+			diff = A[i] - A[i-1];
+			count = 0;
+		    }
+		}
+		ans += (count+1) * count/2;
+		return ans;
+	    }
 };
