@@ -141,4 +141,27 @@ class DPTree {
 		return{ root->val + l.second + r.second,
 			max(l.first, l.second) + max(r.first, r.second) };
 	}
+	
+	// Mine
+	map<TreeNode*, int> cache;
+	    int rob(TreeNode* root) {
+		if(root == NULL)
+		    return 0;
+		if(cache.find(root) != cache.end())
+		    return cache[root];
+		// rob root
+		int ans = root->val;
+		if(root->left){
+		    ans += rob(root->left->left)
+			+ rob(root->left->right);
+		}
+		if(root->right){
+		    ans += rob(root->right->left)
+			+ rob(root->right->right);
+		}
+		// skip root
+		int ans2 = rob(root->left) + rob(root->right);
+		cache[root] = max(ans, ans2);
+		return cache[root];
+	    }
 };
