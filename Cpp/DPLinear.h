@@ -164,6 +164,31 @@ class DP1D {
 		}
 		return res;
 	}
+	// Mine
+	int maxProduct(vector<int>& nums) {
+		if(nums.size() == 0)
+		    return 0;
+
+		vector<int> dpMax(nums.size());
+		vector<int> dpMin(nums.size());
+		dpMax[0] = nums[0];
+		dpMin[0] = nums[0];
+
+		for(int i = 1; i < nums.size(); i++){
+		    //cout << nums[i] << "\t";
+		    if(nums[i] == 0)
+			dpMax[i] = dpMin[i] = 0;
+		    else if(nums[i] > 0){
+			dpMax[i] = max(nums[i], dpMax[i-1] * nums[i]);
+			dpMin[i] = min(nums[i], dpMin[i-1] * nums[i]);
+		    }
+		    else if(nums[i] < 0){
+			dpMax[i] = max(nums[i], dpMin[i-1] * nums[i]);
+			dpMin[i] = min(nums[i], dpMax[i-1] * nums[i]);
+		    }
+		}
+		return *max_element(dpMax.begin(), dpMax.end());
+	    }
 
 	// 198. House Robber [E]
 	// You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night. Max.
