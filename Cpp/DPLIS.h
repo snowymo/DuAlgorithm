@@ -63,7 +63,7 @@ class LISProblems {
 		return ans;
 	}
 
-	// 675. Longest Continuous Increasing Subsequence [H]
+	// 674. Longest Continuous Increasing Subsequence [E]
 	// Given an unsorted array of integers, find the length of longest continuous increasing subsequence (subarray).
 	// Time: O(NM)
 	int findLengthOfLCIS(vector<int>& nums) {
@@ -79,6 +79,25 @@ class LISProblems {
 		}
 		return res;
 	}
+	// Mine
+	int findLengthOfLCIS(vector<int>& nums) {
+		if(nums.size() < 2)
+		    return nums.size();
+
+		int ret = 0;
+		int ans = 1;
+		for(int i = 1; i < nums.size(); i++){
+		    //cout << start << " " << nums[i] << " " << ans << " " << ret << "\n";
+		    if(nums[i] > nums[i-1]){
+			++ans;
+		    }else{
+			ret = max(ret, ans);
+			ans = 1;
+		    }
+		}
+
+		return max(ans,ret);
+	    }
 
 	// 329. Longest Increasing Path in a Matrix [H]
 	int longestIncreasingPath(vector<vector<int>>& matrix) {
