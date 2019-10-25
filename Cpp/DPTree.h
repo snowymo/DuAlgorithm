@@ -17,6 +17,38 @@ class DPTree {
 		res = max(res, l + r + root->val);
 		return root->val + max(l, r);
 	}
+	// Mine
+	int maxPathSum(TreeNode* root) {
+		// with root, left[single]+root+right[single]
+		// left or right
+		if(root == NULL)
+		    return 0;
+		auto [root_single, root_max] = maxPathSumHelp(root);
+		return root_max;
+	    }
+	    pair<int,int> maxPathSumHelp(TreeNode* root){
+		if(root == NULL)
+		    return {INT_MIN,INT_MIN};
+		// return (single, max)
+		auto [left_single, left_max] = maxPathSumHelp(root->left);
+		auto [right_single, right_max] = maxPathSumHelp(root->right);
+		//cout << root->val << "\t";
+		//cout << "le " << left_single << " " << left_max << " ri " << right_single << " " << right_max << "\n";
+		int root_single = root->val;
+		if(root->left)
+		    root_single = max(root_single,max(root->val, root->val+left_single));
+		if(root->right)
+		    root_single = max(root_single, max(root->val, root->val+right_single));
+
+		int root_max = root->val;
+		if(root->left)
+		    root_max = max(root_max, root_max + left_single);
+		if(root->right)
+		    root_max = max(root_max, root_max + right_single);
+		root_max = max(root_max, max(left_max, right_max));
+		//cout << "ro s " << root_single << " ro m " << root_max << "\n";
+		return {root_single, root_max};
+	    }
 
 	// 112. Path Sum
 	// Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
