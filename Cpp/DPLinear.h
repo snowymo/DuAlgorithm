@@ -69,15 +69,45 @@ class DP1D {
 		vector<bool> f(n + 1);
 		f[0] = true;
 		for (int i = 1; i <= n; ++i) {
-			for (int j = 1; j <= i; ++j) if (f[j - 1]) {
-				if (wordDict.find(s.substr(j - 1, i - j + 1)) != wordDict.end()) {
-					f[i] = true;
-					break;
-				}
+			for (int j = 1; j <= i; ++j) 
+				if (f[j - 1]) {
+					if (wordDict.find(s.substr(j - 1, i - j + 1)) != wordDict.end()) {
+						f[i] = true;
+						break;
+					}
 			}
 		}
 		return f[n];
 	}
+	// Mine
+	map<string, int> dict;
+	    map<pair<int,int>, int> dp;
+	    bool wordBreak(string s, vector<string>& wordDict) {
+		for(int i = 0; i < wordDict.size(); i++){
+		    // find a word start from i
+		    dict[wordDict[i]] = i;
+		}
+		return wordBreakHelp(s, 0);
+	    }
+	    bool wordBreakHelp(string s, int start){
+		if(start == s.size())
+		    return true;
+		if(dp[{start, s.size()}] != 0)
+		    return dp[{start, s.size()}] == 1;
+		for(int i = 0; i <= s.size()-start; i++){
+		    if(dict.find(s.substr(start, i)) != dict.end()){
+			//cout << s.substr(start, i)<< "\n";
+			// word exist
+			dp[{start, start+i}] = 1;
+			bool cur = wordBreakHelp(s, start+i);
+			dp[{start+i, s.size()}] = cur? 1 : -1;
+			if(cur)
+			    return cur;
+			//cout << "not find " << s.substr(start+i) << "\n";
+		    }
+		}
+		return false;
+	    }
 
 	// 140. Word Break II
 	// Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, add spaces in s to construct a sentence where each word is a valid dictionary word. Return all such possible sentences.
