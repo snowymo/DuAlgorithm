@@ -212,6 +212,27 @@ class DP1D {
 		}
 		return f.back();
 	}
+	// Mine
+	int rob(vector<int>& nums) {
+		if(nums.size() == 0)
+		    return 0;
+		if(nums.size() == 1)
+		    return nums[0];
+		if(nums.size() <= 3){
+		    return *max_element(nums.begin(), nums.end());
+		}
+		vector<vector<int>> dp (2,vector<int>(nums.size()));
+		dp[0][0] = nums[0];
+		dp[0][1] = nums[0];
+		dp[1][1] = nums[1];
+		dp[0][2] = max(nums[0], nums[1]);
+		dp[1][2] = max(nums[1], nums[2]);
+		for(int i = 3; i <  nums.size(); i++){
+		    dp[0][i] = max(dp[0][i-2] + nums[i-1], dp[0][i-1]);
+		    dp[1][i] = max(dp[1][i-2] + nums[i], dp[1][i-1]);
+		}
+		return max(dp[0].back(), dp[1].back());
+	    }
 
 	// 312. Burst Balloons [H] [NOIP 2007?]
 	// Given n balloons, indexed from 0 to n-1. Each balloon is painted with a number on it represented by array nums. You are asked to burst all the balloons. If the you burst balloon i you will get nums[left] * nums[i] * nums[right] coins. Here left and right are adjacent indices of i. After the burst, the left and right then becomes adjacent. Find the maximum coins you can collect by bursting the balloons wisely.
