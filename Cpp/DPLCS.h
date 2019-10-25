@@ -43,4 +43,28 @@ namespace LCSProblems {
 		}
 		return strs[0].substr(0, ans);
 	}
+	// Mine
+	string longestCommonPrefix(vector<string>& strs) {
+		if(strs.size() == 0)
+		    return "";
+		// int length = strs[0].size();
+		// for(int i = 1; i < strs.size(); i++){
+		//     if(length < strs[i].size())
+		//         length = strs[i].size();
+		// }
+		string ans = "";
+		for(int i = 0; i < strs[0].size(); i++){
+		    char ch = strs[0][i];
+		    int j;
+		    for(j = 1; j < strs.size() && i < strs[j].size(); j++){
+			if(ch != strs[j][i])
+			    break;
+		    }
+		    if(j == strs.size())
+			ans += ch;
+		    else
+			break;
+		}
+		return ans;
+	    }
 }
