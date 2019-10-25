@@ -6,6 +6,7 @@
 // Time: O(M)
 // Space: O(MN) => O(N)
 namespace LCSProblems {
+	//No. 1143
 	int LCS(string &a, string &b) {
 		int n = (int)a.size(), m = (int)b.size();
 		Grid f(n + 1, Vector(m + 1, 0));
@@ -20,6 +21,19 @@ namespace LCSProblems {
 		}
 		return f[n][m];
 	}
+	// Mine
+	int longestCommonSubsequence(string text1, string text2) {
+		vector<vector<int>> lcs(text1.size()+1, vector<int>(text2.size()+1));
+		for(int i = 1; i <= text1.size(); i++){
+		    for(int j = 1; j <= text2.size(); j++){
+			lcs[i][j] = max(lcs[i-1][j], lcs[i][j-1]);
+			if(text1[i-1] == text2[j-1]){
+			    lcs[i][j] = max(lcs[i][j], lcs[i-1][j-1]+1);
+			}
+		    }
+		}
+		return lcs.back().back();
+	    }
 
 	// 14. Longest Common Prefix
 	string longestCommonPrefix(vector<string>& strs) {
