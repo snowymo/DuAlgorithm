@@ -32,6 +32,22 @@ class LISProblems {
 		}
 		return (int)f.size();
 	}
+	// Mine
+	int lengthOfLIS(vector<int>& nums) {
+		if(nums.size() < 2)
+		    return nums.size();
+		vector<int> dp(nums.size(), 1);
+		int ans = 1;
+		for(int i = nums.size()-2; i >= 0; i--){
+		    for(int j = i+1; j < nums.size(); j++){
+			if(nums[i] < nums[j]){
+			    dp[i] = max(dp[i], 1+dp[j]);
+			    ans = max(ans, dp[i]);
+			}
+		    }
+		}
+		return ans;
+	    }
 
 	// Using STL
 	int lengthOfLIS_STL(vector<int>& nums) {
