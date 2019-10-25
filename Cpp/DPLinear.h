@@ -150,6 +150,64 @@ class DP1D {
 			findWordBreak(ans, f, p, s, j, newpath);
 		}
 	}
+	
+	// Mine
+	set<string> myset;
+	    map<pair<int,int>, 
+	    vector<vector<string>>  > dp; // indicating that start with int and end with int is a word
+	    vector<string> wordBreak(string s, vector<string>& wordDict) {
+		// init the set first
+		for(int i = 0; i < wordDict.size(); i++){
+		    myset.insert(wordDict[i]);
+		}
+		vector<vector<string>> answers;
+		wordBreakHelp(s, 0, s.size() ,answers);
+
+		vector<string> ret((int)answers.size(), "");
+		for(int i = 0; i < answers.size(); i++){
+		    string curRet = "";
+		    for(int j = 0; j < answers[i].size(); j++){
+			curRet += answers[i][answers[i].size()-j-1] + " ";
+		    }
+		    ret[i] = curRet.substr(0, (int)curRet.size()-1);
+		}
+		return ret;
+	    }
+
+	    bool wordBreakHelp(string s, int start, int end, vector<vector<string>> & answers){
+		//cout << "processing " << s.substr(start, end-start+1) << "\n";
+		// DP
+		if(dp.find({start, end}) != dp.end()){
+		    answers = dp[{start,end}];
+		    return answers.size() > 0;
+		}            
+
+		vector<vector<string>> ret;
+		for(int j = start; j < end; j++){
+		    string cur = s.substr(start, j-start+1);
+		    if(myset.find(cur) != myset.end()){
+			//cout << "find " << cur << " " << j << " " << end << "\n";
+			//
+			if(j == end-1){
+	//                    cout << "meet end " << cur << "\n";
+			    ret.push_back(vector<string>(1, cur));
+			}else{
+			    vector<vector<string>> temp;
+			    if(wordBreakHelp(s, j+1, end, temp)){
+	  //                      cout << "push_back " << cur << "\n";
+				for(int i = 0; i < temp.size(); i++){
+				    temp[i].push_back(cur);
+				    ret.push_back(temp[i]);                           
+				}
+			    }    
+			}
+		    }
+		}
+		dp[{start, end}] = ret;
+		answers = ret;
+	    //    cout << "dp[{" << start << ", " << end << "}] = " << ret.size() << "\n";
+		return ret.size() > 0;
+	    }
 
 	// 152. Maximum Product Subarray
 	// Given an integer array nums, find the contiguous subarray within an array (containing at least one number) which has the largest product.
