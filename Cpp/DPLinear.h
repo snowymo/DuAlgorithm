@@ -349,6 +349,56 @@ class DP1D {
 
 		return f[1][n];
 	}
+	// Mine, after read discussion
+	int solve(vector<int>& nums, int s, int e, vector<vector<int> >& dp){
+		if(dp[s][e] != -1){
+		    return dp[s][e];
+		}
+		int l = s-1 < 0 ? 1 : nums[s-1];
+		int r = e+1 >= nums.size() ? 1 : nums[e+1];
+		if(s == e){
+		    dp[s][e] = l*nums[s]*r;
+		    return dp[s][e];
+		}
+		int mx = 0;
+		for(int mid=s; mid<=e; mid++){
+		    int left = (mid == s) ? 0 : solve(nums, s, mid-1, dp);
+		    int right = (mid == e) ? 0 :solve(nums, mid+1, e, dp);    
+
+		    int val = left + l * nums[mid] * r + right;
+		    mx = max(mx, val);
+		}
+		dp[s][e] = mx;        
+		return dp[s][e];        
+	    }
+	    int maxCoins2(vector<int>& nums) {
+		int n = (int)nums.size();
+		if(n == 0) return 0;
+		vector<vector<int> > dp(n, vector<int>(n, -1));       
+		int ans = solve(nums, 0, n-1, dp);
+
+		return ans;
+	    }
+	    int maxCoins(vector<int>& nums){
+		const int n=nums.size();
+		if(n==0)
+		    return 0;
+		vector<vector<int> >dp(n,vector<int>(n));
+		for(int L=n-1;L>=0;L--)
+		{
+		    for(int R=L;R<n;R++)
+		    {
+			for(int i=L;i<=R;i++)
+			{
+			    dp[L][R]=max(dp[L][R],
+					  nums[i]*(L?nums[L-1]:1)*(R==n-1?1:nums[R+1])
+					 + (i>0?dp[L][i-1]:0)+  (i==n-1?0:dp[i+1][R])
+					);
+			}
+		    }
+		}
+		return dp[0][n-1];
+	    }
 
 	// 313. Super Ugly Number [M] [VH]
 	// Super ugly numbers are positive numbers whose all prime factors are in the given prime list primes of size k. 
