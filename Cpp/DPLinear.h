@@ -20,6 +20,34 @@ class DP1D {
 		}
 		return ans;
 	}
+	// Mine, after read the solution
+	int trap(vector<int>& height) {
+		if(height.empty() || height.size()<3)
+		    return 0;
+
+		vector<int> maxleft(height.size(),-1);
+		vector<int> maxright(height.size(),-1);
+
+		for(int i=1;i<maxleft.size();i++)
+		{
+		    maxleft[i] = max(height[i-1], maxleft[i-1]);
+		}
+
+		for(int i=maxright.size()-2;i>=0;i--)
+		{
+		    maxright[i]=max(maxright[i+1],height[i+1]);
+		}
+		int units = 0;
+		for(int i=1;i<height.size()-1;i++)
+		{
+		    int val = min(maxleft[i],maxright[i])-height[i];
+		    if(val>0)
+			units+=val;
+		}
+
+		return units;
+
+	    }
 
 	// 256. Paint House
 	// k = 3
