@@ -451,6 +451,30 @@ class DP1D {
 		}
 		return uglies[n - 1];
 	}
+	// Mine, mine is TLE, because I caLculated too many unnecessary answers
+	// Here is the optimization after reading the discussion
+	int nthSuperUglyNumber(int n, vector<int>& primes) {
+		if(n <= 1)
+		    return n;
+		int pos[primes.size()] = {0};
+		int ans[n] = {1};
+
+		for(int i =1;i<n;i++){
+		    ans[i] = INT_MAX;
+		    for(int j = 0; j<primes.size();j++){
+			if(primes[j] * ans[pos[j]] < ans[i])
+			    ans[i] = primes[j] * ans[pos[j]];
+		    }
+
+		    for(int j=0;j<primes.size();j++){
+			if(primes[j] * ans[pos[j]] == ans[i])
+			    ++pos[j];
+		    }           
+		}
+
+		return ans[n-1];
+
+	    }
 	
 	// No.303 Range Sum Query - Immutable Mine
 	// Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.
