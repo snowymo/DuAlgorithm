@@ -154,4 +154,89 @@ private:
 		d[l][r] = res;
 		return d[l][r];
 	}
+	// 1020. Number of Enclaves (Mine)
+	// Given a 2D array A, each cell is 0 (representing sea) or 1 (representing land)
+	// A move consists of walking from one land square 4-directionally to another land square, or off the boundary of the grid.
+	// Return the number of land squares in the grid for which we cannot walk off the boundary of the grid in any number of moves. 
+
+	// Example 1:
+	// Input: [[0,0,0,0],[1,0,1,0],[0,1,1,0],[0,0,0,0]]
+	// Output: 3
+	// Explanation: 
+	// There are three 1s that are enclosed by 0s, and one 1 that isn't enclosed because its on the boundary.
+	// Example 2:
+	// Input: [[0,1,1,0],[0,0,1,0],[0,0,1,0],[0,0,0,0]]
+	// Output: 0
+	// Explanation: 
+	// All 1s are either on the boundary or can reach the boundary.
+
+	// Note:
+	// 1 <= A.length <= 500
+	// 1 <= A[i].length <= 500
+	// 0 <= A[i][j] <= 1
+	// All rows have the same size.
+	int numEnclaves(vector<vector<int>>& A) {
+		vector<vector<int>> B(A.size(), vector<int>(A[0].size()));
+		int rowsize = A.size();
+		int colsize = A[0].size();
+		//cout << "total " << rowsize << " rows and " << colsize << " cols\n";
+
+		for(int j = 0; j < colsize; j++){
+		    int i = 0;
+		    if(A[i][j] == 1){
+			// this is one root, fill the path
+			//cout << "fill " << i << "," << j << "\n";
+			fillThePath(A, B, i, j);
+		    }
+		    i = rowsize-1;
+		    if(A[i][j] == 1){
+			// this is one root, fill the path
+			//cout << "fill " << i << "," << j << "\n";
+			fillThePath(A, B, i, j);
+		    }
+		}
+
+
+		for(int j = 1; j < rowsize-1; j++){
+		    int i = 0;
+		    if(A[j][i] == 1){
+			// this is one root, fill the path
+			//cout << "fill " << j << "," << i << "\n";
+			fillThePath(A, B, j, i);
+		    }
+		    i = colsize-1;
+		    if(A[j][i] == 1){
+			// this is one root, fill the path
+			//cout << "fill " << j << "," << i << "\n";
+			fillThePath(A, B, j, i);
+		    }
+		}
+
+		auto sumA = std::accumulate(A.cbegin(), A.cend(), 0, [](auto lhs, const auto& rhs) {
+		    return std::accumulate(rhs.cbegin(), rhs.cend(), lhs);
+		});
+		auto sumB = std::accumulate(B.cbegin(), B.cend(), 0, [](auto lhs, const auto& rhs) {
+		    return std::accumulate(rhs.cbegin(), rhs.cend(), lhs);
+		});
+		return sumA-sumB;
+
+	    }
+	    void fillThePath(vector<vector<int>>& A, vector<vector<int>>& B, int row, int col){
+		if(B[row][col] == 1 || A[row][col] == 0)
+		    return;
+		//cout << "assign B " << A[row][col] << "\t" << row << "," << col << "\n";
+		B[row][col] = 1;
+		if(row >= 1 && A[row-1][col]){
+		    fillThePath(A, B, row-1, col);
+		}
+		if(row < A.size()-1 && A[row+1][col]){
+		    fillThePath(A, B, row+1, col);
+		}
+		if(col >= 1 && A[row][col-1]){
+		    fillThePath(A, B, row, col-1);
+		}
+		if(col < A[0].size()-1 && A[row][col+1]){
+		    fillThePath(A, B, row, col+1);
+		}
+	    }
 };
