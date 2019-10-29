@@ -88,6 +88,52 @@ class DP1D {
 		}
 		return ans;
 	}
+	// Mine, first I was confused about the problem itself. Then I read the solution... 
+	// So here is one easy-understanding solution and the other is a smart one
+	int candy2(vector<int>& ratings) {
+		    if (ratings.size() == 0) 
+			return 0;
+		    int ret = 1;
+		    int up = 0, down = 0, peak = 0;
+		    for (int i = 1; i < ratings.size() ; i++) {
+			if (ratings[i - 1] < ratings[i]) {
+			    peak = ++up;
+			    down = 0;
+			    ret += 1 + up;
+			} else if (ratings[i - 1] == ratings[i])  {
+			    peak = up = down = 0;
+			    ret += 1;
+			} else {
+			    up = 0;
+			    down++;
+			    ret += 1 + down + (peak >= down ? -1 : 0);
+			}
+		    }
+
+		    return ret;
+	    }
+
+	    int candy(vector<int>& ratings) {
+		    if (ratings.size() == 0) 
+			return 0;
+		int ans[ratings.size()] = {1};
+
+		for(int i = 1; i < ratings.size(); i++){
+		    ans[i] = 1;
+		    if(ratings[i] > ratings[i-1]){
+			ans[i] = ans[i-1]+1;
+		    }
+		    //cout << i << ":" << ans[i] << "\n";
+		}
+		for(int i = ratings.size()-2; i >= 0; i--){
+		    if(ratings[i] > ratings[i+1]){
+			ans[i] = max(ans[i],ans[i+1]+1);
+		    }
+		    //cout << i << ":" << ans[i] << "\n";
+		}
+		return accumulate(ans, ans+ratings.size(), 0); 
+
+	    }
 
 	// 139. Word Break
 	// Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
