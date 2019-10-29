@@ -64,4 +64,20 @@ class LCA {
 		dict[root] = res;
 		return res;
 	}
+	
+	// No.235 Mine
+	TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+		if(root->val == p->val)
+		    return root;
+		if(root->val == q->val)
+		    return root;
+		bool pside = root->val > p->val;    
+		bool qside = root->val > q->val;    
+		if(pside != qside)
+		    return root;
+		if(pside){
+		    return lowestCommonAncestor(root->left,p,q);
+		}
+		return lowestCommonAncestor(root->right,p,q);
+	    }
 }
