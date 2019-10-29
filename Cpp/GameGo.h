@@ -54,4 +54,39 @@ namespace GamesGo {
 			}
 		}
 	}
+	// Mine
+	void solve(vector<vector<char>>& board) {        
+		int rowsize = board.size();
+		if(rowsize == 0)
+		    return;
+
+		int colsize = board[0].size();
+		vector<vector<char>> memo(rowsize, vector<char>(colsize, 'X'));
+		//cout << memo[0][0] << "\n";
+		for(int coli = 0; coli < colsize; coli ++){
+		    solveHelper(board, memo, 0, coli);
+		    solveHelper(board, memo, rowsize-1, coli);
+		}
+		for(int rowi = 1; rowi < rowsize-1; rowi ++){
+		    solveHelper(board, memo, rowi, 0);
+		    solveHelper(board, memo, rowi, colsize-1);
+		}
+		for(int i = 0; i < rowsize; i++){
+		    for(int j = 0; j < colsize; j++){
+			board[i][j] = memo[i][j];
+		    }
+		}
+	    }
+	    void solveHelper(vector<vector<char>>& board, vector<vector<char>>& memo, int row, int col){
+		if(row < 0 || col < 0 || row == board.size() || col == board[0].size())
+		    return;
+		if(memo[row][col] == 'O' || board[row][col] == 'X')
+		    return;
+		memo[row][col] = 'O';
+
+		solveHelper(board, memo, row-1, col);
+		solveHelper(board, memo, row+1, col);
+		solveHelper(board, memo, row, col-1);
+		solveHelper(board, memo, row, col+1);
+	    }
 }
