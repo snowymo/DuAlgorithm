@@ -28,6 +28,7 @@ private:
 		}
 		return true;
 	}
+	// Mine is in BinaryTreeMisc.h
 
 public:
 	// 109. Convert Sorted List to Binary Search Tree
@@ -92,6 +93,8 @@ public:
 	bool isBalanced(TreeNode* root) {
 		return balanceHeight(root) >= 0;
 	}
+	
+	// Mine is in BinaryTreeMisc.h
 
 	// 450. Delete Node in a BST
 	/*
@@ -178,6 +181,7 @@ public:
 			dfs(node->right, prev, result);
 		}
 	};
+	// Mine is in BinaryTreeOrders.h
 
 	// 99. Recover Binary Search Tree [H]
 	// Two elements of a binary search tree (BST) are swapped by mistake.
