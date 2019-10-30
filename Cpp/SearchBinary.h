@@ -152,6 +152,52 @@ class BinarySearch {
 		}
 		return false;
 	}
+	// Mine
+	bool search(vector<int>& nums, int target) {
+		if(nums.size() == 0)
+		    return false;
+
+		int delta = nums[0];
+		if(target == delta)
+		    return true;
+
+		int left = 0;
+		while(left < nums.size()-1){
+		    if(nums[++left] != delta)
+			break;
+		}
+		if(left >= nums.size())
+		    return false;
+
+		float fdelta = nums[left]-0.5;
+		int right = nums.size()-1;
+		while(left <= right){
+			    int pos = (left+right) >> 1;
+			    if(nums[pos] == target)
+				    return true;
+
+			    float multiply = ((float)nums[pos]-fdelta) * ((float)target - fdelta);
+			    //cout << nums[pos] << " " << multiply << "\n";
+			    if(multiply > 0){
+				// same side
+			if(nums[pos] > target)
+			    right = pos-1;
+			if(nums[pos] < target)
+			    left = pos+1;
+		    }else if(multiply < 0){
+		    // different side
+			if(nums[pos] < fdelta)
+			    right = pos-1;
+			if(nums[pos] > fdelta)
+			    left = pos+1;
+		    }else{
+			if(target == fdelta)
+			    return true;
+			return false;
+		    }
+		}
+		return false;
+	    }
 
 	// 153. Find Minimum in Rotated Sorted Array
 	// no duplicates
