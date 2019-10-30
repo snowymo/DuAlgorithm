@@ -15,4 +15,32 @@ namespace STLSort {
 			nums.end(), bind1st(equal_to<int>(), 1)
 			);
 	}
+	// Mine
+	void sortColors2(vector<int>& nums) {
+		int lastBlue = nums.size()-1;
+		int lastWhite = nums.size()-1;
+		for(int i = 0; i < nums.size(); i++){
+		    if(nums[i] == 2){
+			for(int j = lastBlue; j > i; j--){
+			    if(nums[j] < 2){
+				swap(nums[i], nums[j]);
+				//cout << "swap " << i << " with " << j << "\n";
+				lastBlue = j-1;
+				lastWhite = j-1;
+				break;
+			    }
+			}
+		    }
+		    if(nums[i] == 1){
+			for(int j = lastWhite; j > i; j--){
+			    if(nums[j] == 0){
+				swap(nums[i], nums[j]);
+				//cout << "swap " << i << " with " << j << "\n";
+				lastWhite = j-1;
+				break;
+			    }
+			}
+		    }
+		}
+	    }
 }
