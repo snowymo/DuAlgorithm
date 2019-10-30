@@ -38,6 +38,21 @@ class BinarySearch {
 		}
 		return l;
 	}
+	// Mine
+	int searchInsert(vector<int>& nums, int target) {
+		int left = 0, right = nums.size()-1;
+		while(right > left){
+		    //cout << left << ":"<< right << "\n";
+		    int pos = (left+right) >> 1;
+		    if(target == nums[pos])
+			return pos;
+		    if(target > nums[pos])
+			left = pos+1;
+		    else
+			right = pos - 1;
+		}
+		return (target > nums[left]) ? left+1 : left;
+	    }
 
 	// 33. Search in Rotated Sorted Array
 	// Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
