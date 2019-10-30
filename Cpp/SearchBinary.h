@@ -85,6 +85,39 @@ class BinarySearch {
 		}
 		return -1;
 	}
+	// Mine
+	int search(vector<int>& nums, int target) {
+		if(nums.size() == 0)
+		    return -1;
+		float delta = nums[0]-0.5;
+		int left = 0, right = nums.size()-1;
+		while(left <= right){
+		    int pos = (left+right) >> 1;
+		    if(nums[pos] == target)
+			return pos;
+
+		    float multiply = ((float)nums[pos]-delta) * ((float)target - delta);
+		    //cout << nums[pos] << " " << multiply << "\n";
+		    if(multiply > 0){
+			// same side
+			if(nums[pos] > target)
+			    right = pos-1;
+			if(nums[pos] < target)
+			    left = pos+1;
+		    }else if(multiply < 0){
+			// different side
+			if(nums[pos] < delta)
+			    right = pos-1;
+			if(nums[pos] > delta)
+			    left = pos+1;
+		    }else{
+			if(target == delta)
+			    return 0;
+			return -1;
+		    }
+		}
+		return -1;
+	    }
 
 	// 81. Search in Rotated Sorted Array II
 	// Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
