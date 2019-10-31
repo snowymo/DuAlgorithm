@@ -37,4 +37,46 @@ namespace SortInsert {
 		}
 		return dummy->next;
 	}
+	// Miine
+	ListNode* insertionSortList(ListNode* head) {
+		ListNode* ans = NULL;
+		// print(head);
+		while(head){
+
+		    ListNode* cur = head;
+		    head = head->next;
+		    if(ans == NULL){
+			ans = cur;
+			ans->next = NULL;
+		    }   
+		    else{
+			// find the correct place for it
+			// cout << "insert " << cur->val << "\n";
+			ListNode* cur2 = ans, *prev = NULL;
+			while(cur2){
+			    if(cur->val < cur2->val){
+				// insert it
+				if(prev){
+				    prev->next = cur;
+				    cur->next = cur2;
+				}else{
+				    prev = cur;
+				    prev->next = cur2;
+				    ans = prev;
+				}
+				break;
+			    }
+			    prev = cur2;
+			    cur2 = cur2->next;
+			}
+			if(cur2 == NULL){
+			    prev->next = cur;
+			    cur->next = NULL;
+			}
+		    }
+		    // print(head);
+		    // print(ans);
+		}
+		return ans;
+	    }
 }
