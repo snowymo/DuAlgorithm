@@ -403,7 +403,21 @@ public:
 	int peakIndexInMountainArray(vector<int>& A) {
 		return std::max_element(A.begin(),A.end()) - A.begin();
 	    }
-
+	// Not using STL. After reading Du's
+	int peakIndexInMountainArray(vector<int>& A) {
+		int left = 0, right = A.size()-1;
+		while(left <= right){
+		    int pos = (left+right) >> 1;
+		    if(A[pos] < A[pos+1]){
+			left = pos+1;
+		    }
+		    else if(A[pos] < A[pos-1]){
+			right = pos-1;
+		    }else
+			return pos;
+		}
+		return left;
+	    }
 
 	// 719. Find K-th Smallest Pair Distance [H]
 	// Given an integer array, return the k-th smallest distance among all the pairs. The distance of a pair (A, B) is defined as the absolute difference between A and B.
