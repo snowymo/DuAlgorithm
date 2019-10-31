@@ -54,4 +54,69 @@ class CountSort {
 		}
 		return res;
 	}
+	// Mine
+	map<string, int> cache;
+	    int maxProduct(vector<string>& words) {
+		if(words.size() <= 1)
+		    return 0;
+		int ans = 0;
+		for(int i = 0; i < words.size(); i++){
+		    turnToInt(words[i]);
+		}
+		for(int i = 0; i < words.size(); i++){
+		    for(int j = i+1; j < words.size(); j++){
+			if((cache[words[i]] & cache[words[j]]) == 0)
+			    ans = max(ans, (int)words[i].size() * (int)words[j].size());
+		    }
+		}
+		return ans;
+	    }
+
+	    int turnToInt(string s){
+
+		int ans = 0;
+		for(int i = 0; i < s.size(); i++){
+		    int cur = s[i]-'a';
+		    ans |= (1 << cur);
+		}
+		cache[s] = ans;
+		//cout << s << ":" << ans << "\n";
+		return ans;
+	    }
+	// optimization: access in map is slow, vector is faster; adding condition for size is not faster
+	int maxProduct(vector<string>& words) {
+		if(words.size() <= 1)
+		    return 0;
+		int ans = 0;
+		// for(int i = 0; i < words.size(); i++){
+		//     turnToInt(words[i]);
+		// }
+			vector<int> bits(words.size());
+			for (int i = 0; i < words.size(); ++i) {
+				for (const auto& c : words[i]) {
+					bits[i] |= (1 << (c - 'a'));
+				}
+			}
+		for(int i = 0; i < words.size(); i++){
+		    for(int j = i+1; j < words.size(); j++){
+			if((bits[i] & bits[j]) == 0)
+			//if((words[i].size() * words[j].size() > ans) && (bits[i] & bits[j]) == 0)
+			//if((cache[words[i]] & cache[words[j]]) == 0)
+			    ans = max(ans, (int)words[i].size() * (int)words[j].size());
+		    }
+		}
+		return ans;
+	    }
+
+	    void turnToInt(string s){
+
+		int ans = 0;
+		for(int i = 0; i < s.size(); i++){
+		    int cur = s[i]-'a';
+		    ans |= (1 << cur);
+		}
+		cache[s] = ans;
+		//cout << s << ":" << ans << "\n";
+		//return ans;
+	    }
 };
