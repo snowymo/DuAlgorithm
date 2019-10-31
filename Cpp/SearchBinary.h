@@ -458,6 +458,50 @@ public:
 
 		return result;
 	}
+	// Mine
+	vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+		vector<int> ans;
+		for(int i = 0; i < nums1.size(); i++){
+		    if(searchInAns(nums1[i], ans))
+			continue;
+		    for(int j = 0; j < nums2.size(); j++){
+			if(nums1[i] == nums2[j]){
+			    insertIntoAns(nums1[i], ans);
+			    break;
+			}                    
+		    }
+		}
+		return ans;
+	    }
+	    bool searchInAns(int target, vector<int>& ans){
+		int left = 0, right = ans.size()-1;
+		while(left <= right){
+		    int pos = (left+right) >> 1;
+		    if(ans[pos] == target){
+			return true;
+		    }else if(ans[pos] < target){
+			left = pos + 1;
+		    }else if(ans[pos] > target){
+			right = pos - 1;
+		    }
+		}
+		return false;
+	    }
+	    void insertIntoAns(int target, vector<int>& ans){
+		int left = 0, right = ans.size()-1;
+		while(left <= right){
+		    int pos = (left+right) >> 1;
+		    if(ans[pos] == target){
+			return ;
+		    }else if(ans[pos] < target){
+			left = pos + 1;
+		    }else if(ans[pos] > target){
+			right = pos - 1;
+		    }
+		}
+		//cout << "insert at " << left << "\n";
+		ans.insert(ans.begin()+left, target);
+	    }
 
 	// 129. Sum Root to Leaf Numbers
 	// Given a binary tree containing digits from 0-9 only, each root-to-leaf path could represent a number. An example is the root - to - leaf path 1->2->3 which represents the number 123. Find the total sum of all root - to - leaf numbers.
