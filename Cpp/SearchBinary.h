@@ -366,6 +366,39 @@ public:
 		}
 		return false;
 	}
+	// Mine
+	bool searchMatrix(vector<vector<int>>& matrix, int target) {
+		// binary search the first column
+		// binary search the specific row
+		if(matrix.size() == 0)
+		    return false;
+		if(matrix[0].size() == 0)
+		    return false;
+		int left = 0, right = matrix.size()-1;
+		while(left <= right){
+		    int pos = (left+right) >> 1;
+		    if(matrix[pos][0] < target){
+			left = pos+1;
+		    }else if(matrix[pos][0] > target){
+			right = pos - 1;
+		    }else
+			return true;
+		}
+		int row = left-1;
+		if(row < 0)
+		    return false;
+		left = 0; right = matrix[row].size()-1;
+		while(left <= right){
+		    int pos = (left+right) >> 1;
+		    if(matrix[row][pos] < target){
+			left = pos+1;
+		    }else if(matrix[row][pos] > target){
+			right = pos - 1;
+		    }else
+			return true;
+		}
+		return false;
+	    }
 
 
 	// 162. Find peak element in an array [E]
