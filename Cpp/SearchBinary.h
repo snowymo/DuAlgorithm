@@ -215,6 +215,26 @@ class BinarySearch {
 		}
 		return nums[l];
 	}
+	// Mine
+	int findMin(vector<int>& nums) {
+		if(nums.size() == 0)
+		    return -1;
+		int start = nums[0];
+		int ret = start;
+		int left = 0, right = nums.size()-1;
+		while(left < right){
+		    int pos = (left+right)>>1;
+		    ret = min(ret,nums[pos]);
+
+		    if(nums[pos] >= start)
+			left = pos+1;
+		    else{
+			right = pos-1;
+		    }
+		    //cout << pos << " " << left << " " << right << "\n";
+		}
+		return min(ret,nums[left]);
+	    }
 
 	// 154. Find Minimum in Rotated Sorted Array II [H]
 	// with duplicates
