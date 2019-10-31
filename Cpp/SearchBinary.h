@@ -299,6 +299,48 @@ public:
 		if (nums[l] != target) return vector<int>{-1, -1};
 		return vector<int> {l, u};
 	}
+	// Mine
+	vector<int> searchRange(vector<int>& nums, int target) {
+		vector<int> ret(2, -1);
+		if(nums.size() < 1)
+		    return ret;
+		int left = 0, right = nums.size()-1;
+		while(left <= right){
+		    int pos = (left+right) >> 1;
+		    if(nums[pos] > target){
+			right = pos - 1;
+		    }else if(nums[pos] < target){
+			left = pos + 1;
+		    }else{
+					   // find the left
+			ret[0] = searchLeft(nums, target, left, pos, true);
+			ret[1] = searchLeft(nums, target, pos, right, false);
+		       return ret; 
+		    }
+		}
+		return ret;
+	    }
+
+	    int searchLeft(vector<int>& nums, int target, int left, int right, bool isLeft){
+		while(left <= right){
+		    int pos = (left+right) >> 1;
+		    if(isLeft){
+			if(nums[pos] == target){
+			    right = pos-1;
+			}else{
+			    left = pos+1;
+			}    
+		    }
+		    else{
+			if(nums[pos] == target){
+			    left = pos+1;                    
+			}else{
+			    right = pos-1;
+			}
+		    }
+		}
+		return isLeft ? right+1 : left-1;
+	    }
 
 	// 74. Search a 2D Matrix [M]
 	// Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
