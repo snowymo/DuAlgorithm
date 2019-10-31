@@ -417,6 +417,26 @@ public:
 		}
 		return r;
 	}
+	// Mine
+	int findPeakElement(vector<int>& nums) {
+		if(nums.size() == 0)
+		    return -1;
+		if(nums.size() == 1)
+		    return 0;
+		if(nums.size() == 2)
+		    return (nums[0] > nums[1]) ? 0 : 1;
+
+		int step = 0;
+		for(int i = 0; i < nums.size(); i++){
+		    if(step == 0 && nums[i] >= 0){
+			step = 1;
+		    }
+		    else if(step == 1 && nums[i] < nums[i-1]){
+			return i-1;
+		    }
+		}
+		return nums.size()-1;
+	    }
 
 	// 852. Peak Index in a Mountain Array [E]
 	int peakIndexInMountainArray(vector<int>& A) {
