@@ -399,6 +399,10 @@ public:
 		}
 		return l;
 	}
+	// Mine
+	int peakIndexInMountainArray(vector<int>& A) {
+		return std::max_element(A.begin(),A.end()) - A.begin();
+	    }
 
 
 	// 719. Find K-th Smallest Pair Distance [H]
