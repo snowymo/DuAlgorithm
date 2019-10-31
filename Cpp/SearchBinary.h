@@ -257,6 +257,33 @@ public:
 	int findMin(vector<int>& nums) {
 		return findMin(nums, 0, (int)nums.size() - 1);
 	}
+	// Mine 
+	int findMin(vector<int>& nums) {
+		if(nums.size() == 0)
+			    return -1;
+		if(nums.size() == 1)
+		    return nums[0];
+			int left = 0, right = nums.size()-1;
+		while(left < nums.size()-1){
+		    if(nums[++left] != nums[0])
+			break;
+		}
+		int start = nums[left];
+			int ret = min(start, nums[0]);
+
+		while(left < right){
+			    int pos = (left+right)>>1;
+			    ret = min(ret,nums[pos]);
+
+			    if(nums[pos] >= start)
+				left = pos+1;
+			    else{
+				right = pos-1;
+			    }
+			    //cout << pos << " " << left << " " << right << "\n";
+			}
+			return min(ret,nums[left]);
+	    }
 
 	// 34. Find First and Last Position of Element in Sorted Array
 	// Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target value.
