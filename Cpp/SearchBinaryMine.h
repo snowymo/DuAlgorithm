@@ -2,6 +2,50 @@
 #include "common.h"
 
 class BinarySearchMisc {
+  // No.475 Heaters
+  // Winter is coming! Your first job during the contest is to design a standard heater with fixed warm radius to warm all the houses.
+  // Now, you are given positions of houses and heaters on a horizontal line, find out minimum radius of heaters so that all houses could be covered by those heaters.
+  // So, your input will be the positions of houses and heaters seperately, and your expected output will be the minimum radius standard of heaters.
+  // Note:
+  // Numbers of houses and heaters you are given are non-negative and will not exceed 25000.
+  // Positions of houses and heaters you are given are non-negative and will not exceed 10^9.
+  // As long as a house is in the heaters' warm radius range, it can be warmed.
+  // All the heaters follow your radius standard and the warm radius will the same.
+  // Example 1:
+  // Input: [1,2,3],[2]
+  // Output: 1
+  // Explanation: The only heater was placed in the position 2, and if we use the radius 1 standard, then all the houses can be warmed.
+  // Example 2:
+  // Input: [1,2,3,4],[1,4]
+  // Output: 1
+  // Explanation: The two heater was placed in the position 1 and 4. We need to use radius 1 standard, then all the houses can be warmed.
+    int findRadius(vector<int>& houses, vector<int>& heaters) {
+        int ans = 0;
+        sort(houses.begin(), houses.end());
+        sort(heaters.begin(), heaters.end());
+        if(houses[0] >= heaters.back()){
+            // all the houses are largers than heaters
+            ans = houses.back() - heaters.back();
+        }else if(heaters.size() == 1){
+            ans = max(abs(houses.back()-heaters[0]), abs(houses.front()-heaters[0]));
+        }else{
+            int i,j;
+            for(i = 0, j = 0; i < houses.size() && j < heaters.size()-1;){
+                if(houses[i] > heaters[j+1])
+                    ++j;
+                else{
+                    int cur = min(abs(houses[i] - heaters[j]), abs(houses[i] - heaters[j+1]));
+                    ans = max(cur, ans);
+                    ++i;
+                }
+            }
+            for(; i < houses.size(); i++){
+                int cur = abs(houses[i] - heaters.back());
+                    ans = max(cur, ans);
+            }
+        }
+        return ans;
+    }
   //No.744  Find Smallest Letter Greater Than Target
 //   Given a list of sorted characters letters containing only lowercase letters, and given a target letter target, 
   // find the smallest element in the list that is larger than the given target.
