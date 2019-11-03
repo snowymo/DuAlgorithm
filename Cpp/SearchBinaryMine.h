@@ -2,6 +2,41 @@
 #include "common.h"
 
 class BinarySearchMisc {
+  // No.167  Two Sum II - Input array is sorted
+// Given an array of integers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.
+
+// The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2.
+
+// Note:
+
+// Your returned answers (both index1 and index2) are not zero-based.
+// You may assume that each input would have exactly one solution and you may not use the same element twice.
+// Example:
+
+// Input: numbers = [2,7,11,15], target = 9
+// Output: [1,2]
+// Explanation: The sum of 2 and 7 is 9. Therefore index1 = 1, index2 = 2.
+  vector<int> twoSum(vector<int>& numbers, int target) {
+        vector<int> ret;
+        for(int i = 0; i < numbers.size()-1; i++){
+            int substract = target - numbers[i];
+            int left = i+1, right = numbers.size()-1;
+            while(left <= right){
+                int pos = (left+right) >> 1;
+                if(numbers[pos] == substract){
+                    ret.push_back(i+1);
+                    ret.push_back(pos+1);
+                    return ret;
+                }
+                if(numbers[pos] < substract){
+                    left = pos+1;
+                }else{
+                    right = pos-1;
+                }
+            }
+        }
+        return ret;
+    }
   // No.278 First Bad Version
 // You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
 
