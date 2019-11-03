@@ -2,6 +2,27 @@
 #include "common.h"
 
 class BinarySearchMisc {
+  // No.69 Sqrt(x)
+//   Implement int sqrt(int x).
+
+// Compute and return the square root of x, where x is guaranteed to be a non-negative integer.
+
+// Since the return type is an integer, the decimal digits are truncated and only the integer part of the result is returned.
+  int mySqrt(int x) {
+        long left = 0, right = x;
+        while(left <= right){
+            long pos = (left+right) >> 1;
+            long cur = pos * pos;
+            if(cur == x)
+                return (int)pos;
+            if(cur > x){
+                right = pos - 1;
+            }else if(cur < x){
+                left = pos + 1;
+            }
+        }
+        return (int)right;
+    }
   // No.167  Two Sum II - Input array is sorted
 // Given an array of integers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.
 
