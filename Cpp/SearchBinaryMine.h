@@ -2,6 +2,25 @@
 #include "common.h"
 
 class BinarySearchMisc {
+  // No.367 Valid Perfect Square
+// Given a positive integer num, write a function which returns True if num is a perfect square else False.
+// Note: Do not use any built-in library function such as sqrt.
+  bool isPerfectSquare(int num) {
+        // start from n/2, --, 
+        int left = 0, right = num;
+        while(left <= right){
+            long pos = (left+right) >> 1;
+            long ans = pos * pos;
+            if(ans == num)
+                return true;
+            if(ans < num){
+                left = pos + 1;
+            }else{
+                right = pos - 1;
+            }
+        }
+        return false;
+    }
   // No.374 Guess Number Higher or Lower
 // We are playing the Guess Game. The game is as follows:
 // I pick a number from 1 to n. You have to guess which number I picked.
