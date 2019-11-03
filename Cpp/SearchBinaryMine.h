@@ -2,6 +2,30 @@
 #include "common.h"
 
 class BinarySearchMisc {
+  // No.441 Arranging Coins
+  // You have a total of n coins that you want to form in a staircase shape, where every k-th row must have exactly k coins.
+  // Given n, find the total number of full staircase rows that can be formed.
+  // n is a non-negative integer and fits within the range of a 32-bit signed integer.
+  // Example 1:
+  // n = 5
+  // The coins can form the following rows:
+  // ¤
+  // ¤ ¤
+  // ¤ ¤
+
+Because the 3rd row is incomplete, we return 2.
+  int arrangeCoins(int n) {
+        // (1+k)*k/2 < n, find largest k
+        // k*k + k < 2n < k*k + 3k + 2
+        // k < sqrt(2n)
+        long helper = sqrt(2 * (long)n);
+        while(helper > 0){
+            if(helper * (helper+1L) <= (long)n*2)
+                return (int)helper;
+            --helper;
+        }
+        return 0;
+    }
   // No.475 Heaters
   // Winter is coming! Your first job during the contest is to design a standard heater with fixed warm radius to warm all the houses.
   // Now, you are given positions of houses and heaters on a horizontal line, find out minimum radius of heaters so that all houses could be covered by those heaters.
