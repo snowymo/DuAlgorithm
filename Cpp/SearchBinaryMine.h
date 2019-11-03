@@ -2,6 +2,23 @@
 #include "common.h"
 
 class BinarySearchMisc {
+  //No.744  Find Smallest Letter Greater Than Target
+//   Given a list of sorted characters letters containing only lowercase letters, and given a target letter target, 
+  // find the smallest element in the list that is larger than the given target.
+
+// Letters also wrap around. For example, if the target is target = 'z' and letters = ['a', 'b'], the answer is 'a'.
+  char nextGreatestLetter(vector<char>& letters, char target) {
+        int left = 0, right = letters.size()-1;
+        while(left <= right){
+            int pos = (left+right) >> 1;
+            if(letters[pos] <= target){
+                left = pos+1;
+            }else{
+                right = pos-1;
+            }
+        }
+        return letters[left%((int)letters.size())];
+    }
   // No.704 Binary Search
 // Given a sorted (in ascending order) integer array nums of n elements and a target value, write a function to search target in nums. 
   //If target exists, then return its index, otherwise return -1.
