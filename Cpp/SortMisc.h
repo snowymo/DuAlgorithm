@@ -72,4 +72,50 @@ namespace SortMisc {
 		}
 		return 0;
 	}
+	// Mine
+	int compareVersion(string version1, string version2) {
+		int index1 = version1.find("."), index2 = version2.find(".");
+		int prev1 = 0, prev2 = 0;
+		bool end1 = false, end2 = false;
+		while(index1 != string::npos || index2 != string::npos){
+		    int i1 = 0;
+		    if(!end1 && index1 == string::npos){
+			i1 = stoi(version1.substr(prev1), 0,10);
+			end1 = true;
+		    }else if(!end1 && index1 != string::npos){
+			i1=stoi(version1.substr(prev1, index1-prev1), 0,10);
+		    }
+		    int i2 = 0;
+		    if(!end2 && index2 == string::npos){
+			i2 = stoi(version2.substr(prev2), 0,10);
+			end2 = true;
+		    }else if(!end2 && index2 != string::npos){
+			i2=stoi(version2.substr(prev2, index2-prev2), 0,10);
+		    }
+		    //cout << s1 << " " << s2 << "\n";
+		    //cout << i1 << " " << i2 << "\n";
+		    if(i1 == i2){
+			// the same, continue
+			prev1 = index1+1;
+			prev2 = index2+1;
+			index1 = version1.find(".", prev1);
+			index2 = version2.find(".", prev2);
+		    }else if(i1 < i2)
+			return -1;
+		    else
+			return 1;
+		}
+		int i1 = 0, i2 = 0;
+		if(!end1)
+		    i1 = stoi(version1.substr(prev1), 0,10);
+		if(!end2)
+		    i2 =  stoi(version2.substr(prev2), 0,10);
+		if(i1 > i2)
+		    return 1;
+		if(i1 == i2)
+		    return 0;
+		if(i1 < i2)
+		    return -1;
+		return 0;
+	    }
 }
