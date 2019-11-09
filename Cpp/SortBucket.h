@@ -33,4 +33,32 @@ namespace BucketSort {
 		// count the last bucket
 		return max(max_gap, max_val - pre_bucket_max);
 	}
+	// Mine
+	int maximumGap(vector<int>& nums) {
+		if(nums.size() < 2)
+		    return 0;
+		vector<int> process;
+		int ret = 0;
+		for(int i = 0; i < nums.size(); i++){
+		    binaryInsert(nums[i], process);
+		}
+		for(int i = 0; i < process.size()-1; i++){
+		    ret = max(ret, abs(process[i] - process[i+1]));
+		}
+		return ret;
+	    }
+	    void binaryInsert(int element, vector<int> & process){
+		int left = 0, right = process.size()-1;
+		while(left <= right){
+		    int mid = (left+right) >> 1;
+		    if(element < process[mid]){
+			right = mid-1;
+		    }else if(element > process[mid]){
+			left = mid+1;
+		    }else
+			return ;
+		}
+		process.insert(process.begin()+left, element);
+		return;
+	    }
 }
