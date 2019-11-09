@@ -150,6 +150,51 @@ namespace MergeSort {
 
 		return ans->next;
 	}
+	// Mine
+	ListNode* mergeKLists(vector<ListNode*>& lists) {
+		if(lists.size()  == 0)
+		    return NULL;
+		if(lists.size() == 1)
+		    return lists[0];
+
+		return helper(lists, 0, lists.size());
+	    }
+	    ListNode* helper(vector<ListNode*> & lists, int start, int end){
+		if(end - start == 2)
+		    return merge2Lists(lists[start], lists[start+1]);
+		if(end - start == 1)
+		    return lists[start];
+
+		return merge2Lists(helper(lists, start, (start+end)/2),
+				   helper(lists, (start+end)/2, end));
+	    }
+	    ListNode* merge2Lists(ListNode* l1, ListNode* l2){
+		ListNode* ret = new ListNode(-1);
+		ListNode* temp = ret;
+
+		while(l1 || l2){
+		    if(!l1){
+			ret->next = l2;
+			l2 = l2->next;
+			ret = ret->next;
+		    }else if(!l2){
+			ret->next = l1;
+			l1 = l1->next;
+			ret = ret->next;
+		    }
+		    else if(l1->val < l2->val){
+			ret->next = l1;
+			l1 = l1->next;
+			ret = ret->next;
+		    }else{
+			ret->next = l2;
+			l2 = l2->next;
+			ret = ret->next;
+		    }
+		}
+
+		return temp->next;
+	    }
 
 	// 88. Merge Sorted Array
 	// Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
