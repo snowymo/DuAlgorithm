@@ -32,6 +32,38 @@ namespace SortMisc {
 				++j;
 		}
 	}
+	// Mine
+	    void wiggleSort(vector<int>& nums) {
+		if(nums.size() <= 1)
+		    return ;
+		if(nums.size() == 2){
+		    if(nums[0] > nums[1])
+			swap(nums[0], nums[1]);
+		    return ;
+		}
+
+		vector<int> vect2 = nums; 
+		sort(vect2.begin(), vect2.end());
+		// for(int i = 0; i < nums.size(); i++){
+		//     if(i%2 == 1){
+		//         nums[i] = vect2[vect2.size()-(i-1)/2-1];
+		//     }else{
+		//         nums[i] = nums.size()%2==1?vect2[vect2.size()/2-i/2]:vect2[vect2.size()/2-1-i/2];
+		//     }
+		// }
+		if(nums.size() % 2 == 1)
+		    nums[nums.size()-1] = vect2[0];
+		int size = nums.size();
+		int halfsize = (size+1)/2;
+		for(int i = 0; i < nums.size()/2 ;i++){
+		    nums[i*2] = vect2[halfsize-1-i];
+		    nums[i*2+1] = vect2[size-1-i];
+		}
+		// int lastEven = (nums.size()/2-1)*2;
+		// int lastOdd = nums.size()%2==0?lastEven+1:lastEven-1;
+		// if(nums[lastEven] == nums[lastOdd])
+		//     swap(nums[0], nums[lastEven]);
+	    }
 
 	// Time and Space: O(N)
 	string frequencySort(string &s) {
