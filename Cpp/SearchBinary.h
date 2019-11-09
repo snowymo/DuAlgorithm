@@ -607,14 +607,13 @@ public:
 	vector<int> countSmaller(vector<int>& nums) {
 		if(nums.size() == 0)
 		    return vector<int>();
-		vector<int> ans(1);
+		vector<int> ans(nums.size());
 		vector<int> process(1, nums.back());
 		for(int i = nums.size()-2; i >= 0; i--){
 		    // binary search and insert it into process
 		    //cout << "processing " << i << " " << nums[i] << "\n";
-		    ans.push_back( binaryInsert(nums[i], process));
+		    ans[i] = binaryInsert(nums[i], process);
 		}
-		reverse(ans.begin(), ans.end());
 		return ans;
 	    }
 
