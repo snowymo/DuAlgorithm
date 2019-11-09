@@ -603,4 +603,39 @@ public:
 		}
 		return ans;
 	}
+	// Mine
+	vector<int> countSmaller(vector<int>& nums) {
+		if(nums.size() == 0)
+		    return vector<int>();
+		vector<int> ans(1);
+		vector<int> process(1, nums.back());
+		for(int i = nums.size()-2; i >= 0; i--){
+		    // binary search and insert it into process
+		    //cout << "processing " << i << " " << nums[i] << "\n";
+		    ans.push_back( binaryInsert(nums[i], process));
+		}
+		reverse(ans.begin(), ans.end());
+		return ans;
+	    }
+
+	    int binaryInsert(int element, vector<int> & process){
+		int left = 0;
+		int right = process.size()-1;
+		while(left <= right){
+
+		    int mid = (left+right) >> 1;
+		    //cout << "l " << left << " r " << right << " m " << mid << "\n";
+		    if(element <= process[mid]){
+			right = mid-1;
+		    }else if(element > process[mid]){
+			left = mid+1;
+		    }
+		}
+		//cout << "left " << left << "\n";
+		if(left == process.size())
+		    process.push_back(element);
+		else
+		    process.insert(process.begin()+left, element);
+		return left;
+	    }
 };
