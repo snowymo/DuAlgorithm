@@ -205,4 +205,35 @@ namespace SortMisc {
 		ret2.insert(ret2.begin()+left, element);
 
 	    }
+	// No.242  Valid Anagram
+//Given two strings s and t , write a function to determine if t is an anagram of s.
+
+// Example 1:
+
+// Input: s = "anagram", t = "nagaram"
+// Output: true
+// Example 2:
+
+// Input: s = "rat", t = "car"
+// Output: false
+// Note:
+// You may assume the string contains only lowercase alphabets.
+
+// Follow up:
+// What if the inputs contain unicode characters? How would you adapt your solution to such case?
+	bool isAnagram(string s, string t) {
+		if(s.size() != t.size())
+		    return false;
+		unordered_map<int, int> map1, map2;
+		for(int i = 0; i < s.size(); i++){
+		    ++map1[s[i] - 'a'];
+		    ++map2[t[i] - 'a'];
+		}
+
+		for(const auto & item : map1){
+		    if(item.second != map2[item.first])
+			return false;
+		}
+		return true;
+	    }
 }
