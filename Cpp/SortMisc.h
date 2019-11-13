@@ -288,4 +288,30 @@ namespace SortMisc {
 		}
 		return 0;
 	    }
+	
+	// No.1030 Matrix Cells in Distance Order
+// We are given a matrix with R rows and C columns has cells with integer coordinates (r, c), where 0 <= r < R and 0 <= c < C.
+
+// Additionally, we are given a cell in that matrix with coordinates (r0, c0).
+
+// Return the coordinates of all cells in the matrix, sorted by their distance from (r0, c0) from smallest distance to largest distance.  Here, the distance between two cells (r1, c1) and (r2, c2) is the Manhattan distance, |r1 - r2| + |c1 - c2|.  (You may return the answer in any order that satisfies this condition.)
+	vector<vector<int>> allCellsDistOrder(int R, int C, int r0, int c0) {
+		unordered_map<int, vector<vector<int>>> mymap;
+		for(int i = 0; i < R; i++){
+		    for(int j = 0; j < C; j++){
+			int dis = abs(i-r0) + abs(j-c0);
+			if(mymap.find(dis) == mymap.end()){
+			    mymap[dis] = vector<vector<int>>(1, vector<int>{i,j});
+			}else{
+			    mymap[dis].push_back(vector<int>{i,j});
+			}
+		    }
+		}
+		int largest = max(r0, abs(r0-R)) + max(c0, abs(c0-C));
+		vector<vector<int>> ret;
+		for(int i = 0; i <= largest; i++){
+		    ret.insert(ret.end(), mymap[i].begin(), mymap[i].end());
+		}
+		return ret;
+	    }
 }
