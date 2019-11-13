@@ -38,6 +38,26 @@ class Scanning {
 		}
 		return max(res, cnt);
 	}
+	// Mine
+	int maxDistToClosest(vector<int>& seats) {
+		vector<int> dis(seats.size(), INT_MAX);
+		int left = INT_MAX;
+		for(int i = 0; i < seats.size(); i++){
+		    if(seats[i] == 1)
+			left = i;
+		    dis[i] = left == INT_MAX ? INT_MAX : abs(left-i);
+		}
+
+		int right = INT_MAX;
+		int ret = 0;
+		for(int i = seats.size()-1; i >= 0; i--){
+		    if(seats[i] == 1)
+			right = i;
+		    dis[i] = right == INT_MAX ? dis[i] : min(dis[i],abs(right-i));
+		    ret = max(dis[i], ret);
+		}
+		return ret;//*max_element(dis.begin(), dis.end());
+	    }
 
 	// 11. Container With Most Water [M]
 	// Given n non-negative integers a1, a2, ..., an , where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0). Find two lines, which together with x-axis forms a container, such that the container contains the most water.
