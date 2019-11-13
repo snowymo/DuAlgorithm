@@ -272,4 +272,20 @@ namespace SortMisc {
 		}
 		return ret;
 	    }
+	
+	// No.976 Largest Perimeter Triangle
+// Given an array A of positive lengths, return the largest perimeter of a triangle with non-zero area, formed from 3 of these lengths.
+
+// If it is impossible to form any triangle of non-zero area, return 0.
+	int largestPerimeter(vector<int>& A) {
+		sort(A.begin(), A.end());
+		int i = A.size()-1;
+		while(i-2 >= 0){
+		    if(A[i] < A[i-1] + A[i-2]){
+			return A[i] + A[i-1] + A[i-2];
+		    }
+		    --i;
+		}
+		return 0;
+	    }
 }
