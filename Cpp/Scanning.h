@@ -17,7 +17,24 @@ class Scanning {
 		}
 		return res != INT_MAX ? res : 0;
 	}
-
+	// Mine
+	int minSubArrayLen(int s, vector<int>& nums) {
+		if(nums.size() == 0)
+		    return 0;
+		vector<int> sums(nums.size()+1);
+		for(int i = 0; i < nums.size(); i++)
+		    sums[i+1] = sums[i] + nums[i];
+		// solution 1, use lower_bound since numbers are all positive
+		int ret = INT_MAX;
+		for(int i = 0; i < sums.size(); i++){
+		    int to_find = s+sums[i];
+		    auto lower = lower_bound(sums.begin()+i, sums.end(), to_find);
+		    //cout << "i " << i << " index " << int(lower-sums.begin()) << "\n";
+		    if(lower != sums.end())
+			ret = min(ret, int(lower-sums.begin())-i);
+		}
+		return ret == INT_MAX ? 0 : ret;
+	    }
 
 	// 849. Maximize Distance to Closest Person
 	int maxDistToClosest(vector<int>& seats) {
