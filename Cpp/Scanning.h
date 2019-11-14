@@ -414,6 +414,35 @@ class Scanning {
 			ans.push_back(to_string(l));
 		return ans;
 	}
+	// Mine
+	vector<string> summaryRanges(vector<int>& nums) {
+		vector<string> rets;
+		if(nums.size() == 0)
+		    return rets;
+
+		int last = INT_MAX;
+		int start = nums[0];
+		for(int i = 0; i < nums.size(); i++){
+		    if(last == INT_MAX || (long)((long)nums[i]-(long)last) == 1L){
+			// continuous
+			last = nums[i];
+		    }else{
+			// gap
+			rets.push_back(generateRange(start, last));
+			start = nums[i];
+			last = nums[i];
+		    }
+		    if(i == ((int)nums.size()-1))
+			rets.push_back(generateRange(start, last));
+		}
+		return rets;
+	    }
+	    string generateRange(int start, int end){
+		string ret = to_string(start);
+		if(end > start)
+		    ret += "->" + to_string(end);
+		return ret;
+	    }
 
 	// 904. Fruit Into Baskets [E]
 	// You have two baskets, and each basket can carry any quantity of fruit, but you want each basket to only carry one type of fruit each.
