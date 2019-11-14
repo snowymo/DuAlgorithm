@@ -488,6 +488,49 @@ class Scanning {
 		}
 		return res;
 	}
+	// Mine
+	int totalFruit(vector<int>& tree) {
+		int ret = 0;
+		int maxret = 0;
+		int start1 = -1, end1 = -1, start2 = -1, end2 = -1;
+		int fruit1 = -1, fruit2 = -1;
+		for(int i = 0; i < tree.size(); i++){
+		    if(fruit1 == tree[i]){
+			end1 = i;
+			++ret;
+		    }else if(fruit2 == tree[i]){
+			end2 = i;
+			++ret;
+		    }
+		    else if(start1 == -1){
+			start1 = end1 = i;
+			fruit1 = tree[i];
+			ret = 1;
+		    }else if(start2 == -1){
+			start2 = end2 = i;
+			fruit2 = tree[i];
+			++ret;
+		    }else{
+			// the third fruit
+			maxret = max(ret, maxret);
+			// fruit2 should be the third one, and fruit1 should be tree[i-1]
+			if(fruit1 == tree[i-1]){
+			    // keep fruit1 and discard fruit2
+			    ret = i-max(start1, end2+1)+1;
+			    fruit2 = tree[i];
+			    start2 = end2 = i;
+			}else{
+			    // keep fruit2 and discard fruit1
+			    ret = i-max(start2, end1+1)+1;
+			    fruit1 = tree[i];
+			    start1 = end1 = i;
+			}        
+		    }
+		    // cout << fruit1 << ":" << start1 << " " << end1 << ";"
+		    //     << fruit2 << ":" << start2 << " " << end2 << "=" << ret << "\n";
+		}
+		return max(ret,maxret);
+	    }
 
 	// 238. Product of Array Except Self [M]
 	// Given an array nums of n integers where n > 1,  return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
