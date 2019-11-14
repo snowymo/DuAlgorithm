@@ -252,6 +252,19 @@ class Scanning {
 		}
 		return false;
 	}
+	// Mine
+	vector<int> majorityElement(vector<int>& nums) {
+		unordered_map<int,int> count;
+		vector<int> ret;
+		for(int i = 0; i < nums.size(); i++){
+		    ++count[nums[i]];
+		    if((count[nums[i]]) > ((int)nums.size()/3)){
+			ret.push_back(nums[i]);
+			count[nums[i]]= -10 * nums.size();
+		    }                
+		}
+		return ret;
+	    }
 
 	int threeSumSmaller(vector<int>& nums, int target) {
 		if (nums.size() < 3) return 0;
