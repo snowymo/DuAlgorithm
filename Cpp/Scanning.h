@@ -325,6 +325,22 @@ class Scanning {
 		}
 		return 0;
 	}
+	// Mine TLE
+	int jump2(vector<int>& nums) {
+		vector<int> myvec(nums.size(), INT_MAX);
+		myvec[nums.size()-1] = 0;
+		for(int i = nums.size()-2; i >= 0; i--){
+		    if(i+nums[i]+1 >= nums.size()){
+			myvec[i] = 1;
+			//cout << i << " ha " << myvec[i] << "\n";
+			continue;
+		    }
+
+		    myvec[i] = *min_element(myvec.begin()+i+1, myvec.begin()+i+nums[i]+1) + 1;
+		    //cout << i << " " << myvec[i] << "\n";
+		}
+		return myvec[0];
+	    }
 
 	// 76. Minimum Window Substring [H]
 	// Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
