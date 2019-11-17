@@ -157,6 +157,19 @@ class Scanning {
 		}
 		return res >= n - 1;
 	}
+	// Mine
+	bool canJump(vector<int>& nums) {
+		int smallestTrue = nums.size()-1;
+		bool ret = true;
+		for(int i = nums.size()-2; i >= 0; i--){
+		    ret = false;
+		    if(nums[i]+i >= smallestTrue){
+			smallestTrue = i;
+			ret = true;
+		    }
+		}
+		return ret;
+	    }
 
 	int removeDuplicatesTwice(vector<int>& nums) {
 		int n = (int)nums.size();
@@ -622,6 +635,7 @@ class Scanning {
 		}
 		return ans;
 	}
+	// Mine
 	int hIndex(vector<int>& citations) {
 		//sort(citations.begin(), citations.end());
 		int size = citations.size();
