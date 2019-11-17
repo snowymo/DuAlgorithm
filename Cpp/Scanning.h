@@ -654,4 +654,52 @@ class Scanning {
 		reverse(res.begin(), res.end());
 		return res;
 	}
+	
+	// Mine
+	bool isAdditiveNumber(string num) {
+		int size = num.size();
+
+		for(int lastTry1 = 1; lastTry1 < size; lastTry1++){
+		    for(int lastTry2 = 1; lastTry2+lastTry1+max(lastTry1,lastTry2)<=size; lastTry2++){
+			bool ans = evaluate(num, 0, lastTry1, lastTry2);
+			if(ans){
+			   return true;
+			}
+		    }
+		}
+		return false;
+	    }
+	    bool evaluate(string & num, int start, int index1, int index2){
+		//cout << start << " " << index1 << " " << index2 << "\n";
+		if(start+index1+index2 == int(num.size()))
+		    return true;
+		if(start+index1+index2 > int(num.size()))
+		    return false;
+		if(start+index1+index2+max(index1,index2) > int(num.size()))
+		    return false;
+		string s1 = num.substr(start, index1);
+		string s2 = num.substr(start+index1, index2);
+		//cout << "s1 " << s1 << " s2 " << s2 << "\n";
+		long long i1 = stoll(s1, 0, 10);
+		long long i2 = stoll(s2, 0, 10);
+		// make sure no prefix 0
+		//cout << i1 << " index1 should be " << max(1, int(log(i1) / log(10)) + 1) << " now is " << index1 << "\n";
+		//cout << i2 << " index2 should be " << max(1, int(log(i2) / log(10)) + 1) << " now is " << index2 << "\n";
+		if(max(1, int(log(i1) / log(10)) + 1) != index1)
+		    return false;
+		// make sure no prefix 0
+		if(max(1, int(log(i2) / log(10)) + 1) != index2)
+		    return false;
+		long long isum = i1+i2;
+		int len = max(1, int(log(isum) / log(10)) + 1);
+		//cout << "len " << len << "\n";
+		if(start+index1+index2+len > long(num.size()))
+		    return false;
+		string s3 = num.substr(start+index1+index2, len);
+		//cout << "s3 " << s3 << "\n";
+		if(stol(s3, 0, 10) != isum)
+		    return false;
+
+		return evaluate(num, start+index1, index2, len);
+	    }
 };
