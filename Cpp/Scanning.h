@@ -374,6 +374,49 @@ class Scanning {
 		}
 		return res >= 0 ? s.substr(res, len) : "";
 	}
+	// Mine
+	string minWindow(string s, string t) {
+		int left = 0, right = 0;
+		vector<int> numExist(52,0), numReq(52,0);
+		//unordered_map<int,int> numExist, numReq;
+		for(int i = 0; i < t.size(); i++){
+		    int index = t[i] >= 'a' ? t[i]-'a'+25 : t[i]-'A';
+		    //cout << t[i] << " " << index << " " << numReq[index] << "\n";
+		    ++numReq[index];
+		    //cout << t[i] << " " << numReq[index] << "\n";
+		}
+		int count = 0;
+		string ret = "";
+		int minDis = INT_MAX;
+		for(; right < s.size(); right++){
+		    // check if [left,right] includes t
+		    int index = s[right] >= 'a' ? s[right]-'a'+25 : s[right]-'A';
+		    //cout << index << " numReq[s[right]-'a'] " << numReq[index] << " numExist[s[right]-'a'] " << numExist[index] << "\n"; 
+
+		    if((numReq[index] > 0) && (numExist[index]++ < numReq[index])){
+			++count;
+		    }
+
+
+		    while(count == (int)t.size()){
+			// try shrink left
+			if(minDis > right-left+1){
+			    minDis = right-left+1;
+			    ret = s.substr(left, right-left+1); 
+			}
+
+			//cout << ret << "\n";
+
+			index = s[left] >= 'a' ? s[left]-'a'+25 : s[left]-'A';
+			if((numReq[index] > 0) && (--numExist[index] < numReq[index])){
+			    // the only existence
+			    --count;
+			}
+			++left;
+		    }
+		}
+		return ret;
+	    }
 
 	// 632. Smallest Range [H][VH]
 	// You have k lists of sorted integers in ascending order. Find the smallest range that includes at least one number from each of the k lists. 
