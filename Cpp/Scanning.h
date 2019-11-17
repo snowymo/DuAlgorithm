@@ -414,6 +414,36 @@ class Scanning {
 		}
 		return res;
 	}
+	// Mine the same as Du's
+	vector<int> smallestRange(vector<vector<int>>& nums) {
+        // merge everything to a sorted array with group id
+		// the problem is converted to minimum window substring
+		vector<pair<int, int>> pairs_of_all_ranges;
+		for (int i = 0; i < (int)nums.size(); ++i) {
+			for (int x : nums[i])
+				pairs_of_all_ranges.push_back({ x, i });
+		}
+		sort(pairs_of_all_ranges.begin(), pairs_of_all_ranges.end());
+
+		int l = 0, n = (int)pairs_of_all_ranges.size(), k = (int)nums.size(), cnt = 0, minDis = INT_MAX;
+		vector<int> numExistOfGroup(k, 0), res;
+
+		// sliding window scanning with two pointers to find the minimum range
+		for (int r = 0; r < n; ++r) {
+			if (numExistOfGroup[pairs_of_all_ranges[r].second]++ == 0)
+				++cnt;
+			while (cnt == k) {
+				auto lValue = pairs_of_all_ranges[l].first, rValue = pairs_of_all_ranges[r].first;
+				if (minDis > rValue - lValue) {
+					minDis = rValue - lValue;
+					res = { lValue, rValue };
+				}
+				if (--numExistOfGroup[pairs_of_all_ranges[l++].second] == 0)
+					--cnt;
+			}
+		}
+		return res;
+    }
 
 	// 228. Summary Ranges [M]
 	// Given a sorted integer array without duplicates, return the summary of its ranges.
