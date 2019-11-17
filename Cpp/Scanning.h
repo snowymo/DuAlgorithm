@@ -591,6 +591,27 @@ class Scanning {
 		}
 		return n;
 	}
+	// Mine
+	int hIndex(vector<int>& citations) {
+		sort(citations.begin(), citations.end());
+		int size = citations.size();
+		if(size == 0)
+		    return 0;
+		if(size == 1)
+		    return citations[0] > 0 ? 1 : 0;
+		int left = 0, right = size;
+		while(left <= right){
+		    int mid = (left+right) >> 1;
+		    //cout << left << " " <<right << " " << mid << "\n";
+		    // let's check if mid meets requirement
+		    if(mid == 0 || citations[size-mid] >= mid){
+			left = mid+1;
+		    }else{
+			right = mid-1;
+		    }
+		}
+		return max(0,left-1);
+	    }
 
 	// 275. H-Index II
 	int hIndexII(vector<int>& citations) {
