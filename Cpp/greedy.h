@@ -96,4 +96,25 @@ namespace Greedy {
 		}
 		return res;
 	}
+	// --- EASY---
+	// Mine
+	// No.1221 Split a String in Balanced Strings
+// Balanced strings are those who have equal quantity of 'L' and 'R' characters.
+
+// Given a balanced string s split it in the maximum amount of balanced strings.
+
+// Return the maximum amount of splitted balanced strings.
+	int balancedStringSplit(string s) {
+		// seems there is only one solution, we just scan to get it
+		int count = 0;
+		int cntL = 0;
+		for(int i = 0; i < s.size(); i++){
+		    --cntL;
+		    if(s[i] == 'L')
+			cntL += 2;
+		    if(cntL == 0)
+			++count;
+		}
+		return count;
+	    }
 }
