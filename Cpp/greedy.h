@@ -97,8 +97,7 @@ namespace Greedy {
 		return res;
 	}
 	// --- EASY---
-	// Mine
-	// No.1221 Split a String in Balanced Strings
+	// No.1221 Split a String in Balanced Strings (Mine)
 // Balanced strings are those who have equal quantity of 'L' and 'R' characters.
 
 // Given a balanced string s split it in the maximum amount of balanced strings.
@@ -116,5 +115,30 @@ namespace Greedy {
 			++count;
 		}
 		return count;
+	    }
+	
+	// No.944 Delete Columns to Make Sorted (Mine)
+// We are given an array A of N lowercase letter strings, all of the same length.
+
+// Now, we may choose any set of deletion indices, and for each string, we delete all the characters in those indices.
+
+// For example, if we have an array A = ["abcdef","uvwxyz"] and deletion indices {0, 2, 3}, then the final array after deletions is ["bef", "vyz"], and the remaining columns of A are ["b","v"], ["e","y"], and ["f","z"].  (Formally, the c-th column is [A[0][c], A[1][c], ..., A[A.length-1][c]].)
+
+// Suppose we chose a set of deletion indices D such that after deletions, each remaining column in A is in non-decreasing sorted order.
+
+// Return the minimum possible value of D.length.
+	int minDeletionSize(vector<string>& A) {
+		// go through each column and figure out if it is non-decreasing, if yes, add 1
+		int ret = 0;
+		for(int i = 0; i < A[0].size(); i++){
+		    // check column i
+		    for(int j = 1; j < A.size(); j++){
+			if(A[j][i] < A[j-1][i]){
+			    ++ret;
+			    break;
+			}
+		    }
+		}
+		return ret;
 	    }
 }
