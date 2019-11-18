@@ -160,4 +160,62 @@ namespace Greedy {
 		}
 		return oddCnt > ((int)chips.size() - oddCnt) ? ((int)chips.size() - oddCnt) : oddCnt;
 	    }
+	
+	// No.1046 Last Stone Weight (Mine)
+// We have a collection of rocks, each rock has a positive integer weight.
+
+// Each turn, we choose the two heaviest rocks and smash them together.  Suppose the stones have weights x and y with x <= y.  The result of this smash is:
+
+// If x == y, both stones are totally destroyed;
+// If x != y, the stone of weight x is totally destroyed, and the stone of weight y has new weight y-x.
+// At the end, there is at most 1 stone left.  Return the weight of this stone (or 0 if there are no stones left.)
+	int lastStoneWeight(vector<int>& stones) {
+		int n = stones.size();
+		while(n > 2){
+		    int l1,l2, i1, i2;
+		    findLargest2(stones, n, l1, l2, i1, i2);
+		    int newValue = abs(l1-l2);
+
+		    if(i2 == n-1)
+			swap(stones[i1], stones[n-2]);
+		    else
+			swap(stones[i1], stones[n-1]);
+		    stones.pop_back();
+		    if(i2 != n-1)
+			swap(stones[i2], stones[n-2]);
+		    stones[n-2] = newValue;
+		    stones[n-2] = newValue;
+		    --n;
+		    if(newValue == 0){
+			--n;
+		    }
+		}
+		if(n == 2)
+		    return abs(stones[0] - stones[1]);
+		return stones[0];
+	    }
+
+	    void findLargest2(vector<int>& stones, int& n, int& l1, int& l2, int&i1, int&i2){
+		i1 = 1;
+		i2 = 0;
+		if(stones[0] > stones[1]){
+		    i1 = 0;
+		    i2 = 1;
+		}
+		l1 = stones[i1];
+		l2 = stones[i2];
+
+		for(int i = 2; i < n; i++){
+		    if(stones[i] > l1){
+			l2 = l1;
+			i2 = i1;
+			l1 = stones[i];
+			i1 = i;
+		    }else if(stones[i] > l2){
+			l2 = stones[i];
+			i2 = i;
+		    }
+		}
+		//cout << i1 << " " << l1 << " " << i2 << " " << l2 << "\n";
+	    }
 }
