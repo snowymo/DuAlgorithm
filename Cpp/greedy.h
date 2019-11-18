@@ -218,4 +218,88 @@ namespace Greedy {
 		}
 		//cout << i1 << " " << l1 << " " << i2 << " " << l2 << "\n";
 	    }
+	
+	// No.1029 Two City Scheduling (Mine)
+// There are 2N people a company is planning to interview. The cost of flying the i-th person to city A is costs[i][0], and the cost of flying the i-th person to city B is costs[i][1].
+
+// Return the minimum cost to fly every person to a city such that exactly N people arrive in each city.
+
+ 
+
+// Example 1:
+
+// Input: [[10,20],[30,200],[400,50],[30,20]]
+// Output: 110
+// Explanation: 
+// The first person goes to city A for a cost of 10.
+// The second person goes to city A for a cost of 30.
+// The third person goes to city B for a cost of 50.
+// The fourth person goes to city B for a cost of 20.
+
+// The total minimum cost is 10 + 30 + 50 + 20 = 110 to have half the people interviewing in each city.
+	int twoCitySchedCost(vector<vector<int>>& costs) {
+		multimap<int, vector<int>> mymap; // delta cost,{person, cityA, cityB}
+		vector<bool> assigned(costs.size(), false); // if true, one city of the person is chosen
+		// first fill the costs
+		for(int i = 0; i < costs.size(); i++){
+		    mymap.insert(pair<int, vector<int>>(-abs(costs[i][0]-costs[i][1]), {i, costs[i][0], costs[i][1]}));
+		}
+		// since it is map. it is already sorted
+		int lastCost = INT_MAX;,lastPerson = -1,lastOtherCost = INT_MAX,numA = 0, numB = 0;
+		int ret = 0;
+		for(auto it = mymap.begin(); it != mymap.end() && (numA*2) != (int)costs.size() && (numB*2) != (int)costs.size(); it++){
+		    //cout << it->first << " " << it->second[0] << "\n";
+		    if(assigned[it->second[0]])
+			continue;
+
+		    if(lastCost != INT_MAX){
+			// compare to see if we want to update last(same) or decide the last(different)
+			if(lastCost == it->first){
+			    if(lastOtherCost > (it->second[2]+it->second[1])){
+				lastPerson = it->second[0];
+				lastOtherCost = (it->second[2]+it->second[1]);
+
+			    }
+			}else{
+			    // finalize the last option
+			    if(costs[lastPerson][0] < costs[lastPerson][1]){
+				++numA;
+				ret += costs[lastPerson][0];
+
+			    //cout << "pick " << lastPerson << " city A " << costs[lastPerson][0] << "\n";
+			    }else{
+				++numB;
+				ret += costs[lastPerson][1];
+				//cout << "pick " << lastPerson << " city B " << costs[lastPerson][1] << "\n";
+			    }
+			    assigned[lastPerson] = true;
+
+			}
+		    }
+
+		    // assign the value
+		    lastCost = abs(it->second[1] - it->second[2]);
+		    lastPerson = it->second[0];
+		    if(assigned[it->second[0]]){
+			// the person was just assigned
+			lastCost = INT_MAX;
+		    }
+		    lastOtherCost = min(lastOtherCost, (it->second[2]+it->second[1]));
+		}
+
+		for(int i = 0; i < costs.size(); i++){
+		    if(!assigned[i]){
+			if(numA*2 == (int)costs.size()){
+			    //cout << "pick " << i << " city B" << costs[i][1] << "\n";
+			    ret += costs[i][1];
+			}else{
+			    //cout << "pick " << i << " city A" << costs[i][0] << "\n";
+			    ret += costs[i][0];
+			}
+		    }
+
+		}
+
+		return ret;
+	    }
 }
