@@ -73,6 +73,34 @@ namespace Greedy {
 		}
 		if (total_gas < total_cost) return -1; else return start;
 	}
+	
+	// Mine
+	int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+		if(accumulate(gas.begin(), gas.end(), 0) < accumulate(cost.begin(), cost.end(), 0))
+		    return -1;
+		bool round = false;
+		for(int tryIndex = 0; tryIndex < gas.size() && !round; ){
+		    int remainGas = 0;
+		    bool isSuccess = true;
+		    //cout << tryIndex << "\t";
+		    for(int i = 0; i < gas.size(); i++){
+			int cur = (i+tryIndex) % (int)(gas.size());
+			if((i+tryIndex) > ((int)gas.size()))
+			    round = true;
+			remainGas += (gas[cur] - cost[cur]);
+			if(remainGas < 0){
+			    tryIndex = cur+1;
+			    isSuccess = false;
+			    //cout << "failed\n";
+			    break;
+			}
+		    }
+		    //cout << isSuccess << "\n";
+		    if(isSuccess)
+			return tryIndex;
+		}
+		return -1;
+	    }
 
 	// 330. Patching Array
 	// Given a sorted positive integer array nums and an integer n, add/patch elements to the array such that any number in range [1, n] inclusive can be formed by the sum of some elements in the array. Return the minimum number of patches required.
