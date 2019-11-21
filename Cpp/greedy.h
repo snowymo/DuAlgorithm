@@ -302,4 +302,51 @@ namespace Greedy {
 
 		return ret;
 	    }
+	
+	// No.860 Lemonade Change (Mine)
+// 	At a lemonade stand, each lemonade costs $5. 
+
+// 	Customers are standing in a queue to buy from you, and order one at a time (in the order specified by bills).
+
+// 	Each customer will only buy one lemonade and pay with either a $5, $10, or $20 bill.  You must provide the correct change to each customer, so that the net transaction is that the customer pays $5.
+
+// 	Note that you don't have any change in hand at first.
+
+// 	Return true if and only if you can provide every customer with correct change.
+	bool lemonadeChange(vector<int>& bills) {
+		unordered_map<int,int> current_cash; // only has[5] [10] and [20]
+		for(int i = 0; i < bills.size(); i++){
+		    switch(bills[i]){
+			case 5:
+			    // take it
+			    ++current_cash[5];
+			    //cout << "5 " << current_cash[5] << "\n";
+			    break;
+			case 10:
+			    // let us see if we have 1 '5'
+			    if(current_cash[5] < 1){
+				return false;
+			    }
+			    ++current_cash[10];
+			    --current_cash[5];
+			    //cout << "5 " << current_cash[5] << "\n";
+			    //cout << "10 " << current_cash[10] << "\n";
+			    break;
+			case 20:
+			    // 3 '5' or 1 '5' + 1 '10'
+			    if(current_cash[10] > 0 && current_cash[5] > 0){
+				--current_cash[10];
+				--current_cash[5];
+			    }else if(current_cash[5] > 2){
+				current_cash[5] -= 3;
+			    }else
+				return false;
+			    //cout << "5 " << current_cash[5] << "\n";
+			    //cout << "10 " << current_cash[10] << "\n";
+			default:
+			    break;
+		    }
+		}
+		return true;
+	    }
 }
