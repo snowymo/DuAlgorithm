@@ -444,4 +444,186 @@ namespace Greedy {
 		}
 		return ret;
 	    }
+	
+	// No.874 Walking Robot Simulation(Mine)
+// 	A robot on an infinite grid starts at point (0, 0) and faces north.  The robot can receive one of three possible types of commands:
+
+// 	-2: turn left 90 degrees
+// 	-1: turn right 90 degrees
+// 	1 <= x <= 9: move forward x units
+// 	Some of the grid squares are obstacles. 
+
+// 	The i-th obstacle is at grid point (obstacles[i][0], obstacles[i][1])
+
+// 	If the robot would try to move onto them, the robot stays on the previous grid square instead (but still continues following the rest of the route.)
+
+// 	Return the square of the maximum Euclidean distance that the robot will be from the origin.
+
+
+
+// 	Example 1:
+
+// 	Input: commands = [4,-1,3], obstacles = []
+// 	Output: 25
+// 	Explanation: robot will go to (3, 4)
+// 	Example 2:
+
+// 	Input: commands = [4,-1,4,-2,4], obstacles = [[2,4]]
+// 	Output: 65
+// 	Explanation: robot will be stuck at (1, 4) before turning left and going to (1, 8)
+
+
+// 	Note:
+
+// 	0 <= commands.length <= 10000
+// 	0 <= obstacles.length <= 10000
+// 	-30000 <= obstacle[i][0] <= 30000
+// 	-30000 <= obstacle[i][1] <= 30000
+// 	The answer is guaranteed to be less than 2 ^ 31.
+	unordered_map<int, vector<int> > obstaclesByRow, obstaclesByCol;
+	    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+		int direction = 0;// 0-N, 1-W, 2-S, 3-E
+		vector<int> origin(2,0);
+		vector<int> target(2,0);
+		vector<int> result(2,0);
+		int dis = 0;
+
+		for(int i = 0; i < obstacles.size(); i++){
+		    if(obstaclesByRow.find(obstacles[i][0]) == obstaclesByRow.end()){
+			obstaclesByRow[obstacles[i][0]] = {obstacles[i][1]};
+		    }else{
+			obstaclesByRow[obstacles[i][0]].push_back(obstacles[i][1]);
+		    }
+		    if(obstaclesByCol.find(obstacles[i][1]) == obstaclesByCol.end()){
+			obstaclesByCol[obstacles[i][1]] = {obstacles[i][0]};
+		    }else{
+			obstaclesByCol[obstacles[i][1]].push_back(obstacles[i][0]);
+		    }
+		}
+		for(auto obr : obstaclesByRow){
+		    sort(obr.second.begin(), obr.second.end());
+		    obstaclesByRow[obr.first] = obr.second;
+		}
+		for(auto obr : obstaclesByCol){
+		    sort(obr.second.begin(), obr.second.end());
+		    obstaclesByCol[obr.first] = obr.second;
+		}
+		// stage 2
+		for(int i = 0; i < commands.size(); i++){
+		    if(commands[i] == -1){
+			direction = (direction+1)%4;
+		    }else if(commands[i] == -2){
+			direction = (direction+3)%4;
+		    }else{
+			switch(direction){
+			    case 0:
+				target = {origin[0], origin[1]+commands[i]};
+				break;
+			    case 1:
+				target = {origin[0] + commands[i], origin[1]};
+				break;
+			    case 2:
+				target = {origin[0], origin[1]-commands[i]};
+				break;
+			    case 3:
+				target = {origin[0] - commands[i], origin[1]};
+			    default:
+				break;
+			}
+			//cout << direction << " " << target[0] << "," << target[1] << "\t";
+			meetObstacles(origin, target, result);
+
+			dis = max(dis, result[0] * result[0]+result[1]*result[1]);
+			//cout << " after " << result[0] << "," << result[1] << "=" << dis << "\n";
+			origin = result;
+		    }
+		}
+		return dis;
+	    }
+
+	    int bsearch(vector<int>& arr, int val){
+		int left = 0, right = arr.size()-1;
+		while(left <= right){
+		    int mid = (left+right) >> 1;
+		    if(arr[mid] < val){
+			left = mid+1;
+		    }else if(arr[mid] > val){
+			right = mid-1;
+		    }else
+			return mid;
+		}
+		return left-1;
+	    }
+
+	    int findClosest(vector<int>& arr, int origin, int target){
+		int ret;
+		// if origin < target, find the smallest one larger than origin
+		if(origin < target){
+		    ret = INT_MAX;
+		    for(int a: arr){
+			if(a > origin && a <= target)
+			    ret = min(ret, a);
+		    }
+		}else if(origin > target){
+		    // find the largest one smaller than origin
+		    ret = INT_MIN;
+		    for(int a: arr){
+			if(a < origin && a >= target)
+			    ret = max(ret, a);
+		    }
+		}
+		return ret;
+	    }
+
+	    void meetObstacles(vector<int>& origin, vector<int>& target, vector<int>& result){
+		result = target;
+		for(int i = 0; i <= 1; i++){
+		    if(origin[i] == target[i]){
+			// go through the row map
+			vector<int> os = i == 0 ? obstaclesByRow[origin[i]] : obstaclesByCol[origin[i]];
+			// if(os.size() > 0){
+			//     cout << "obstacles size " << os.size() << ":";
+			//     for(auto o : os)
+			//         cout << o << "\t";
+			//     cout << "\n";
+			// }
+
+			if(target[1-i] > origin[1-i]){
+			    // find the last element that smaller than target[1]
+			    int obs = findClosest(os, origin[1-i], target[1-i]);
+			    if(obs != INT_MAX && obs != INT_MIN){
+				//cout << obs << "\n";
+				if(i == 1)
+				    result =  {obs-1, origin[i]};
+				else
+				    result = { origin[i], obs-1};
+			    }
+
+			    // auto lower = upper_bound(os.begin(), os.end(), origin[1]);
+			    // if(lower != os.end()){
+			    //     cout << os[lower-os.begin()] << "\n";
+			    //     result = {origin[0], os[lower-os.begin()]-1};
+			    // }
+			}else{
+			    // find the last element that smaller than target[1]
+			    //auto lower = lower_bound(os.begin(), os.end(), target[1-i]);
+			    int obs = findClosest(os, origin[1-i], target[1-i]);
+			    if(obs != INT_MAX && obs != INT_MIN){
+				//cout << obs << "\n";
+				if(i == 1)
+				    result =  {obs+1, origin[i]};
+				else
+				    result = { origin[i], obs+1};
+			    }
+			    // if(lower != os.end() && os[lower-os.begin()] < origin[1-i]){
+			    //     cout << os[lower-os.begin()] << "\n";
+			    //     if(i == 1)
+			    //         result = {os[lower-os.begin()]+1, origin[i]};
+			    //     else
+			    //         result = {origin[1-i], os[lower-os.begin()]+1};
+			    // }
+			}
+		    }
+		}
+	    }
 }
