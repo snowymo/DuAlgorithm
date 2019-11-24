@@ -67,6 +67,71 @@ class NQueens {
 			NQpath.pop_back();
 		}
 	}
+	
+	// Mine, slow
+	vector<vector<string>> ret;
+	    vector<vector<string>> solveNQueens(int n) {
+
+		vector<int> assignment(n, -1);
+		bool findSol = solveHelper(assignment, 0, n);
+		return ret;
+	    }
+
+	    void addSol(int n, vector<int>& assignment){
+		string str(n, '.');
+		vector<string> curSol(n,str);
+		for(int i = 0; i < n; i++){
+		    curSol[i][assignment[i]] = 'Q';
+		}
+		ret.push_back(curSol);
+	    }
+
+	    bool solveHelper(vector<int>& assignment, int col, int n){
+		if(col == n)
+		    return true;
+		bool isCurCol = false;
+		for(int i = 0; i < n; i++){
+		    // try i for column col
+		    assignment[col] = i;
+		    // check if col will break or not
+		    if(!isValid(assignment, col))
+			continue;
+		    // if not, move to next col
+		    bool nextCol = solveHelper(assignment, col+1, n);
+		    if(nextCol && col == (n-1)){
+			// this one is one solution
+			addSol(n, assignment);
+			isCurCol = true;
+		    }
+		}
+		return isCurCol;
+	    }
+
+	    bool isValid(vector<int>& assignment, int col){
+		//cout << "check ";
+		for(int a:assignment)
+		    cout << a << " ";
+		for(int i = 0; i < col; i++){
+		    // by row
+		    if(assignment[i] == assignment[col]){
+			//cout << "F\n";
+			return false;
+		    }
+
+		    // by cross
+		    if((assignment[i] + i) == (assignment[col] + col)){
+			//cout << "F\n";
+			return false;
+		    }
+
+		    if((assignment[i] - i) == (assignment[col] - col)){
+			//cout << "F\n";
+			return false;
+		    }
+		}
+		//cout << "T\n";
+		return true;
+	    }
 
 public:
 	// 52. N-Queens II
