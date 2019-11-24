@@ -143,4 +143,59 @@ public:
 		bitNQueensSimple(0, 0, 0);
 		return NQtotal;
 	}
+	// Mine, almost the same as No.51
+	int totalNQueens(int n) {
+		vector<int> assignment(n, -1);
+		bool findSol = solveHelper(assignment, 0, n);
+		return ret;
+	    }
+	    int ret;
+
+
+	    bool solveHelper(vector<int>& assignment, int col, int n){
+		if(col == n)
+		    return true;
+		bool isCurCol = false;
+		for(int i = 0; i < n; i++){
+		    // try i for column col
+		    assignment[col] = i;
+		    // check if col will break or not
+		    if(!isValid(assignment, col))
+			continue;
+		    // if not, move to next col
+		    bool nextCol = solveHelper(assignment, col+1, n);
+		    if(nextCol && col == (n-1)){
+			// this one is one solution
+			++ret;
+			isCurCol = true;
+		    }
+		}
+		return isCurCol;
+	    }
+
+	    bool isValid(vector<int>& assignment, int col){
+		//cout << "check ";
+		// for(int a:assignment)
+		//     cout << a << " ";
+		for(int i = 0; i < col; i++){
+		    // by row
+		    if(assignment[i] == assignment[col]){
+			//cout << "F\n";
+			return false;
+		    }
+
+		    // by cross
+		    if((assignment[i] + i) == (assignment[col] + col)){
+			//cout << "F\n";
+			return false;
+		    }
+
+		    if((assignment[i] - i) == (assignment[col] - col)){
+			//cout << "F\n";
+			return false;
+		    }
+		}
+		//cout << "T\n";
+		return true;
+	    }
 };
