@@ -43,6 +43,34 @@ public:
 		}
 		return true;
 	}
+	// Mine
+	bool isValidSudoku(vector<vector<char>>& board) {
+		vector<int> checkCol(board.size()), checkGrid(board.size());
+		for(int i = 0; i < board.size(); i++){
+		    int check = 0; // for row
+		    for(int j = 0; j < board[i].size(); j++){
+
+			if(board[i][j] == '.')
+			    continue;
+			int cur = (1 << (board[i][j] - '0'));
+			if(cur & check)
+			    return false;
+
+			if(cur & checkCol[j])
+			    return false;
+
+			// how to check grid
+			int gridIndex = i/3*3+j/3;
+			if(cur & checkGrid[gridIndex])
+			    return false;
+
+			check = cur | check;
+			checkCol[j] = cur | checkCol[j];
+			checkGrid[gridIndex] = checkGrid[gridIndex] | cur;
+		    }
+		}
+		return true;
+	    }
 
 	// 37. Sudoku solver
 	// Write a program to solve a Sudoku puzzle by filling the empty cells.
