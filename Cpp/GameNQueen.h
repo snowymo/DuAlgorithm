@@ -71,22 +71,22 @@ class NQueens {
 	// Mine, slow
 	vector<vector<string>> ret;
 	    vector<vector<string>> solveNQueens(int n) {
-
+		string str(n, '.');
+		vector<string> curSol(n,str);
 		vector<int> assignment(n, -1);
-		bool findSol = solveHelper(assignment, 0, n);
+		bool findSol = solveHelper(assignment, 0, n, curSol);
 		return ret;
 	    }
 
-	    void addSol(int n, vector<int>& assignment){
-		string str(n, '.');
-		vector<string> curSol(n,str);
+	    void addSol(int n, vector<int>& assignment, vector<string> curSol){
+
 		for(int i = 0; i < n; i++){
 		    curSol[i][assignment[i]] = 'Q';
 		}
 		ret.push_back(curSol);
 	    }
 
-	    bool solveHelper(vector<int>& assignment, int col, int n){
+	    bool solveHelper(vector<int>& assignment, int col, int n, vector<string> & curSol){
 		if(col == n)
 		    return true;
 		bool isCurCol = false;
@@ -97,10 +97,10 @@ class NQueens {
 		    if(!isValid(assignment, col))
 			continue;
 		    // if not, move to next col
-		    bool nextCol = solveHelper(assignment, col+1, n);
+		    bool nextCol = solveHelper(assignment, col+1, n, curSol);
 		    if(nextCol && col == (n-1)){
 			// this one is one solution
-			addSol(n, assignment);
+			addSol(n, assignment, curSol);
 			isCurCol = true;
 		    }
 		}
@@ -109,8 +109,8 @@ class NQueens {
 
 	    bool isValid(vector<int>& assignment, int col){
 		//cout << "check ";
-		for(int a:assignment)
-		    cout << a << " ";
+		// for(int a:assignment)
+		//     cout << a << " ";
 		for(int i = 0; i < col; i++){
 		    // by row
 		    if(assignment[i] == assignment[col]){
