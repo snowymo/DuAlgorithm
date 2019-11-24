@@ -2,6 +2,7 @@
 #include "common.h"
 
 class NimGame {
+	// No.293[E][L]
 	vector<string> generatePossibleNextMoves(string s) {
 		vector<string> res;
 		for (int i = 1; i < s.size(); ++i) {
