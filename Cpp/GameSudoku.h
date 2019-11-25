@@ -110,4 +110,67 @@ private:
 					return false;
 		return true;
 	}
+	// Mine
+	void solveSudoku(vector<vector<char>>& board) {
+		solveSudokuHelper(board, 0, 0);
+	    }
+	    bool solveSudokuHelper(vector<vector<char>>& board, int row, int col){
+		if(row == 9)
+		    return true;
+		if(board[row][col] != '.'){
+		    // next step
+		    bool ret1 = false;
+		    if(col != 8){
+			ret1 = solveSudokuHelper(board, row, col+1);
+		    }
+		    else{
+			ret1 = solveSudokuHelper(board, row+1, 0);
+		    }
+		    return ret1;
+		}else{
+		    // guess cur cell
+		    for(int k = 0; k < 9; k ++){
+			board[row][col] = '1' + k;
+
+			bool check = isValid(board, row, col);
+			//if(check && row == 0)
+			    //cout << row << "," << col << "=" << board[row][col] << "\t";
+			if(!check){
+			    board[row][col] = '.';
+			    continue;
+			}
+			else{
+			    // next step
+			    bool ret1 = false;
+			    if(col != 8){
+				ret1 = solveSudokuHelper(board, row, col+1);
+			    }
+			    else{
+				ret1 = solveSudokuHelper(board, row+1, 0);
+			    }
+			    if(!ret1){
+				board[row][col] = '.';
+				continue;
+			    }
+			    else
+				return true;
+			}
+		    }
+		    //cout << "\n";
+		}
+
+		return false;
+	    }
+	    bool isValid(vector<vector<char>>& board, int row, int col){
+		// check row
+		for(int i = 0; i <  board.size(); i++){
+		    if((board[i][col] == board[row][col]) && (i != row))
+			return false;
+		    if((board[row][i] == board[row][col]) && (i != col))
+			return false;
+		    if((board[row/3*3+i/3][col/3*3+i%3]) == board[row][col] && (i != ((row%3)*3+col%3)))
+			return false;
+		}
+		return true;
+	    }
 };
