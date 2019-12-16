@@ -61,3 +61,47 @@ public:
 		}
 	}
 };
+
+// Mine, slow, need to remember where the key is stored in the list
+class LRUCache {
+public:
+    LRUCache(int capacity) {
+        _capacity = capacity;
+    }
+    
+    void updateCache(int key){
+        deque<int>::iterator it = find(mycache.begin(), mycache.end(), key);
+        mycache.erase(it);
+        mycache.push_back(key);
+    }
+    
+    int get(int key) {
+        if(mymap.find(key) != mymap.end()){
+            updateCache(key);
+            
+            return mymap[key];
+        }else{
+            return -1;
+        }
+    }
+    
+    void put(int key, int value) {
+        if(mymap.find(key) != mymap.end()){
+            mymap[key] = value;
+            updateCache(key);
+        }
+        else if(mymap.size() < _capacity){
+            mymap[key] = value;
+            mycache.push_back(key);
+        }else{
+            int index = mycache.front();
+            mycache.pop_front();
+            mymap.erase(index);
+            mymap[key] = value;
+            mycache.push_back(key);
+        }
+    }
+    unordered_map<int,int> mymap;
+    int _capacity;
+    deque<int> mycache;
+};
