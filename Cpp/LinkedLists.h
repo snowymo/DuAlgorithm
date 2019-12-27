@@ -15,6 +15,18 @@ namespace TestLinkedList {
 		}
 		return h.next;
 	}
+	// Mine
+	ListNode* reverseList(ListNode* head) {
+		ListNode* cur = head;
+		ListNode* pre = NULL;
+		while(cur){
+		    ListNode* curNext = cur->next;
+		    cur->next = pre;
+		    pre = cur;
+		    cur = curNext;
+		}
+		return pre;
+	    }
 
 	// 92. Reverse Linked List II
 	// Reverse a linked list from position m to n. Do it in one-pass.
