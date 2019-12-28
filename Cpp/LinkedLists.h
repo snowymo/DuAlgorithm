@@ -455,6 +455,25 @@ namespace TestLinkedList {
 		}
 		return false;
 	}
+	// Mine
+	bool hasCycle(ListNode *head) {
+		if(!head)
+		    return false;
+		ListNode* ptr1 = head->next;
+		if(!ptr1)
+		    return false;
+		ListNode* ptr2 = head->next->next;
+		while(ptr1 != ptr2 && ptr1 && ptr2){
+		    ptr1 = ptr1->next;
+		    ptr2 = ptr2->next;
+		    if(!ptr2)
+			return false;
+		    ptr2 = ptr2->next;
+		}
+		if(ptr1 == ptr2)
+		    return true;
+		return false;
+	    }
 
 	// 142. Linked List Cycle II [M]
 	// Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
