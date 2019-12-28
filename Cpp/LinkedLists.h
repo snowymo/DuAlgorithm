@@ -341,6 +341,44 @@ namespace TestLinkedList {
 		}
 		return ans->next;
 	}
+	// Mine, finished 2 years ago
+	ListNode* deleteDuplicates(ListNode* head) {
+		std::map<int,int> dictionary;
+		//ListNode * prev = NULL;
+		if(head == NULL)
+		    return head;
+
+		/*ListNode * newhead = new ListNode(head->val);
+		ListNode * ret = newhead;
+		dictionary[newhead->val] = 1;
+
+		ListNode * cur = head->next;
+
+		while(cur != NULL){
+		    std::map<int,int>::const_iterator it = dictionary.find(cur->val);
+		    if(it == dictionary.end()){
+			dictionary[cur->val] = 1;
+			newhead->next = new ListNode(cur->val);
+			newhead = newhead->next;
+		    }
+
+		    cur = cur->next;
+		}*/
+
+		ListNode * cur = head;
+		ListNode * prev = NULL;
+		while(cur){
+		    std::map<int,int>::const_iterator it = dictionary.find(cur->val);
+		    if(it == dictionary.end()){
+			dictionary[cur->val] = 1;
+			prev = cur;
+		    }else{
+			prev->next = cur->next;
+		    }
+		    cur = cur->next;
+		}
+		return head;
+	    }
 
 	// 82. Remove Duplicates from Sorted List II [M]
 	// Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
