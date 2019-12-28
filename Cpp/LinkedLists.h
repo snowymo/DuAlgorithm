@@ -57,6 +57,30 @@ namespace TestLinkedList {
 		}
 		return dummy.next;
 	}
+	// Mine
+	ListNode* reverseBetween(ListNode* head, int m, int n) {
+		ListNode* newHead = new ListNode(0);
+		newHead->next = head;
+		ListNode* start = head,* pre = newHead;
+		for(int i = 0; i < m-1; i++){
+		    pre = start;
+		    start = start->next;
+		}
+		ListNode* newPre = pre,* newEnd = start,* endNext = start->next,* curNext = NULL;
+		pre = NULL;
+		for(int i = 0; i < n-m; i++){
+		    endNext = start->next->next;
+		    curNext = start->next;
+		    start->next = pre;
+
+		    pre = start;
+		    start = curNext;
+		}
+		start->next = pre;
+		newPre->next = start;
+		newEnd->next = endNext;
+		return newHead->next;
+	    }
 
 	// 25. Reverse Nodes in k-Group [H]
 	// Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
