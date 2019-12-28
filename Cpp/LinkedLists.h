@@ -503,6 +503,42 @@ namespace TestLinkedList {
 		}
 		return nullptr;
 	}
+	// Mine, Du's is smart, the sum of two list length must be the same
+	ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+		// get the length first
+		int nA = 0;
+		ListNode* recordA = headA;
+		while(headA){
+		    headA = headA->next;
+		    ++nA;
+		}
+		int nB = 0;
+		ListNode* recordB = headB;
+		while(headB){
+		    headB = headB->next;
+		    ++nB;
+		}
+		headA = recordA;
+		headB = recordB;
+		// start at the same position from the end
+		while(nA > nB){
+		    headA = headA->next;
+		    --nA;
+		}
+		while(nA < nB){
+		    headB = headB->next;
+		    --nB;
+		}
+		// Now we start to move until we found the same node
+		while(headA){
+		    if(headA == headB){
+			return headA;
+		    }
+		    headA = headA->next;
+		    headB = headB->next;
+		}
+		return NULL;
+	    }
 
 	// 328. Odd Even Linked List [M][E]
 	// Given a singly linked list, group all odd nodes together followed by the even nodes. Please note here we are talking about the node number and not the value in the nodes.
