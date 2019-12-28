@@ -492,6 +492,25 @@ namespace TestLinkedList {
 		}
 		return nullptr;
 	}
+	// Mine. Read Du's approach of finding the pos
+	ListNode *detectCycle(ListNode *head) {
+		ListNode* slow = head, *fast = head;
+		while(slow && fast){
+		    slow = slow->next;
+		    fast = fast->next;
+		    if(!fast)
+			return NULL;
+		    fast = fast->next;
+		    if(slow == fast){
+			while(head != slow){
+			    head = head->next;
+			    slow = slow->next;
+			}    
+			return slow;
+		    }
+		}
+		return NULL;
+	    }
 
 	// 160. Intersection of Two Linked Lists
 	// Write a program to find the node at which the intersection of two singly linked lists begins.
