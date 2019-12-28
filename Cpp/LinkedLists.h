@@ -296,6 +296,21 @@ namespace TestLinkedList {
 		}
 		return head;
 	}
+	
+	// Mine, finished before
+	ListNode* removeElements(ListNode* head, int val) {
+		ListNode* headhead = new ListNode(val-1);
+		headhead->next = head;
+		ListNode* lastPtr = headhead, *curPtr = head;
+		while(curPtr){
+		    if(curPtr->val == val){
+			lastPtr->next = curPtr->next;
+		    }else
+			lastPtr = lastPtr->next;
+		    curPtr = curPtr->next;            
+		}
+		return headhead->next;
+	    }
 
 	// 83. Remove Duplicates from Sorted List [E]
 	// Given a sorted linked list, delete all duplicates such that each element appear only once.
