@@ -611,4 +611,36 @@ namespace TestLinkedList {
 		cur_even->next = nullptr;
 		return odd;
 	}
+	// mine
+	ListNode* oddEvenList(ListNode* head) {
+		ListNode* lastOddNode = head, *curNode = head;
+		ListNode* firstEvenNode = NULL, *lastEvenNode = NULL;
+		ListNode* temp;
+		int originalIndex = 1;
+		while(curNode != NULL){
+		    if(originalIndex % 2 == 1){
+			if(curNode != lastOddNode){
+			    // curNode should be the next one to lastOddNode
+			    // curNode->next should be firstEvenNode
+			    temp = curNode;
+			    lastEvenNode->next = temp->next;
+			    lastOddNode->next = temp;
+			    temp->next = firstEvenNode;
+			    lastOddNode = lastOddNode->next;
+			    curNode = lastEvenNode->next;
+			}else{
+			    curNode = curNode->next;
+			}
+		    }else {
+			if(firstEvenNode == NULL){
+			    firstEvenNode = curNode;
+			}
+			lastEvenNode = curNode;
+			curNode = curNode->next;
+		    }
+
+		    ++originalIndex;
+		}
+		return head;
+	    }
 }
