@@ -711,4 +711,91 @@ namespace TestLinkedList {
 		}
 		return returnVector;
 	    }
+	
+	// No.234 Palindrome Linked List[E] Mine
+	// Given a singly linked list, determine if it is a palindrome.
+	ListNode* reverseList(ListNode* head, int n){
+		// cout << "reversing\n";
+		if(n == 1)
+		    return head;
+		ListNode* prev=NULL, *next,* cur = head;
+		for(int i = 0; i < n; i++){
+		    if(cur->next == NULL){
+			cur->next = prev;
+			// cout << "after:" << cur->val << "\n";
+			return cur;
+		    }
+
+		    next = cur->next;
+		    // if(next != NULL)
+		    // cout << "next " << next->val << "\t";
+		    // cur->next->next = cur;
+		    cur->next = prev;
+		    // if(cur->next != NULL)
+		    // cout << "cur->next " << cur->next->val << "\t";
+		    prev = cur;
+		    // if(prev != NULL)
+		    // cout << "prev " << prev->val << "\n";
+		    cur = next;
+		    // if(cur!=NULL)
+		    // cout << "cur " << cur->val << "\t";
+
+		}
+		// if(prev != NULL)
+		    // cout << "after:" << prev->val << "\n";
+		return prev;
+	    }
+	    bool isPalindrome(ListNode* head) {
+		if(head == NULL || head->next == NULL)
+		    return true;
+
+		ListNode* beforeHead = new ListNode(0);
+		beforeHead->next = head;
+		ListNode* firstHalf = beforeHead, *secondHalf = beforeHead;
+		int isEven = false;
+		int len = 0;
+		while(true){
+		    if(secondHalf->next == NULL){
+			isEven = true;
+			break;
+		    }
+		    if(secondHalf->next->next == NULL){
+			isEven = false;
+			break;
+		    }
+		    firstHalf = firstHalf->next;
+		    secondHalf = secondHalf->next->next;
+		    ++len;
+		}
+		// cout << "len " << len << "\n";
+		if(isEven){
+		    secondHalf = firstHalf->next;
+		}else{
+		    secondHalf = firstHalf->next->next;
+		}
+		firstHalf->next = NULL;
+		// cout << "iseven " << (isEven?"true":"false") << " secondHalf:" << secondHalf->val << "\n";
+		// reverse head-firstHalf
+		// cout << "head " << head << "->val:" << head->val;
+		ListNode* newFirstHalf = reverseList(head, len);
+		// printList(newFirstHalf, len);
+		// compare reversed head-firstHalf and secondHalf
+		for(int i = 0; i < len && newFirstHalf != NULL; i++){
+		    if(newFirstHalf->val != secondHalf->val){
+			return false;
+		    }
+		    newFirstHalf = newFirstHalf->next;
+		    secondHalf = secondHalf->next;
+		}
+		return true;
+	    }
+	    // void printList(ListNode* head, int len){
+	    //     ListNode*cur = head;
+	    //     cout << "printing\t";
+	    //     for(int i = 0; i < len && cur != NULL; i++){
+	    //         cout << cur->val << "\t";
+	    //         cur = cur->next;
+	    //     }
+	    //     cout << "\n";
+	    // }
 }
