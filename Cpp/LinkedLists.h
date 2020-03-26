@@ -798,4 +798,37 @@ namespace TestLinkedList {
 	    //     }
 	    //     cout << "\n";
 	    // }
+	
+	// No.21 Merge Two Sorted Lists[E] Mine
+	ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+		if(!l1)
+		    return l2;
+		if(!l2)
+		    return l1;
+		ListNode* beforeHead = new ListNode(0);
+		ListNode*prev = beforeHead;
+		beforeHead->next = l2;
+		if(l1->val < l2->val){
+		    beforeHead->next = l1;
+		}
+		for(;l1 != NULL && l2 != NULL;){
+
+		    if(l1->val < l2->val){
+			    prev->next = l1;
+			prev = l1;
+			l1 = l1->next;
+		    }else{
+			    prev->next = l2;
+			prev = l2;
+			l2 = l2->next;
+		    }
+
+		}
+		if(l1 != NULL)
+		    prev->next = l1;
+		if(l2 != NULL)
+		    prev->next = l2;
+
+		return beforeHead->next;
+	    }
 }
