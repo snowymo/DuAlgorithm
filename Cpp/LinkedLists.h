@@ -922,4 +922,16 @@ namespace TestLinkedList {
 			}
 		return firstHalf->next;
 	    }
+	
+	// No.1290 [E] Convert Binary Number in a Linked List to Integer mine
+	int getDecimalValue(ListNode* head) {
+		ListNode* cur = head;
+		int ret = 0;
+		while(cur){
+		    ret *= 2;
+		    ret += cur->val;
+		    cur = cur->next;
+		}
+		return ret;
+	    }
 }
