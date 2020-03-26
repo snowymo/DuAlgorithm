@@ -474,6 +474,33 @@ namespace TestLinkedList {
 		}
 		return ans->next;
 	}
+	// Mine
+	ListNode* deleteDuplicates(ListNode* head) {
+		if(head== NULL || head->next == NULL)
+		    return head;
+		ListNode* beforeHead = new ListNode(head->val-1);
+		beforeHead->next = head;
+		ListNode* cur = beforeHead;
+		int lastValue = cur->val;
+		ListNode* prev = beforeHead, *tbd;
+		while(cur != NULL){
+		    // cout << lastValue << "\t" << cur->val << "\n";
+		    if(cur->val == lastValue){
+			tbd = NULL;
+			cur = cur->next;
+		    }else{
+			if(tbd != NULL){
+			    prev->next = tbd;
+			    prev = tbd;
+			}
+			tbd = cur;
+			lastValue = cur->val;
+			cur = cur->next;
+		    }
+		}
+		prev->next = tbd;
+		return beforeHead->next;
+	    }
 
 	// 86. Partition List
 	// Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
