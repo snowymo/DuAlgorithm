@@ -408,4 +408,46 @@ namespace ArrayInPlace {
 		}
 		return ret;
 	    }
+	// No.189[E] Rotate Array (Mine)
+// Given an array, rotate the array to the right by k steps, where k is non-negative.
+
+// Example 1:
+
+// Input: [1,2,3,4,5,6,7] and k = 3
+// Output: [5,6,7,1,2,3,4]
+// Explanation:
+// rotate 1 steps to the right: [7,1,2,3,4,5,6]
+// rotate 2 steps to the right: [6,7,1,2,3,4,5]
+// rotate 3 steps to the right: [5,6,7,1,2,3,4]
+	void rotate(vector<int>& nums, int k) {
+		int len = nums.size();
+		int temp, temp2;
+		k = k % len;
+		int times = 0;
+		for(int i = 0; i < k; i++){
+		    int stop = 0;    
+		    int oldIndex = i;
+		    temp = nums[oldIndex];
+		    while(stop < 2 && times < k){
+			// cout << oldIndex << "\t";
+			if(oldIndex == i){
+			    ++stop;
+			}
+			int newIndex = oldIndex + k;
+			if(newIndex >= len){
+			    ++times;
+			    newIndex -= len; 
+			}
+			// cout << i << "\t";
+			temp2 = nums[newIndex];
+			// cout << "stop" << stop << "\t";
+			// cout << "nums[" << newIndex <<"]:" << nums[newIndex] << "\t";
+			// cout << "nums[" << oldIndex <<"]:" << nums[oldIndex] << "\t";
+			nums[newIndex] = temp;
+			// cout << "nums[" << newIndex <<"]:" << nums[newIndex] << "\n\n";
+			temp = temp2;
+			oldIndex = newIndex;
+		    }
+		}
+	    }
 }
