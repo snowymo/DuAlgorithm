@@ -643,4 +643,45 @@ namespace TestLinkedList {
 		}
 		return head;
 	    }
+	
+	// No.725 Split Linked List in Parts[M] (Mine)
+	// Given a (singly) linked list with head node root, write a function to split the linked list into k consecutive linked list "parts".
+	// The length of each part should be as equal as possible: no two parts should have a size differing by more than 1. This may lead to some parts being null.
+	// The parts should be in order of occurrence in the input list, and parts occurring earlier should always have a size greater than or equal parts occurring later.
+	// Return a List of ListNode's representing the linked list parts that are formed.
+	// Examples 1->2->3->4, k = 5 // 5 equal parts [ [1], [2], [3], [4], null ]
+	vector<ListNode*> splitListToParts(ListNode* root, int k) {
+		// we should know how many elements in each vector
+		int length = 0;
+		for(ListNode* curNode = root; curNode != NULL; curNode = curNode->next){
+		    ++ length;
+		}
+		int vectorLength = length / k + 1;
+		int vectorWithMoreE = k-(vectorLength*k-length);
+		vector<ListNode*> returnVector;
+		ListNode* curNode = root, *temp = NULL, *head = NULL;
+		for(int i = 0; i < vectorWithMoreE; i++){
+		    head = curNode;
+		    for(int j = 0; j < vectorLength-1; j++){
+			curNode = curNode->next; 
+		    }
+		    temp = curNode;
+		    curNode = curNode->next;
+		    temp->next = NULL;
+		    returnVector.push_back(head);
+		}
+		for(int i = 0; i < (k-vectorWithMoreE); i++){
+		    head = curNode;
+		    for(int j = 0; j < vectorLength-2; j++){
+			curNode = curNode->next; 
+		    }
+		    temp = curNode;
+		    if(curNode != NULL){
+			curNode = curNode->next;
+			temp->next = NULL;
+		    }
+		    returnVector.push_back(head);
+		}
+		return returnVector;
+	    }
 }
