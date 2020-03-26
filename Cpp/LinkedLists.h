@@ -281,6 +281,33 @@ namespace TestLinkedList {
 		nodeRotate->next = nullptr;
 		return node;
 	}
+	// Mine
+	ListNode* rotateRight(ListNode* head, int k) {
+		// get the length first
+		if(head == NULL)
+		    return head;
+		int length = 0;
+		for(ListNode* node = head; node != NULL; node = node->next){
+		    ++length;
+		}
+		k = k % length;
+		if(k == 0)
+		    return head;
+		// then we need to rotate k times
+		// that means the first element is (length - k)th 
+		ListNode* curNode = head, *prev = NULL;
+		for(int i = 0; i < (length-k); i++ ){
+		    prev = curNode;
+		    curNode = curNode->next;
+		}
+		prev->next = NULL;
+		ListNode* returnNode = curNode;
+		for(;curNode->next != NULL; curNode = curNode->next){
+
+		}
+		curNode->next = head;
+		return returnNode;
+	    }
 
 	// 203. Remove Linked List Elements [E]
 	ListNode* removeElements(ListNode* head, int val) {
