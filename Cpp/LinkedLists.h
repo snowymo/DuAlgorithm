@@ -136,6 +136,45 @@ namespace TestLinkedList {
 		}
 		return head;
 	}
+	// Mine
+	ListNode* removeNthFromEnd(ListNode* head, int n) {
+		ListNode* beforeHead = new ListNode(0);
+		beforeHead->next = head;
+		ListNode* firstHalf = beforeHead, * secondHalf = beforeHead;
+		int len = 0;
+		while(secondHalf != NULL){
+		    if(secondHalf->next == NULL){
+			break;
+		    }
+		    if(secondHalf->next->next == NULL){
+			++len;
+			break;
+		    }
+		    firstHalf = firstHalf->next;
+		    secondHalf = secondHalf->next->next;
+		    len += 2;
+		}
+		n = len - n; // count from the beginning
+		if(n > len/2){
+		    // loop from firstHalf
+		    for(int i = len/2; i < n; i++){
+			firstHalf = firstHalf->next;
+		    }
+		    firstHalf->next = firstHalf->next->next;
+		}else{
+		    ListNode* cur = beforeHead, *prev= beforeHead;
+		    for(int i = 0; i < n; i++){
+			prev = cur;
+			cur = cur->next;
+		    }
+		    if(cur->next)
+			cur->next = cur->next->next;
+		    else{
+			prev->next = NULL;   
+		    }
+		}
+		return beforeHead->next;
+	    }
 
 	// 237. Delete Node in a Linked List [E]
 	// Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.
