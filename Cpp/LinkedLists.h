@@ -831,4 +831,29 @@ namespace TestLinkedList {
 
 		return beforeHead->next;
 	    }
+	// No.876 Middle of the linked list[E] Mine
+	ListNode* middleNode(ListNode* head) {
+		if(head == NULL || head->next == NULL)
+			    return head;
+
+			ListNode* beforeHead = new ListNode(0);
+			beforeHead->next = head;
+			ListNode* firstHalf = beforeHead, *secondHalf = beforeHead;
+			int isEven = false;
+			int len = 0;
+			while(true){
+			    if(secondHalf->next == NULL){
+				    isEven = true;
+				    break;
+			    }
+			    if(secondHalf->next->next == NULL){
+				    isEven = false;
+				    break;
+			    }
+			    firstHalf = firstHalf->next;
+			    secondHalf = secondHalf->next->next;
+			    ++len;
+			}
+		return firstHalf->next;
+	    }
 }
