@@ -145,4 +145,29 @@ class DPMisc{
         }
         return ans;
     }
+  
+  // No.338 Counting Bits (Mine)
+  vector<int> countBits(int num) {
+        int lastPowerNumber = 2;
+        vector<int> returnVec;
+        if(num >= 0){
+            returnVec.push_back(0);
+        }
+        if(num >= 1){
+            returnVec.push_back(1);
+        }
+        if(num >= 2){
+            returnVec.push_back(1);
+        }
+        for(int i = 3; i <= num; i++){
+            if(i < lastPowerNumber*2){
+                returnVec.push_back(returnVec[lastPowerNumber]+returnVec[i-lastPowerNumber]);
+            }else{
+                // == 
+                returnVec.push_back(1);
+                lastPowerNumber *= 2;
+            }
+        }
+        return returnVec;
+    }
 }
