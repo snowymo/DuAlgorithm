@@ -34,6 +34,42 @@ namespace TopologicalSort {
 		vd[i] = 1;
 		return true;
 	}
+	// Mine
+	bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        // save prerequisties into my container
+        unordered_map<int, vector<int>> prereq;
+        for(int i = 0; i < numCourses; i++)
+            prereq[i] = vector<int>();
+        for(int i = 0; i < prerequisites.size(); i++){
+            prereq[prerequisites[i][0]].push_back(prerequisites[i][1]);
+        }
+        // check if the prerequire course is valid recursively
+        vector<int> courses(numCourses, 0);
+		for(int i = 0; i < numCourses; i++){
+		    bool isIValid = isValid(prereq, i, courses);
+		    if(!isIValid)
+			return false;
+		}
+		return true;
+	    }
+
+	    bool isValid(unordered_map<int, vector<int>>& prereq, int courseNumber, vector<int> &courses){
+		// cout << "checking " << courseNumber << "\n";
+		if(courses[courseNumber] == 1)
+		    return true;
+		if(courses[courseNumber] == -1)
+		    return false;
+		courses[courseNumber] = -1;
+		for(int i = 0; i < prereq[courseNumber].size(); i++){
+		    bool isIValid = isValid(prereq, prereq[courseNumber][i], courses);
+		    if(!isIValid){
+			courses[courseNumber] = -1;
+			return false;
+		    }
+		}
+		courses[courseNumber] = 1;
+		return true;
+	    }
 
 	// 210. Course Schedule II [M]
 	// Given the total number of courses and a list of prerequisite pairs, return the ordering of courses you should take to finish all courses.
