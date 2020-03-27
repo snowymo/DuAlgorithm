@@ -535,6 +535,24 @@ namespace TestLinkedList {
 		moreNode->next = NULL;
 		return less->next;
 	}
+	// Mine
+	ListNode* partition(ListNode* head, int x) {
+		ListNode* beforeFirst = new ListNode(0), *beforeSecond = new ListNode(0);
+		ListNode* ptrFirst = beforeFirst, *ptrSecond = beforeSecond;
+		while(head){
+		    if(head->val < x){
+			ptrFirst->next = head;
+			ptrFirst = head;
+		    }else{
+			ptrSecond->next = head;
+			ptrSecond = head;
+		    }
+		    head = head->next;
+		}
+		ptrFirst->next = beforeSecond->next;
+		ptrSecond->next = NULL;
+		return beforeFirst->next;
+	    }
 
 	// 141. Linked List Cycle
 	// Given a linked list, determine if it has a cycle in it.
