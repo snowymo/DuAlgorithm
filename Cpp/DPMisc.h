@@ -170,4 +170,39 @@ class DPMisc{
         }
         return returnVec;
     }
+  
+  // No.673 Number of Longest Increasing Subsequence (Mine)
+  int findNumberOfLIS(vector<int>& nums) {
+        if(nums.size() == 0)
+            return 0;
+        vector<int> length(nums.size());
+        vector<int> count(nums.size());
+        for(int i = 0; i < length.size(); i++)
+            length[i] = 1;
+        count[0] = 1;
+        int maxLength = 1;
+        for(int i = 1; i < nums.size(); i++){
+            for(int j = 0; j < i; j ++){
+                if(nums[i] > nums[j]){
+                    length[i] = max(length[i], length[j]+1);
+                    // cout << i << ":" << length[i] << "\n";
+                }
+            }
+            if(length[i] == 1)
+                count[i] = 1;
+            else{
+                for(int j = 0; j < i; j ++){
+                    if(length[j] == (length[i]-1) && (nums[i]>nums[j]))
+                        count[i] += count[j];
+                }
+            }
+            maxLength = max(maxLength, length[i]);
+        }
+        int ret = 0;
+        for(int i = 0; i < length.size(); i++){
+            if(maxLength == length[i])
+                ret += count[i];
+        }
+        return ret;
+    }
 }
