@@ -952,4 +952,203 @@ namespace TestLinkedList {
 		}
 		return ret;
 	    }
+	// No.707 [M] Mine Design Linked List
+	// https://leetcode.com/problems/design-linked-list/
+	class MyNode{
+		public:
+		    int val;
+		    MyNode* next;
+		    MyNode* prev;
+		    MyNode(){
+			val = 0;
+			next = NULL;
+			prev = NULL;
+		    }
+		    MyNode(int v){
+			val = v;
+			next = NULL;
+			prev = NULL;
+		    }
+		};
+
+		class MyLinkedList {
+		    private:
+		    int len;
+		    MyNode* head;
+		    MyNode* tail;
+		public:
+		    /** Initialize your data structure here. */
+		    MyLinkedList() {
+			head = NULL;
+			tail = NULL;
+			len = 0;
+		    }
+
+		    void print(){
+			MyNode* ptr = head;
+			cout << "len:" << len << "\t";
+			for(int i = 0; i < len; i++){
+			    if(ptr){
+				cout << ptr->val << "\t";
+				ptr = ptr->next;
+			    }
+			}
+			cout << "\n";
+		    }
+
+		    /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+		    int get(int index) {
+			// cout << "get " << index << "\t";
+			if(index >= len){
+			    // cout << "NULL\n";
+			    return -1;
+			}
+			MyNode* ptr = head;
+			for(int i = 0; i < index; i++){
+			    if(ptr)
+				ptr = ptr->next;    
+			}
+			if(ptr){
+			    // cout << ptr->val << "\n";
+			    return ptr->val;
+			}
+			// cout << "NULL\n";
+			return -1;
+		    }
+
+		    /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
+		    void addAtHead(int val) {
+			MyNode* newhead = new MyNode(val);
+			newhead->next = head;
+			if(head){
+			    head->prev = newhead;    
+			}
+			head = newhead;
+			if(!tail)
+			    tail = head;
+			++len;
+			// cout << "addAtHead\t";
+			// print();
+		    }
+
+		    /** Append a node of value val to the last element of the linked list. */
+		    void addAtTail(int val) {
+			// cout << "addAtTail\t";
+			MyNode* newtail = new MyNode(val);
+			// cout << newtail->val << "\t";
+			if(tail)
+			    tail->next = newtail;
+			newtail->prev = tail;
+			tail = newtail;
+			// cout << tail->val << "\t";
+			if(!head)
+			    head = tail;
+			++len;
+
+			// print();
+		    }
+
+		    /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+		    void addAtIndex(int index, int val) {
+			if(index > len){
+			    return;
+			}
+			MyNode* newnode = new MyNode(val);
+			if(index == 0){
+			    newnode->next = head;
+			    if(head){
+				head->prev = newnode;
+			    }
+			    head = newnode;
+			}else if(index == len){
+			    if(tail)
+				tail->next = newnode;
+			    newnode->prev = tail;
+			    tail = newnode;
+			}
+			else{
+			    MyNode* ptr;
+			    if(len < 10 || index < len/2){
+				ptr = head;
+				for(int i = 0; i < index-1; i++){
+				    ptr = ptr->next;
+				}
+			    }else{
+				ptr = tail;
+				for(int i = len; i > index; i--){
+				    ptr = ptr->prev;
+				}
+			    }
+			    newnode->next = ptr->next;
+			    newnode->prev = ptr;
+			    if(ptr->next)
+				ptr->next->prev = newnode;
+			    ptr->next = newnode;  
+			}
+
+			++len;
+			// cout << "insert at " << index << "\t";
+			// print();
+		    }
+
+		    /** Delete the index-th node in the linked list, if the index is valid. */
+		    void deleteAtIndex(int index) {
+			if(index >= len){
+			    return;
+			}
+			if(len == 1){
+			    delete head;
+			    head = NULL;
+			    tail = NULL;
+			    return;
+			}
+			if(index == 0){
+			    MyNode* ptr = head->next;
+			    // delete head;
+			    head = ptr;
+			    head->prev = NULL;
+			    --len;
+			    // cout << "delete " << index << "\t";
+			    // print();
+			    return;
+			}
+			if(len-1 == index){
+			    MyNode* ptr = tail->prev;
+			    // delete tail;
+			    tail = ptr;
+			    tail->next = NULL;
+			    --len;
+			    // cout << "delete " << index << "\t";
+			    // print();
+			    return;
+			}
+			MyNode* ptr = head;
+
+			for(int i = 0; i < index-1; i++){
+			    ptr = ptr->next;
+			}
+			MyNode* todelete = ptr->next;
+			if(ptr->next && ptr->next->next){
+			    ptr->next->next->prev = ptr;
+			}
+			if(ptr->next)
+			    ptr->next = ptr->next->next;
+			--len;
+			// if(todelete)
+			    // delete todelete;
+			todelete = NULL;
+			// cout << "delete " << index << "\t";
+			// print();
+		    }
+		};
+
+		/**
+		 * Your MyLinkedList object will be instantiated and called as such:
+		 * MyLinkedList* obj = new MyLinkedList();
+		 * int param_1 = obj->get(index);
+		 * obj->addAtHead(val);
+		 * obj->addAtTail(val);
+		 * obj->addAtIndex(index,val);
+		 * obj->deleteAtIndex(index);
+		 */
 }
