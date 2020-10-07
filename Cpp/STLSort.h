@@ -57,4 +57,36 @@ namespace STLSort {
 		}
 		return;
 	    }
+// 	use for loop for one pass
+	void sortColors(vector<int>& nums) {
+        // write your code here
+        if(nums.size() <= 1)
+            return;
+        int index0 = 0, index2 = nums.size()-1;
+        for(int i = 0; i < nums.size() && index0 <= index2 && i <= index2;){
+            // cout << "progress " << i << " " << nums[i] << "\t";
+            if(nums[i] == 0){
+                if(i != index0){
+                    nums[i] = nums[index0];
+                    nums[index0] = 0;
+                }else
+                    ++i;
+                ++index0;
+            }
+            else if(nums[i] == 2){
+                while(index2 >= 0 && nums[index2] == 2)
+                    --index2;
+                if(index2 > i){
+                    nums[i] = nums[index2];
+                    nums[index2] = 2;
+                    --index2;
+                }
+            }
+            else{
+                    ++i;
+                }
+            // cout << index0 << " " << index2 << "\t";
+            // print(nums);
+        }
+    }
 }
