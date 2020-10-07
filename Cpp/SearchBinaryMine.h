@@ -343,4 +343,108 @@ Because the 3rd row is incomplete, we return 2.
         }
         return ans;
     }
+  
+//   15. 3Sum
+//   Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+
+// Notice that the solution set must not contain duplicate triplets.
+  bool binarySearch(vector<int>& num, int start, int end, int v){
+        bool ret = false;
+        
+        while(true){
+            if(start >= end)
+                return false;
+            if(num[start] == v)
+                return true;
+            if(num[end-1] == v)
+                return true;
+                
+            int mid = (start + end) >> 1;
+            if(num[mid] == v){
+                return true;
+            }
+            if(num[mid] > v){
+                end = mid;
+            }else{
+                start = mid+1;
+            }
+        }
+        return false;
+    }
+    
+    vector<vector<int>> threeSum1(vector<int>& numbers) {
+        vector<vector<int>> ret;
+        // first sort
+        int len = numbers.size();
+        sort(numbers.begin(), numbers.end());
+        // iterate with binary search
+        std::unordered_map<int,bool> mymap0;
+        for(int i = 0; i < len-2; i++){
+            if(numbers[i] > 0)
+                break;
+            // cout << "i " << i << ":" << numbers[i] << "\n";
+            if(i > 0 && numbers[i] == numbers[i-1])
+                continue;
+            
+            for(int j = i+1; j < len-1; j++){
+                if(j > (i+1) && numbers[j] == numbers[j-1])
+                    continue;
+                
+                int v = -numbers[i]-numbers[j];
+                if(v < 0)
+                    break;
+                // cout << "\tj " << j << ":" << numbers[j] << "\n";                
+                // find if we have value v
+
+                bool findV = binarySearch(numbers,  j+1,  len,  v);
+                if(findV){
+                    ret.push_back(vector<int>{numbers[i], numbers[j], v});
+                }
+                // cout << "\t\tfind " << v << ":" << findV << "\n";
+                
+            }
+            
+        }
+        return ret;
+    }
+    
+    vector<vector<int>> threeSum(vector<int>& numbers) {
+        vector<vector<int>> ret;
+        // first sort
+        int len = numbers.size();
+        sort(numbers.begin(), numbers.end());
+        // iterate with binary search
+        std::unordered_map<int,bool> mymap0;
+        for(int i = 0; i < len-2; i++){
+            if(numbers[i] > 0)
+                break;
+            // cout << "i " << i << ":" << numbers[i] << "\n";
+            if(i > 0 && numbers[i] == numbers[i-1])
+                continue;
+            
+//             two pointer
+            int v = -numbers[i];
+            int start = i+1;
+            int end = len-1;
+            while(start < end){                
+                if(numbers[start] + numbers[end] == v){
+                    ret.push_back(vector<int>{numbers[i], numbers[start], numbers[end]});
+                    while((start < len-1) && numbers[start] == numbers[start+1])
+                        ++start;
+                    while((end > i+1) && numbers[end] == numbers[end-1])
+                        --end;
+                    
+                    ++start;
+                    --end;
+                }
+                else if(numbers[start] + numbers[end] < v){
+                    ++start;
+                }else{
+                    --end;
+                }
+            }
+            
+        }
+        return ret;
+    }
 }
