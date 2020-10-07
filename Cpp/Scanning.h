@@ -846,4 +846,54 @@ class Scanning {
 
 		return evaluate(num, start+index1, index2, len);
 	    }
+	
+// Mine No.56 Merge intervals[M]
+// Given a collection of intervals, merge all overlapping intervals.
+
+// Example 1:
+
+// Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+// Output: [[1,6],[8,10],[15,18]]
+// Explanation: Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].
+vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> result;
+        
+        if(intervals.size() == 0)
+        return result;
+        
+        int start = intervals[0][0], end = intervals[0][1];
+        for(int i = 0; i < intervals.size(); i++){
+            start = min(start, intervals[i][0]);
+            end = max(end, intervals[i][1]);
+        }
+        // 
+        end = end*2;
+        start = start*2;
+        
+        unsigned char* temp = new unsigned char[end-start+2];
+        memset((void*)(temp), 0, end-start+2);
+        for(int i = 0; i < intervals.size(); i++){
+            // if(intervals[i].start > 450)
+                // cout << "for " << intervals[i].start << " from " << intervals[i].start*2 - start << " by " << intervals[i].end*2 - intervals[i].start*2 << "\n";
+            memset((void*)(temp + intervals[i][0]*2 - start), 1, max(1,intervals[i][1]*2 - intervals[i][0]*2));
+        }
+        
+        bool isInInterval = false;
+        int curStart;
+        for(int i = 0; i < end-start+2; i++){
+            if(!isInInterval && (temp[i]==1)){
+                curStart = i+start;
+                isInInterval = !isInInterval;
+            }else if(isInInterval && (temp[i]!=1)){
+                result.push_back(vector<int>{curStart/2, (i+start)/2});
+                isInInterval = !isInInterval;
+                // cout << "add [" << curStart/2 << "," << (i+start)/2 << "]\t";
+            }
+        }
+        // if continues to the end, usually yes
+        if(isInInterval){
+            result.push_back(vector<int>{curStart/2, end/2});
+        }
+        return result;
+    }
 };
