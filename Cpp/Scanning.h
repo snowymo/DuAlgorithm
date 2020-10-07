@@ -990,4 +990,116 @@ vector<vector<int>> merge(vector<vector<int>>& intervals) {
 //         }
 //         return ret;
 //     }
+	
+// 	No. 252 Meeting rooms https://www.lintcode.com/problem/meeting-rooms/description
+// 	Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), determine if a person could attend all meetings.
+
+// (0,8),(8,10) is not conflict at 8
+	bool canAttendMeetings1(vector<Interval> &intervals) {
+		// write your code here
+		vector<Interval> result;
+
+		if(intervals.size() == 0)
+		return true;
+
+		int start = intervals[0].start, end = intervals[0].end;
+		for(int i = 0; i < intervals.size(); i++){
+		    start = min(start, intervals[i].start);
+		    end = max(end, intervals[i].end);
+		}
+		// 
+		end = end*2;
+		start = start*2;
+
+		unsigned char* temp = new unsigned char[end-start+2];
+		memset((void*)(temp), 0, end-start+2);
+		for(int i = 0; i < intervals.size(); i++){
+		    // if(intervals[i].start > 450)
+			// cout << "for " << intervals[i].start << " from " << intervals[i].start*2 - start << " by " << intervals[i].end*2 - intervals[i].start*2 << "\n";
+		    memset((void*)(temp + intervals[i].start*2 - start), 1, max(0,intervals[i].end*2 - intervals[i].start*2 - 1));
+		}
+
+		bool isInInterval = false;
+		int curStart;
+		for(int i = 0; i < end-start+2; i++){
+		    if(!isInInterval && (temp[i]==1)){
+			curStart = i+start;
+			isInInterval = !isInInterval;
+		    }else if(isInInterval && (temp[i]!=1)){
+			result.push_back(Interval(curStart, (i+start)));
+			isInInterval = !isInInterval;
+			// cout << "add [" << curStart/2 << "," << (i+start)/2 << "]\t";
+		    }
+		}
+		// if continues to the end, usually yes
+		if(isInInterval){
+		    result.push_back(Interval(curStart, end));
+		}
+		if(intervals.size() == result.size())
+		    return true;
+		else
+		    return false;
+	    }
+
+	    static bool sortInterval(Interval a, Interval b){
+		return a.start < b.start;
+	    }
+
+	    bool canAttendMeetings(vector<Interval> &intervals) {
+		// write your code here
+		if(intervals.size() <= 1)
+		    return true;
+
+		sort(intervals.begin(), intervals.end(), sortInterval);
+
+
+		for(int i = 0; i < intervals.size()-1; i++){
+		    if(intervals[i].end > intervals[i+1].start)
+			return false;
+		}
+		return true;
+	    }
+	
+// 	No.253 Meeting Room II
+// 	https://www.lintcode.com/problem/meeting-rooms-ii/description
+// Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+
+// Have you met this question in a real interview?  
+// Example
+// Example1
+
+// Input: intervals = [(0,30),(5,10),(15,20)]
+// Output: 2
+// Explanation:
+// We need two meeting rooms
+// room1: (0,30)
+// room2: (5,10),(15,20)
+// Example2
+
+// Input: intervals = [(2,7)]
+// Output: 1
+// Explanation: 
+// Only need one meeting room
+	static bool compareInterval(Interval &a, Interval &b){
+		return a.start < b.start;
+	    }
+	    int minMeetingRooms(vector<Interval> &intervals) {
+		// Write your code here
+		if(intervals.size() <= 1)
+		    return intervals.size();
+
+		sort(intervals.begin(), intervals.end(), compareInterval);
+		priority_queue<int, vector<int>, greater<int>> rooms;
+
+		int minNum = 0;
+		rooms.push(intervals[0].end);
+		for(int i = 1; i < intervals.size(); i++){
+		    if(intervals[i].start >= rooms.top()){
+			rooms.pop();
+		    }
+		    rooms.push(intervals[i].end);
+		    minNum = max(minNum, (int)(rooms.size()));
+		}
+		return minNum;
+	    }
 };
