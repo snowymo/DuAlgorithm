@@ -896,4 +896,98 @@ vector<vector<int>> merge(vector<vector<int>>& intervals) {
         }
         return result;
     }
+	
+// 	mine 825. Friends Of Appropriate Ages
+// Medium
+// Some people will make friend requests. The list of their ages is given and ages[i] is the age of the ith person. 
+
+// Person A will NOT friend request person B (B != A) if any of the following conditions are true:
+
+// age[B] <= 0.5 * age[A] + 7
+// age[B] > age[A]
+// age[B] > 100 && age[A] < 100
+// Otherwise, A will friend request B.
+
+// Note that if A requests B, B does not necessarily request A.  Also, people will not friend request themselves.
+
+// How many total friend requests are made?
+	int numFriendRequests(vector<int>& ages){
+        int ans = 0;
+        vector<int> count(121,0);
+        
+        for(int i = 0; i < ages.size(); i++){
+            // if(ages[i] = 120 && ages[1] >= 16)
+                count[ages[i]]++;
+        }
+            
+        for(int a = 15; a <= 120; a++){
+            for(int b = a/2 + 8; b <= a; b++){
+                ans += count[a] * count[b];
+                if(a == b) ans -= count[a];
+            }
+        }
+        return ans;
+        
+    }
+//     int numFriendRequest1s(vector<int>& ages) {
+//         // 
+//         int ret = 0;
+//         int lastRet = 0;
+//         sort(ages.begin(), ages.end());
+//         // for(int i = 0; i < ages.size(); i++){
+//         //     cout << ages[i] << ",";
+//         // }
+//         // cout << "\n";
+//         unordered_map<int,int> cache;
+//         for(int i = 1; i < ages.size(); i++){
+//             if((i < ages.size()-1) && (ages[i] == ages[i+1])){
+//                 continue;
+//             }
+                
+//             // find 0.5*ages[i]+7
+//             float youngestFriend = 0.5 * ages[i] + 7;
+//             // (youngestFriend, ages[i]]
+//             int start = 0, end = i-1;
+//             int index = i;
+//             while(start <= end){
+//                 if((float)ages[start] == youngestFriend){
+//                     index = start;
+//                     break;
+//                 }
+//                 if((float)ages[end] <= youngestFriend){
+//                     index = end;
+//                     break;
+//                 }
+                
+//                 index = (start+end) >> 1;
+//                 if((float)ages[index] == youngestFriend){
+//                     break;
+//                 }
+//                 else if((float)ages[index] < youngestFriend){
+//                     start = index+1;
+//                 }else{
+//                     end = index-1;
+//                 }
+//             }
+            
+//             if(ages[index] <= youngestFriend){
+//                 while(index < ages.size()-1 && index < i-1 && ages[index] == ages[index+1])
+//                     ++index;
+//                 ++index;
+//             }
+                
+//             // cout << i << ":" << ages[i] << "-" << index <<":" << ages[index]<< "\n";
+//             cache[ages[i]] = 0;
+//             if(index < i && (float)ages[index] > youngestFriend){
+//                 // lastRet = i-1 - index + 1;
+//                 cache[ages[i]] = i-1 - index + 1;
+//                 // cout << "\tadd " << cache[ages[i]] << " to " << ages[i] << "\n";
+//                 // ret += lastRet;
+//             }
+//         }
+//         for(int i = 0; i < ages.size(); i++){
+//             ret += cache[ages[i]];
+//         }
+//         return ret;
+//     }
 };
