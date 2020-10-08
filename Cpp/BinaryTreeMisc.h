@@ -1434,4 +1434,106 @@ public:
 		}
 		return root;
 	    }
+	
+// 	 Mine No.863[M] All Nodes Distance K in Binary Tree
+// 	We are given a binary tree (with root node root), a target node, and an integer value K.
+
+// Return a list of the values of all nodes that have a distance K from the target node.  The answer can be returned in any order.
+
+ 
+
+// Example 1:
+
+// Input: root = [3,5,1,6,2,0,8,null,null,7,4], target = 5, K = 2
+
+// Output: [7,4,1]
+
+// Explanation: 
+// The nodes that are a distance 2 from the target node (with value 5)
+// have values 7, 4, and 1.
+	std::vector<int> result;
+	    // std::unordered_map<std::vector<int>> rowContainer;
+	    int targetLevel = 0;
+	    std::deque<pair<TreeNode*,int>> complexPath; //{val, {0-both,1-left,2-right}}
+
+	    vector<int> distanceK(TreeNode* root, TreeNode* target, int K) {
+	//         identify the path
+		generatePath(root, target);
+	//         go through complexPath
+		int distance = K;
+		while(!complexPath.empty()){
+		    pair<TreeNode*,int> cur = complexPath.front();
+		    complexPath.pop_front();
+	//             find K children of cur
+		    if(distance == 0)
+			result.push_back(cur.first->val);
+
+		    std::deque<TreeNode*> container;
+
+		    if(cur.second == 0 || cur.second == 2)
+			if(cur.first->left)
+			    container.push_back(cur.first->left);
+
+		    if(cur.second == 0 || cur.second == 1)
+			if(cur.first->right)
+			    container.push_back(cur.first->right);
+
+		    // cout << "find dis=" << (distance - 1) << " in size-" << container.size() << "\n";
+		    distanceK(container, distance - 1);
+		    --distance;
+		}
+
+		return result;
+	    }
+
+	    void distanceK(std::deque<TreeNode*> & rowContainer, int distance){
+		if(distance < 0)
+		    return;
+		if(distance == 0){
+		    for(auto iter = rowContainer.begin(); iter != rowContainer.end(); iter++){
+			result.push_back((*iter)->val);
+		    }
+		    return;
+		}
+		for(int i = 0; i < distance; i++){
+		    std::deque<TreeNode*> curRow;
+		    while(!rowContainer.empty()){
+			TreeNode* curNode = rowContainer.front();
+			rowContainer.pop_front();
+			if(curNode->left)
+			    curRow.push_back(curNode->left);
+			if(curNode->right)
+			    curRow.push_back(curNode->right);
+		    }            
+		    rowContainer.assign(curRow.begin(), curRow.end());
+		}
+		for(auto iter = rowContainer.begin(); iter != rowContainer.end(); iter++){
+		    result.push_back((*iter)->val);
+		}
+	    }
+
+	    bool generatePath(TreeNode* root, TreeNode* target){
+		if(root){
+		    if(root->val == target->val){
+			// cout << "found " << root->val << "\n";
+			complexPath.push_back({root, 0});
+			return true;
+		    }
+		    bool retLeft = generatePath(root->left, target);
+		    if(retLeft){
+			// cout << "add to path " << root->val << "\n";
+			complexPath.push_back({root, 1});
+			return true;
+		    }                
+		    bool retRight = generatePath(root->right, target);
+		    if(retRight){
+			// cout << "add to path " << root->val << "\n";
+			complexPath.push_back({root, 2});
+			return true;
+		    }                
+	//             both false            
+		    return false;
+		}else
+		    return false;
+	    }
 };
