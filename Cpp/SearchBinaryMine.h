@@ -447,4 +447,94 @@ Because the 3rd row is incomplete, we return 2.
         }
         return ret;
     }
+  
+  // No.480 sliding window Median[H]
+// Median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two middle value.
+
+// Examples:
+// [2,3,4] , the median is 3
+
+// [2,3], the median is (2 + 3) / 2 = 2.5
+
+// Given an array nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position. Your job is to output the median array for each window in the original array.
+
+// For example,
+// Given nums = [1,3,-1,-3,5,3,6,7], and k = 3.
+
+// Window position                Median
+// ---------------               -----
+// [1  3  -1] -3  5  3  6  7       1
+//  1 [3  -1  -3] 5  3  6  7       -1
+//  1  3 [-1  -3  5] 3  6  7       -1
+//  1  3  -1 [-3  5  3] 6  7       3
+//  1  3  -1  -3 [5  3  6] 7       5
+//  1  3  -1  -3  5 [3  6  7]      6
+// Therefore, return the median sliding window as [1,-1,-1,3,5,6].
+  vector<double> medianSlidingWindow(vector<int>& nums, int k) {
+//         T(n) = O(n log(k))
+        vector<double> ret;
+        
+        if(nums.size() == 0)
+            return ret;
+        
+//         init window
+        vector<int> curWindow;
+        for(int i = 0; i < k; i++){
+            curWindow.push_back(nums[i]);
+        }
+        sort(curWindow.begin(), curWindow.end());
+        if(k % 2 == 1){
+            ret.push_back(curWindow[k/2]);
+        }else{
+            ret.push_back((
+                (double)curWindow[k/2] +
+                (double)curWindow[k/2-1])/2);
+        }
+        // printVec(curWindow);
+//      loop nums
+        for(int i = 1; i < nums.size()-k+1; i++){
+            // remove nums[i-1] and insert nums[i+k]
+            binsearch(curWindow, nums[i-1], 1);
+            // printVec(curWindow);
+            binsearch(curWindow, nums[i+k-1], 0);
+            // printVec(curWindow);
+            // cout << "\n";
+            if(k % 2 == 1){
+                ret.push_back(curWindow[k/2]);
+            }else{
+                ret.push_back(((double)curWindow[k/2] +(double)curWindow[k/2-1])/2);
+            }
+        }
+        return ret;
+    }
+                          
+    void binsearch(vector<int> &win, int value, int operation){
+        int start = 0, end = win.size();
+        int mid;
+        while(start <= end){
+            mid = (start + end) >> 1;
+            if(win[mid] == value){
+                // found it
+                break;
+            }else if(win[mid] > value){
+                end = mid-1;
+            }else{
+                start = mid+1;
+            }
+        }
+        if(operation == 0){
+            // insert
+            if(win[mid] <= value){
+                if(mid+1 >= win.size())
+                    win.push_back(value);
+                else
+                    win.insert(win.begin() + mid + 1, value);
+            }else{
+                win.insert(win.begin() + mid, value);
+            }
+        }else{
+            // deletion
+            win.erase(win.begin() + mid);
+        }
+    }
 }
