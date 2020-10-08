@@ -185,6 +185,42 @@ class Stacks {
 		}
 		return stack.empty();
 	}
+	// Mine
+	bool isValid(string s) {
+		std::deque<int> myDeque;
+		for(int i = 0; i < s.length(); i++){
+		    int ret = isOpen(s[i]);
+		    if(ret > 0){
+			myDeque.push_back(ret);
+		    }else if(ret < 0){
+			if(myDeque.size() == 0)
+			    return false;
+			int last = myDeque.back();
+			if(last + ret == 0){
+			    myDeque.pop_back();
+			}else{
+			    return false;
+			}
+		    }
+		}
+
+		 return myDeque.size() == 0;
+	    }
+	    int isOpen(char ch){
+		if(ch == '(')
+		    return 1;
+		if(ch == ')')
+		    return -1;
+		if(ch == '{')
+		    return 2;
+		if(ch == '}')
+		    return -2;
+		if(ch == '[')
+		    return 3;
+		if(ch == ']')
+		    return -3;
+		return 0;
+	    }
 
 	// 32. Longest Valid Parentheses
 	int longestValidParentheses(string s) {
