@@ -169,4 +169,21 @@ private:
 		}
 		return true;
 	}
+// 	Mine No.263. Ugly Number[E]
+
+// Ugly numbers are positive numbers whose prime factors only include 2, 3, 5.
+	bool isUgly(int num) {
+        if(num <= 0)
+            return false;
+        while(num / 2 * 2 == num){
+            num /= 2;
+        }
+        while(num / 3 * 3 == num){
+            num /= 3;
+        }
+        while(num / 5 * 5 == num){
+            num /= 5;
+        }
+        return num == 1;
+    }
 };
