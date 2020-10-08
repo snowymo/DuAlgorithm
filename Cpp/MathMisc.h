@@ -253,4 +253,50 @@ class MathMisc {
 		return true;
 	    }
 	
+	// Mine No.670 Maximum Swap [M]
+// Given a non-negative integer, you could swap two digits at most once to get the maximum valued number. Return the maximum valued number you could get.
+
+// Example 1:
+// Input: 2736
+// Output: 7236
+// Explanation: Swap the number 2 and the number 7.
+	static bool myfunction (int i,int j) { return (i>=j); }
+	    int maximumSwap(int num) {
+	//         try switch from left to right
+		int count = log10 (num);
+		int ret = num;
+		vector<int> digits, optimal;
+		unordered_map<int,vector<int>> position;
+		for(int i = count; i >= 0; i--){
+		    int cur = num / (pow(10.0, (double)(i)));
+		    num -= cur * pow(10.0,(double)i);
+		    digits.push_back(cur);
+		    optimal.push_back(cur);
+		    position[cur].push_back(i);
+		    // cout << "position[" << cur << "]=" << position[cur] << "\n";
+		}
+	//         
+		sort(optimal.begin(), optimal.end(), myfunction);
+		// printVec(digits);
+		// printVec(optimal);
+		for(int i = 0; i < digits.size(); i++){
+		    if(digits[i] < optimal[i]){
+	//                 swap!
+			// digits[position[optimal[i]]] = digits[i];
+			// digits[i] = optimal[i];
+			cout << "swap " << digits[i] << "to" << optimal[i] << "\n";
+			vector<int> beswap = position[optimal[i]];
+			sort(beswap.begin(), beswap.end());
+	//                 find the smallest
+
+			// cout << "(" << optimal[i] << "-" << digits[i] << ")*(pow," << digits.size()-1-i << ")-pow(10," << beswap[0] << ")\n";
+			ret += (optimal[i] - digits[i]) * 
+			    (pow(10, (double)(digits.size()-i-1)) 
+			     - pow(10,(double)beswap[0]));
+			return ret;
+		    }
+		}
+		return ret;
+	    }
+	
 };
