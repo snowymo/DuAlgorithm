@@ -342,4 +342,22 @@ class Stacks {
 		stack<NestedInteger> s;
 
 	};
+
+// Mine No.84 Backspace String Compare[E]
+bool backspaceCompare(string S, string T) {
+        return process(S) == process(T);
+    }
+    string process(string& str){
+        string newStr = "";
+        for(int i = 0; i < str.size(); i++){
+            if(str[i] == '#'){
+                if(newStr.length() > 0){
+                    newStr.pop_back();
+                }
+            }else{
+                newStr.push_back(str[i]);
+            }
+        }
+        return newStr;
+    }
 };
