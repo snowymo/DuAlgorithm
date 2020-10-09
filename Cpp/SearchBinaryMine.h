@@ -537,4 +537,38 @@ Because the 3rd row is incomplete, we return 2.
             win.erase(win.begin() + mid);
         }
     }
+  
+  // Mine No.378 [M] Kth Smallest Element in a Sorted Matrix
+  // better solution
+  int kthSmallest(vector<vector<int>>& matrix, int k){
+        int n=matrix.size();
+        if(n==0)
+            return 0;
+        
+        // kind of binary search the 'value' and then check the count smaller than the 'value' as bs condition
+        int low=matrix[0][0];
+        int high=matrix[n-1][n-1];
+        while(low<high)
+        {
+            int mid= low + (high-low) / 2;
+            int lessthanmid=0;
+            int i=n-1;
+            int j=0;
+            while(i>=0 and j<n)
+            {
+                if(matrix[i][j]<=mid)
+                {
+                    ++j;
+                    lessthanmid+=i+1;
+                }
+                else
+                    --i;
+            }
+            if(lessthanmid<k)
+                low=mid+1;
+            else
+                high=mid;
+        }
+        return low;
+    }
 }
