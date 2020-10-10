@@ -1265,6 +1265,58 @@ class BinaryTreeMisc {
 		}
 		return ret;
 	    }
+// 	slower one bc I have to check the stack every time, should push and pop with a value (visit time)
+	TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+		// generate path for p and q
+		// assign the first found one as the result
+		// if go back to parent node, re-assign the result until find the other node
+		// ret = root;
+		path.push_back(root);
+		generatePath(root, p, q);
+		return path.back();
+
+	    }
+	    TreeNode* ret = NULL;
+	    bool underOne = false;
+	    bool nochange = false;
+	    deque<TreeNode*> path;
+	    int found = 0;
+	    void generatePath(TreeNode* root, TreeNode* p, TreeNode* q){
+		if(found == 2)
+		    return;
+
+		// cout << "root->val=" << root->val << "\n";
+		if(p != NULL && root->val == p->val){
+		    found += 1;    
+		    p = NULL;
+		}
+		if(q != NULL && root->val == q->val){
+		   found += 1;
+		     q = NULL;
+		}
+
+		if(root->left){
+		    if(found == 0){
+			path.push_back(root->left);
+			// cout << "push " << root->left->val << "\n";;
+		    }                
+		    generatePath(root->left, p, q);
+		}
+		if(root->right){
+		    if(found == 0){
+			path.push_back(root->right);
+			// cout << "push " << root->right->val << "\n";;
+		    }                
+		    generatePath(root->right, p, q);
+		}
+		// cout << "finish root->val=" << root->val << "\n";
+		if(found <= 1){
+		    if(path.back()->val == root->val){
+			// cout << "pop " << path.back()->val << "\n";
+			path.pop_back();   
+		    }            
+		}            
+	    }
 	
 	// No. 129 (Mine)
 	// Given a binary tree containing digits from 0-9 only, each root-to-leaf path could represent a number.
