@@ -344,4 +344,89 @@ private:
 		board[row][col] = old;
 		return false;
 	    }
+	
+	// Mine No.212 Word Search [H]
+// 	Given a 2D board and a list of words from the dictionary, find all words in the board.
+// Each word must be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.
+// Example:
+// Input: 
+// board = [
+//   ['o','a','a','n'],
+//   ['e','t','a','e'],
+//   ['i','h','k','r'],
+//   ['i','f','l','v']
+// ]
+// words = ["oath","pea","eat","rain"]
+
+// Output: ["eat","oath"]
+	class Trie {
+		public:
+		    Trie() {
+			// next_.reserve(26);
+			// for (int i = 0; i < 26; i++) {
+			//     next_[i] = nullptr;
+			// }
+			next = vector<Trie*>(26, NULL);
+		    }
+
+		    void insert(const string &word) {
+			Trie* curr = this;
+			for (int i = 0; i < word.length(); i++) {
+			    auto& pros = curr->next[word[i]-'a'];
+			    if (pros == nullptr) {
+				Trie* new_node = new Trie();
+				pros = new_node;
+			    }
+			    curr = pros;
+			}
+			curr->is_word = true;
+			curr->word = word;
+		    }
+
+		    string word = "";
+		    bool is_word = false;
+		    vector<Trie*> next;
+		};
+	void dfs(int i, int j, Trie* head, vector<vector<char>>& board, vector<string>* out) {
+		if (i >= board.size() || i < 0 || j >= board[i].size() || j < 0) return;
+
+		char c = board[i][j];
+		if (c == '.') return;
+
+		Trie* next_trie = head->next[c - 'a'];
+		if (next_trie == nullptr) return;
+
+		board[i][j] = '.'; // changes board
+
+		if (next_trie->is_word) {
+		    out->push_back(next_trie->word);
+		    next_trie->is_word = false; // changes the trie (other option is to use hashset)//the same word in the dict should only appear once
+		}
+
+		dfs(i+1, j, next_trie, board, out);
+		dfs(i, j+1, next_trie, board, out);
+		dfs(i-1, j, next_trie, board, out);
+		dfs(i, j-1, next_trie, board, out);
+
+		board[i][j] = c; // reverting board
+
+		return;
+	    }   
+
+	    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+		if (board.empty()) return vector<string>(); 
+
+		Trie* head = new Trie();
+		for (const auto &word : words) {
+		    head->insert(word);
+		}
+
+		vector<string> out;
+		for (int i = 0; i < board.size(); i++) {
+		    for (int j = 0; j < board[i].size(); j++) {
+			dfs (i, j, head, board, &out);
+		    }
+		}
+		return out;
+	    }
 };
