@@ -241,4 +241,107 @@ private:
 		    fillThePath(A, B, row, col+1);
 		}
 	    }
+	
+	// Mine No.79 Word Search [M]
+	// sol 1. dfs && backtrace, slow
+// 	Given a 2D board and a word, find if the word exists in the grid.
+
+// The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+// Example:
+
+// board =
+// [
+//   ['A','B','C','E'],
+//   ['S','F','C','S'],
+//   ['A','D','E','E']
+// ]
+
+// Given word = "ABCCED", return true.
+// Given word = "SEE", return true.
+// Given word = "ABCB", return false.
+	    int width;
+	    // vector<vector<char>> globalboard;
+	    bool exist2(vector<vector<char>>& board, string word) {
+		// create a graph first
+		// globalboard = board;
+		unordered_map<char, vector<int>> mapCharPos;
+		for(int i = 0; i < board.size(); i++){
+		    int len = board[i].size();
+		    width = len;
+		    for(int j = 0; j < len; j++){
+			mapCharPos[board[i][j]].push_back(i * len + j);
+		    }
+		}
+		// check if the word exists
+		return existHelp(mapCharPos, word, 0, -1);
+	    }
+
+
+	    unordered_map<int,bool> used;
+	    bool existHelp(unordered_map<char, vector<int>>& mapCharPos, string& word, int progress, int parent){
+		// cout << "progress " << progress << "\n";
+		if(progress == word.size())
+		    return true;
+
+		vector<int> candidates = mapCharPos[word[progress]];        
+		for(int i = 0; i < candidates.size(); i++){
+		    int curPos = candidates[i];
+		    if(used.count(curPos) > 0 && used[curPos])
+			continue;
+		    if(parent == -1 || ((abs(curPos-parent) == 1) && (curPos/width == parent/width)) || (abs(curPos-parent) == width) ){
+			// the char is acceptable
+			// cout << "try " << curPos << " " << globalboard[(int)(curPos/width)][curPos%width] << " with parent " << parent << "\n";
+			// mapCharPos[word[progress]].erase(mapCharPos[word[progress]].begin() + i);
+			used[curPos] = true;
+			bool thisTry= existHelp(mapCharPos, word, progress+1, curPos);
+			if(thisTry)
+			    return true;
+			else
+			    used[curPos] = false;
+			// cout << "failed and put " << curPos << " back\n";
+		    }
+		}
+
+		return false;
+	    }
+
+	    // sol.2 DP?
+	    // sol.2 still dfs and backtracing, however, don't check all the candidates but check four directions.
+	    const vector<vector<int>> dirs {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+	    bool exist(vector<vector<char>>& board, string word)
+	    {
+		int row = board.size(), col = board[0].size();
+		for (int i = 0; i < row; i++) {
+		    for (int j = 0; j < col; j++) {
+			if (word[0] == board[i][j] && dfs(board, word, i, j, 0)) {
+			    return true;
+			}
+		    }
+		}
+		return false;
+	    }
+	       bool dfs(vector<vector<char>>& board, string word, int row, int col, int index) {
+		if (index == word.size()) {
+		    return true;
+		}
+
+		if (row < 0 || col < 0 || row >= board.size() || col >= board[0].size() || board[row][col] != word[index]) {
+		    return false;
+		}
+
+		char old = board[row][col];
+		board[row][col] = '$';
+
+		// all branches
+		for (const auto& dir : dirs) {
+		    if (dfs(board, word, row + dir[0], col + dir[1], index + 1)) {
+			board[row][col] = old;
+			return true;
+		    }
+		}
+
+		board[row][col] = old;
+		return false;
+	    }
 };
