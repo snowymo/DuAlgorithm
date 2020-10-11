@@ -231,4 +231,75 @@ class RegularMatchQuestionStar {
 		}*/
 		return 'a';
 	    }
+	
+	// Mine No.438. Find All Anagrams in a String [M]
+// 	Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
+
+// Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 20,100.
+
+// The order of output does not matter.
+
+// Example 1:
+
+// Input:
+// s: "cbaebabacd" p: "abc"
+
+// Output:
+// [0, 6]
+
+// Explanation:
+// The substring with start index = 0 is "cba", which is an anagram of "abc".
+// The substring with start index = 6 is "bac", which is an anagram of "abc".
+	vector<int> findAnagrams(string &s, string &p) {
+		// write your code here
+		vector<int> ret;
+		if(s.length() == 0)
+		    return ret;
+		if(s.length() < p.length())
+		    return ret;
+		unordered_map<char,int> count;
+		for(int i = 0; i < p.length(); i++){
+		    count[p[i]] += 1;
+		}
+		int numChar = count.size();
+		// lastPer is the permutation
+
+		// iterate s to see if substr is in permutation(p)
+		unordered_map<char,int> curCount;
+
+		string curStr = s.substr(0, p.length());
+		int curNumCorrect = 0;
+		for(int j = 0; j < curStr.length(); j++){
+		    curCount[curStr[j]] += 1;
+		    if(curCount[curStr[j]] == count[curStr[j]]){
+			curNumCorrect += 1;
+		    }else if(curCount[curStr[j]] > count[curStr[j]]){
+			curNumCorrect -= 1;
+		    }
+		}
+		if(curNumCorrect == numChar)
+		    ret.push_back(0);
+
+		for(int i = 1; i <= s.length() - p.length(); i++){
+		    string curStr = s.substr(i, p.length());
+		    if(s[i-1] != s[i+p.length()-1]){
+			curCount[s[i-1]] -= 1;
+			curCount[s[i+p.length()-1]] += 1;
+			if(curCount[s[i-1]] == count[s[i-1]]){
+			    curNumCorrect += 1;
+			}else if(curCount[s[i-1]] == count[s[i-1]]-1){
+			    curNumCorrect -= 1;
+			}
+			if(curCount[s[i-1+p.length()]] == count[s[i-1+p.length()]]){
+			    curNumCorrect += 1;
+			}else if(curCount[s[i-1+p.length()]] == count[s[i-1+p.length()]]+1){
+			    curNumCorrect -= 1;
+			}    
+		    }
+
+		    if(curNumCorrect == numChar)
+			ret.push_back(i);
+		}
+		return ret;
+	    }
 };
