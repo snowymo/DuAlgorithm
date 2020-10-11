@@ -58,6 +58,47 @@ public:
 		parent->right = sortedListToBST(head, mid + 1, end);
 		return parent;
 	}
+	// Mine
+	TreeNode* sortedListToBST(ListNode* head) {
+		// find the median, put as the root, recursively create left and right son
+		if(!head)
+		    return NULL;
+
+		if(!head->next)
+		    return new TreeNode(head->val);
+
+		return createTree(head);
+	    }
+
+	// T(n) = nlog(n)
+	    TreeNode* createTree(ListNode* head){
+		if(!head)
+		    return NULL;
+		if(!head->next)
+		    return new TreeNode(head->val);
+		// cout << "create tree-" << head->val << "\n";
+		ListNode* mid = findMiddle(head);
+		TreeNode* root = new TreeNode(mid->val);
+		root->left = createTree(head);
+		root->right = createTree(mid->next);
+		return root;
+	    }
+
+	    ListNode* findMiddle(ListNode* head){
+		if(!head->next)
+		    return head;
+		ListNode* cur = head, *mid = head, *prev = NULL;
+		while(cur && cur->next){
+		    prev = mid;
+		    mid = mid->next;
+		    cur = cur->next;
+		    if(cur)
+			cur = cur->next;
+		}
+		prev->next = NULL;
+		// cout << "mid-" << mid->val << "\n";
+		return mid;
+	    }
 
 public:
 	// 108. Convert Sorted Array to Binary Search Tree
