@@ -357,4 +357,26 @@ namespace Hashmaps {
 		}
 		return true;
 	}
+	
+	// Mine No.560 Subarray Sum Equals K[M]
+// 	Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.
+
+// Example 1:
+
+// Input:nums = [1,1,1], k = 2
+// Output: 2
+	int subarraySum(vector<int>& nums, int k) {
+		unordered_map<int,int> sumCount;
+		sumCount[0] = 1;
+		int ret = 0;
+		int curSum = 0;
+		for(int i = 0; i < nums.size(); i++){
+		    curSum += nums[i];
+
+		    ret += sumCount[curSum-k];
+		    // cout << "curSum " << curSum << " sumCount["<<curSum-k<< "] " << sumCount[curSum-k] << "\n";
+		    sumCount[curSum] += 1;
+		}
+		return ret;
+	    }
 }
