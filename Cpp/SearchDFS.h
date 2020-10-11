@@ -429,4 +429,28 @@ private:
 		}
 		return out;
 	    }
+	
+	// Mine No.494 [M] Target Sum
+// 	You are given a list of non-negative integers, a1, a2, ..., an, and a target, S. Now you have 2 symbols + and -. For each integer, you should choose one from + and - as its new symbol.
+
+// Find out how many ways to assign symbols to make sum of integers equal to target S.
+	int findTargetSumWays(vector<int>& nums, int S) {
+		vector<int> dp (2001,0);
+		dp[nums[0] + 1000] = 1;
+		dp[-nums[0] + 1000] += 1;
+		for (int i = 1; i < nums.size(); i++) {
+		    // cout << i << "\n";
+		    vector<int> cur(2001,0);
+		    for (int sum = -1000; sum <= 1000; sum++) {
+			if (dp[sum + 1000] > 0) {
+			    // cout << "add " << dp[sum + nums[i] + 1000]
+			    //     << " sub " << dp[sum - nums[i] + 1000] << "\n";
+			    cur[sum + nums[i] + 1000] += dp[sum + 1000];
+			    cur[sum - nums[i] + 1000] += dp[sum + 1000];
+			}
+		    }
+		    dp = cur;
+		}
+		return S > 1000 ? 0 : dp[S + 1000];
+	    }
 };
