@@ -1588,4 +1588,35 @@ public:
 		}else
 		    return false;
 	    }
+	
+	// Mine No.426 [M] Convert Binary Search Tree to Sorted Doubly Linked List
+// 	Convert a BST to a sorted circular doubly-linked list in-place. Think of the left and right pointers as synonymous to the previous and next pointers in a doubly-linked list.
+
+// Let's take the following BST as an example, it may help you understand the problem better:
+	TreeNode * treeToDoublyList(TreeNode * root) {
+		// Write your code here.
+		if (!root) return NULL;
+		TreeNode *head = NULL, *pre = NULL;
+		inorder(root, pre, head);
+		pre->right = head;
+		head->left = pre;
+		return head;
+	      }
+
+	      void inorder(TreeNode* node, TreeNode*& pre, TreeNode*& head) {
+		if (!node) return;
+		// cout << "process " << node->val << "\n";
+		inorder(node->left, pre, head);
+		if (!head) {
+		    // cout << "leaf " << node->val << "\n";
+		  head = node;
+		  pre = node;
+		} else {
+		    // cout << "non leaf " << pre->val << " " << head->val << "\n";
+		  pre->right = node;
+		  node->left = pre;
+		  pre = node;
+		}
+		inorder(node->right, pre, head);
+	      }
 };
