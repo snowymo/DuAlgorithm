@@ -1151,4 +1151,71 @@ namespace TestLinkedList {
 		 * obj->addAtIndex(index,val);
 		 * obj->deleteAtIndex(index);
 		 */
+	
+	// Mine No.16 [M] Reorder List
+// 	Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+// reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+
+// You may not modify the values in the list's nodes, only nodes itself may be changed.
+
+// Example 1:
+
+// Given 1->2->3->4, reorder it to 1->4->2->3.
+// Example 2:
+
+// Given 1->2->3->4->5, reorder it to 1->5->2->4->3.
+	void reorderList(ListNode* head) {
+		// find n
+		// reverse the second half
+		// merge 2 linked list to 1
+		if(!head)
+		    return;
+		if(!head->next)
+		    return;
+		ListNode* mid = head, *cur = head, *prevMid = NULL;
+		int n = 0;
+		while(cur){
+		    prevMid = mid;
+		    mid = mid->next;
+		    cur = cur->next;
+		    ++n;
+		    if(cur){
+			++n;
+			cur = cur->next;
+		    }                
+		}
+		prevMid->next = NULL;
+		// cout << "n=" << n << " mid " << mid->val << "\n";
+		// reverse from mid to the end
+		ListNode* temp, *next, *prev = NULL;
+		while(mid){
+		    temp = mid;
+		    next = mid->next;
+		    temp->next = prev;
+
+		    mid = next;
+		    prev = temp;
+		}
+		// cout << "prev " << prev->val << "\n";
+		// merge head and prev
+		cur = head;
+		for(int i = 0; i < n; i+=2){
+		    // cout << "i-" << i << "\n";
+		    temp = cur->next;
+		    cur->next = prev;
+		    // cout << "\tcur " << cur->val << "\n";
+		    cur = temp;            
+		    if(prev){
+			temp = prev->next;
+			prev->next = cur;
+			// cout << "\tprev " << prev->val << "\n";
+			prev = temp;                
+		    }
+		}
+		// cur->next = NULL;
+		// cout << "cur " << cur <<  " prev " << prev << "\n";
+		// for(ListNode* ptr = head; ptr!=NULL; ptr = ptr->next){
+		//     cout << ptr->val << "\t";
+		// }
+	    }
 }
